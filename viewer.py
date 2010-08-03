@@ -91,7 +91,6 @@ class Visor:
 		self.toolbar1.add (toolbutton5)
 		toolbutton5.connect('clicked',  self.full)
 
-
 		# Scrolled window
 		scrolledwindow1 = gtk.ScrolledWindow()
 		scrolledwindow1.show()
@@ -105,6 +104,13 @@ class Visor:
 		self.image = gtk.Image()
 		self.image.show()
 		scrolledwindow1.add_with_viewport(self.image)
+
+		# Barra de estado
+		self.statusbar = gtk.Statusbar()
+		self.context_id = self.statusbar.get_context_id("Users")
+		vbox1.pack_end(self.statusbar, False, False, 0)
+		self.statusbar.push(0, "Listo")
+		self.statusbar.show()
 
 		# Slideshow control:
 		self.slideshow_window = gtk.Window(gtk.WINDOW_POPUP)
@@ -169,6 +175,8 @@ class Visor:
 	# Muestra la imagen a partir de un numero
 	def show_image_by_number(self, widget, number):
 		""""""
+		context_id = self.statusbar.get_context_id("Estado de descarga de imagenes")
+		self.statusbar.push(context_id, "Descargando imagen, por favor espere...")
 		dir_downloads = cons.PATH_TEMP
 		dominio = 'img.submanga.com:8080'
 		imagen_local = 'img_temp.jpg'
@@ -195,6 +203,7 @@ class Visor:
 		self.window.set_title("Imagen " + str(self.image_num))
 		# Mostrams la imagen
 		self.image.set_from_file(self.make_image_name(self.image_num))
+		self.statusbar.pop(context_id)
 
 		return True
 
@@ -217,7 +226,8 @@ class Visor:
 		else:
 			self.window.fullscreen()
 			self.status_fullscreen=True
-			# Ocultamos la barra de heramientas y de busqueda
+			# Ocultamos la barra de heramientas y de estado
 			self.toolbar1.hide()
+			self.statusbar.hide()
 			# Mostramos la barra de control de pantalla completa
 			self.slideshow_window.show_all()

@@ -10,19 +10,20 @@ import cons
 import lib_submanga
 
 class Visor:
-
+	""""""
 	def delete(self, widget, event=None):
+		""""""
 		self.window.destroy()
 		#widget.destroy()
 		#gtk.main_quit()
 		return False
 
 	def __init__(self, manga):
+		""""""
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.connect("delete_event", self.delete)
 		self.window.resize(700, 700)
 		self.window.set_icon_from_file(cons.ICON_PROGRAM)
-		#self.window.set_title(manga.nombre+" "+manga.numero+" - Cargando...")
 		self.window.set_border_width(0)
 		self.window.connect('key-press-event', self.topwindow_keypress)
 
@@ -32,7 +33,6 @@ class Visor:
 		self.image_num = 1
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
-		self.scroll_pos=0
 
 		# Caja contenedora de la ventana
 		vbox1 = gtk.VBox()
@@ -161,59 +161,61 @@ class Visor:
 		self.set_image(self.image_num)
 		self.window.show()
 
-
 	def set_image(self, num):
-		if self.image_num <= int(self.manga.numpaginas) and self.image_num >= 1:
+		""""""
+		if num <= int(self.manga.numpaginas) and num >= 1:
 			self.image_num = num
 			digadd=3-len(str(num))
 			self.image.set_from_file(self.directorio+"/"+(digadd*"0")+str(self.image_num)+".jpg")
 			self.page_pos.set_text(str(self.image_num))
+			self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
 			return True
 		else:
 			print "No se pudo cambiar la pagina"
 			return False
 
 	def next_image(self, widget):
-		self.image_num += 1
-		if self.set_image(self.image_num) == False:
-			self.image_num -= 1
+		""""""
+		self.set_image(self.image_num+1)
 
 	def prev_image(self, widget):
-		self.image_num -= 1
-		if self.set_image(self.image_num) == False:
-			self.image_num += 1
+		""""""
+		self.set_image(self.image_num-1)
 
 	def goto_image(self, widget, entry):
+		""""""
 		entry_text = entry.get_text()
 		self.set_image(int(entry_text))
 		return True
 
 	def rescroll(self, widget):
-		self.scroll_pos=0
-		self.vadj.set_value(0)
-		self.scrolledwindow1.set_vadjustment(self.vadj)
+		""""""
+		self.scrolledwindow1.get_vadjustment().set_value(0)
 
 	def scroll_up(self, widget):
-		newy=self.scroll_pos-60
+		""""""
 		yadjust = self.scrolledwindow1.get_vadjustment()
+		vActual=yadjust.get_value()
+		newy=vActual-60
 		if newy >= yadjust.lower and newy <= yadjust.upper - yadjust.page_size:
-			self.scroll_pos=self.scroll_pos-60
+			self.scroll_pos=newy
 		else:
-			self.scroll_pos=yadjust.lower
-		self.vadj.set_value(self.scroll_pos)
-		self.scrolledwindow1.set_vadjustment(self.vadj)
+			newy=yadjust.lower
+		yadjust.set_value(newy)
 
 	def scroll_down(self, widget):
-		newy=self.scroll_pos+60
+		""""""
 		yadjust = self.scrolledwindow1.get_vadjustment()
+		vActual=yadjust.get_value()
+		newy=vActual+60
 		if newy >= yadjust.lower and newy <= yadjust.upper - yadjust.page_size:
-			self.scroll_pos=self.scroll_pos+60
+			self.scroll_pos=newy
 		else:
-			self.scroll_pos=yadjust.upper - yadjust.page_size
-		self.vadj.set_value(self.scroll_pos)
-		self.scrolledwindow1.set_vadjustment(self.vadj)
+			newy=yadjust.upper - yadjust.page_size
+		yadjust.set_value(newy)
 
 	def full(self, widget):
+		""""""
 		if self.status_fullscreen:
 			self.window.unfullscreen()
 			self.status_fullscreen=False
@@ -228,28 +230,25 @@ class Visor:
 			self.slideshow_window.show_all()
 
 	def topwindow_keypress(self, widget, event):
+		""""""
 		print event
 		if event.keyval == gtk.gdk.keyval_from_name('Left'):
 			self.prev_image(self)
-			return
 		elif event.keyval == gtk.gdk.keyval_from_name('Right'):
 			self.next_image(self)
-			return
 		elif event.keyval == gtk.gdk.keyval_from_name('Up'):
 			self.scroll_up(self)
-			return
 		elif event.keyval == gtk.gdk.keyval_from_name('Down'):
 			self.scroll_down(self)
-			return
 		shortcut = gtk.accelerator_name(event.keyval, event.state)
 		if "Escape" in shortcut:
 			if self.status_fullscreen:
 				self.full(self)
 			else:
 				self.window.destroy()
-			return
 
 	def button_clicked(self, widget, event):
+		""""""
 		if event.button == 1 and event.type == gtk.gdk.BUTTON_PRESS:
 			self.next_image(widget)
 		elif event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:

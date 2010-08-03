@@ -7,7 +7,7 @@ import locale
 
 # Constantes del proyecto
 PROGRAM_NAME = "pyManga"
-PROGRAM_VERSION = "0.1.2 beta"
+PROGRAM_VERSION = "0.1.3 beta"
 WEBPAGE = "http://code.google.com/p/pymanga/"
 DOC = "http://code.google.com/p/pymanga/"
 
@@ -20,8 +20,10 @@ if "win" in sys.platform:
 else:
 	PATH = os.path.join(sys.path[0], "")
 	DEFAULT_PATH = os.path.join(os.path.expanduser("~"), "")
-CONFIG_PATH = os.path.join(DEFAULT_PATH, ".pymanga" ,"")
 
+#CONFIG_PATH = os.path.join(DEFAULT_PATH, ".pymanga" ,"")
+
+CONFIG_PATH = os.path.join(PATH, ".pymanga" ,"")
 # Direciones utiles
 PATH_TEMP = os.path.join(PATH, "temp", "")
 PATH_MEDIA = os.path.join(PATH, "media", "")

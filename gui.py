@@ -20,6 +20,8 @@ class Gui:
 	def delete(self, widget, event=None):
 		""""""
 		gtk.main_quit()
+		self.saveToQuit()
+
 		return False
 
 	def get_main_menu(self, window):
@@ -32,14 +34,19 @@ class Gui:
 
 		return item_factory.get_widget("<main>")
 
-	def __init__(self):
+	def __init__(self, conf):
 		""""""
-		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		#configuration
+		self.configuration = conf
 
-		window.connect("delete_event", self.delete)
-		window.resize(800, 500)
-		window.set_icon_from_file(cons.ICON_PROGRAM)
-		window.set_border_width(0)
+		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window.connect("delete_event", self.delete)
+		self.window.set_icon_from_file(cons.ICON_PROGRAM)
+		self.window.set_title("pyManga")
+		self.window.set_border_width(0)
+
+		geometry=self.configuration.getValue("main","mainWindowGeometry")
+		self.window.parse_geometry(geometry)
 
 		self.menu_items = (
 			( "/_Archivo",         None,         None, 0, "<Branch>" ),
@@ -57,10 +64,10 @@ class Gui:
 
 		# Caja global
 		vboxAdm = gtk.VBox()
-		window.add(vboxAdm)
+		self.window.add(vboxAdm)
 		vboxAdm.show()
 
-		menubar = self.get_main_menu(window)
+		menubar = self.get_main_menu(self.window)
 		vboxAdm.pack_start(menubar, False, True, 0)
 		menubar.show()
 
@@ -84,8 +91,6 @@ class Gui:
 		self.notebook.set_tab_pos(gtk.POS_TOP)
 		vboxAdm.pack_start(self.notebook, True, True, 0)
 		self.notebook.show()
-		self.show_tabs = True
-		self.show_border = True
 
 		# Tab de biblioteca
 		self.biblioteca = tab_library.TreeLibrary()
@@ -112,7 +117,7 @@ class Gui:
 		self.statusbar.push(0, "Listo")
 		self.statusbar.show()
 
-		window.show()
+		self.window.show()
 
 	def refresh_buttom(self, widget):
 		""""""
@@ -122,6 +127,14 @@ class Gui:
 			self.biblioteca.listar()
 		elif page==1:
 			self.novedades.listar()
+
+	def saveToQuit(self):
+		x, y = self.window.get_position()
+		allocation=self.window.allocation
+		width = allocation.width
+		height = allocation.height
+		value=str(width)+"x"+str(height)+"+"+str(x)+"+"+str(y)
+		self.configuration.setValue("main","mainWindowGeometry",value)
 
 
 def main():

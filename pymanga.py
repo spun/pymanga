@@ -9,6 +9,8 @@ import gtk
 import gobject
 from gui import Gui
 
+import config
+
 class Pymanga:
 	""""""
 	def __init__(self):
@@ -16,6 +18,9 @@ class Pymanga:
 		#exception hook
 		self.old_exception_hook = sys.excepthook
 		sys.excepthook = self.exception_hook
+
+
+		self.configuration = config.Config()
 
 	def exception_hook(self, type, value, trace):
 		""""""
@@ -34,5 +39,5 @@ class Pymanga:
 if __name__ == "__main__":
 	gobject.threads_init()
 	p = Pymanga()
-	Gui()
+	Gui(p.configuration)
 	gtk.main()
