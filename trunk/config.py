@@ -45,6 +45,4 @@ class Config():
 
 if __name__ == "__main__":
 	c = Config()
-	print c.getValue("main","mainWindowGeometry")
-	c.setValue("main","mainWindowGeometry", "000x000+000+00")
 

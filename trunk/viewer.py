@@ -222,6 +222,7 @@ class Visor:
 			self.window.unfullscreen()
 			self.status_fullscreen=False
 			self.toolbar1.show()
+			self.statusbar.show()
 			self.slideshow_window.hide_all()
 		else:
 			self.window.fullscreen()
