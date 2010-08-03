@@ -14,6 +14,7 @@ import tab_library
 import tab_new
 import tab_search
 from about import About
+from preferences import Preferences
 
 class Gui:
 	""""""
@@ -57,7 +58,7 @@ class Gui:
 			#~ ( "/Archivo/sep1",     None,         None, 0, "<Separator>" ),
 			( "/Archivo/Quit",     "<control>Q", gtk.main_quit, 0, None ),
 			( "/_Editar",      None,         None, 0, "<Branch>" ),
-			#~ ( "/Editar/Test",  None,         None, 0, None ),
+			( "/Editar/_Preferencias",  None,         Preferences, 0, None ),
 			( "/Ay_uda",         None,         None, 0, "<LastBranch>" ),
 			( "/Ayuda/Acerca de",   None,         About, 0, None ),
 			)
@@ -88,6 +89,7 @@ class Gui:
 		toolbutton3.connect('clicked',  self.refresh_buttom)
 
 		self.notebook = gtk.Notebook()
+		self.notebook.set_property("homogeneous", True)
 		self.notebook.set_tab_pos(gtk.POS_TOP)
 		vboxAdm.pack_start(self.notebook, True, True, 0)
 		self.notebook.show()
