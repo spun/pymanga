@@ -17,8 +17,6 @@ import notifications
 import downloader
 import zipfile
 
-
-
 class TreeLibrary(gtk.ScrolledWindow):
 	""""""
 	def __init__(self):
@@ -287,7 +285,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 		num=model.get_value(iter, 2)
 		namefile=name+"_"+num+"."+tipo
 
-		dialog = gtk.FileChooserDialog("Guardar como .zip",None,gtk.FILE_CHOOSER_ACTION_SAVE,(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+		dialog = gtk.FileChooserDialog("Guardar como ."+tipo,None,gtk.FILE_CHOOSER_ACTION_SAVE,(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 		dialog.set_current_name(namefile)
 
 		saveaction=False
