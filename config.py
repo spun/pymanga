@@ -41,6 +41,7 @@ class Config():
 		value="800x500+50+50"
 		self.cfg.add_section("main")
 		self.cfg.set("main","mainWindowGeometry",value)
+		self.cfg.set("main","mainTabSelected","0")
 
 
 if __name__ == "__main__":

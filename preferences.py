@@ -15,7 +15,7 @@ class Preferences(gtk.Dialog):
 		self.set_icon_from_file(cons.PREFERENCES_ICON)
 		self.connect("response", self.close)
 		self.set_size_request(500,500)
-
+		self.set_title(cons.PROGRAM_NAME+" - Preferencias ")
 		frame1 = gtk.Frame(" Dirección de la biblioteca ")
 		frame1.set_border_width(10)
 		self.vbox.pack_start(frame1, False, True, 0)
@@ -36,7 +36,7 @@ class Preferences(gtk.Dialog):
 		hbbox.show()
 
 		button = gtk.Button("Cambiar")
-		button.connect("clicked", self.close)
+		button.connect("clicked", self.changeLibraryFolder)
 		hbbox.pack_start(button)
 		button.show()
 
@@ -54,6 +54,26 @@ class Preferences(gtk.Dialog):
 	def close(self, widget=None, other=None):
 		""""""
 		self.destroy()
+		
+		
+		
+		
+	def changeLibraryFolder(self, widget=None):
+		print "Cambiando"
+
+		dialog = gtk.FileChooserDialog("Guardar como ",None,gtk.FILE_CHOOSER_ACTION_SAVE,(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+		#~ dialog.set_current_name(namefile)
+		dialog.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+
+		saveaction=False
+		response = dialog.run()
+		if response == gtk.RESPONSE_OK:
+			direccion=dialog.get_filename()
+			saveaction=True
+		dialog.destroy()
+		
+		print direccion
+
 
 if __name__ == "__main__":
 	p = Preferences()

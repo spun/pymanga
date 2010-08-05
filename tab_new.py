@@ -81,9 +81,10 @@ class TreeNews(gtk.ScrolledWindow):
 		#self.vaciar_lista()
 		#time.sleep(5)
 		self.novedades = lib_submanga.Novedades()
-		self.novedades.realizarBusqueda()
+		numMangas=10
+		self.novedades.realizarBusqueda(numMangas)
 
-		for i in range(10):
+		for i in range(numMangas):
 			novManga=self.novedades.getManga(i)
 			self.tvNovedades.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
 		gtk.gdk.threads_leave()

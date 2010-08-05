@@ -14,43 +14,64 @@ class Novedades:
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com/p/1")
 		fin=False
+
+		nom=""
+		num=""
+		cod=""
 		numeroMangas=0
+		mode=0
 		while fin==False:
 			linea = f.readline()
 			if not linea: break
-			encontrado = linea.find('<td><a href="http://submanga.com/')
-			if encontrado != -1:
-				completo=False
-				cont = encontrado+len('<td><a href="http://submanga.com/')
+			# Si buscamos un manga
+			if mode==0:
+				encontrado = linea.find('<td><a href="http://submanga.com/')
+				if encontrado != -1:
+					completo=False
+					cont = encontrado+len('<td><a href="http://submanga.com/')
 
-				parte=0
-				nom=""
-				num=""
-				cod=""
-				while completo==False:
-					if linea[cont]!='"':
-						if linea[cont]=='/':
-							parte=parte+1
+					parte=0
+					nom=""
+					num=""
+					cod=""
+					while completo==False:
+						if linea[cont]!='"':
+							if linea[cont]=='/':
+								parte=parte+1
+							else:
+								if parte==0:
+									nom = nom+linea[cont]
+								elif parte==1:
+									num = num+linea[cont]
+								elif parte==2:
+									cod = cod+linea[cont]
+
+							cont=cont+1
 						else:
-							if parte==0:
-								nom = nom+linea[cont]
-							elif parte==1:
-								num = num+linea[cont]
-							elif parte==2:
-								cod = cod+linea[cont]
-
+							completo = True
+					mode=1
+			# Si buscamos una scanlation
+			else:
+				encontrado = linea.find('<td class="grey s"><a rel="nofollow" href="http://submanga.com/'+nom+'/scanlation/')
+				if encontrado != -1:
+					cont = encontrado+len('<td class="grey s"><a rel="nofollow" href="http://submanga.com/'+nom+'/scanlation/')
+					fansub=""
+					while linea[cont]!='"' and linea[cont+1]!='>':
+						fansub+=linea[cont]
 						cont=cont+1
-					else:
-						completo = True
 
-				numeroMangas=numeroMangas+1
-				if numeroMangas>10:
-					fin=True
+					nom=nom.replace("_"," ")
+					num=num.replace("_"," ")
+					fansub=fansub.replace("_"," ")
+					manga = Manga(nom,num,cod,fansub)
+					self.resultados.append(manga)
 
-				nom=nom.replace("_"," ")
-				num=num.replace("_"," ")
-				manga = Manga(nom,num,cod)
-				self.resultados.append(manga)
+					numeroMangas=numeroMangas+1
+					mode=0
+
+					if numeroMangas>=numres:
+						fin=True
+
 		f.close()
 
 	def getManga(self, num):
@@ -171,3 +192,8 @@ class Busqueda:
 	def numMangas(self):
 		""""""
 		return len(self.resultados)
+
+if __name__ == "__main__":
+	n = Novedades()
+	n.realizarBusqueda(10)
+	print n.numMangas()
