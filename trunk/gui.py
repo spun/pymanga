@@ -43,7 +43,7 @@ class Gui:
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.connect("delete_event", self.delete)
 		self.window.set_icon_from_file(cons.ICON_PROGRAM)
-		self.window.set_title("pyManga")
+		self.window.set_title(cons.PROGRAM_NAME)
 		self.window.set_border_width(0)
 
 		geometry=self.configuration.getValue("main","mainWindowGeometry")
@@ -110,7 +110,8 @@ class Gui:
 		self.notebook.append_page(busqueda, label)
 
 		# Tab con el foco al iniciar
-		self.notebook.set_current_page(0)
+		tabSelected=self.configuration.getValue("main","mainTabSelected")
+		self.notebook.set_current_page(int(tabSelected))
 
 		# Barra de estado (completamente innecesaria)
 		self.statusbar = gtk.Statusbar()
@@ -137,6 +138,10 @@ class Gui:
 		height = allocation.height
 		value=str(width)+"x"+str(height)+"+"+str(x)+"+"+str(y)
 		self.configuration.setValue("main","mainWindowGeometry",value)
+		
+		tabSelected=self.notebook.get_current_page()
+		self.configuration.setValue("main","mainTabSelected",str(tabSelected))
+		
 
 
 def main():
