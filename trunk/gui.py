@@ -138,10 +138,10 @@ class Gui:
 		height = allocation.height
 		value=str(width)+"x"+str(height)+"+"+str(x)+"+"+str(y)
 		self.configuration.setValue("main","mainWindowGeometry",value)
-		
+
 		tabSelected=self.notebook.get_current_page()
 		self.configuration.setValue("main","mainTabSelected",str(tabSelected))
-		
+
 
 
 def main():

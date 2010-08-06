@@ -71,7 +71,6 @@ class Novedades:
 
 					if numeroMangas>=numres:
 						fin=True
-
 		f.close()
 
 	def getManga(self, num):
@@ -153,13 +152,71 @@ class Manga:
 
 class Busqueda:
 	""""""
-	def __init__(self, nombre, numero):
+	def __init__(self):
 		""""""
-		self.nombre=nombre
-		self.numero=numero
+		self.nombre=""
+		self.numero=""
 		self.resultados=[]
 
-	def realizarBusqueda(self, numres=10):
+
+	def getFromDirect(self, url):
+		partes=url.split('/')
+		tam=len(partes)
+		codigo=partes[tam-1]
+		numero=partes[tam-2].replace("_"," ")
+		nombre=partes[tam-3].replace("_"," ")
+		m=Manga(nombre, numero, codigo)
+		m.getExtraInfo()
+
+		self.resultados[:].remove
+		self.resultados.append(m)
+
+	def realizarBusqueda(self, nombre, numero):
+		self.nombre=nombre
+		self.numero=numero
+
+		if numero!="":
+			self.busquedaExacta()
+		else:
+			self.realizarBusquedaGlobal()
+
+	def realizarBusquedaGlobal(self):
+		""""""
+		self.resultados[:].remove
+		nameManga=self.nombre.replace(" ","_")
+		f = urllib2.urlopen("http://submanga.com/"+nameManga+"/completa")
+		while True:
+			linea = f.readline()
+			if not linea: break
+			encontrado = linea.find('<td><a href="http://submanga.com/'+nameManga+'/')
+			if encontrado != -1:
+				cont = encontrado+len('<td><a href="http://submanga.com/'+nameManga+'/')
+
+				completo=False
+				modo=0
+				numang=""
+				numChapter=""
+				while completo==False:
+					if modo==0:
+						if linea[cont]!='/':
+							numChapter = numChapter+linea[cont]
+						else:
+							modo=1
+					else:
+						if linea[cont]!='"':
+							numang = numang+linea[cont]
+						else:
+							completo = True
+					cont=cont+1
+
+				name=nameManga.replace("_"," ")
+				numChapter=numChapter.replace("_"," ")
+				manga = Manga(name,numChapter, numang)
+				self.resultados.append(manga)
+
+		f.close()
+
+	def busquedaExacta(self, numres=10):
 		""""""
 		self.resultados[:].remove
 		nameManga=self.nombre.replace(" ","_")
@@ -185,6 +242,7 @@ class Busqueda:
 				self.resultados.append(manga)
 		f.close()
 
+
 	def getManga(self, num):
 		""""""
 		return self.resultados[num]
@@ -194,6 +252,5 @@ class Busqueda:
 		return len(self.resultados)
 
 if __name__ == "__main__":
-	n = Novedades()
-	n.realizarBusqueda(10)
+	n = Busqueda("Soul Eater", "")
 	print n.numMangas()

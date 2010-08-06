@@ -164,7 +164,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 		verWeb.connect_object("activate", self.seleccionar_origen, path, "VerEnWeb")
 
 		menu.show_all()
-		menu.popup(None, None, self.posicionar_menu, boton, tiempo, None)
+		menu.popup(None, None, None, boton, tiempo, None)
 
 	def seleccionar_origen(self, path, accion):
 		""""""
@@ -188,10 +188,6 @@ class TreeLibrary(gtk.ScrolledWindow):
 			self.abrirEnWeb()
 		#print "Seleccionado: ", path, accion
 
-	def posicionar_menu(self, widget, pos):
-		""""""
-		# Establece la posicion del menu desplegable
-		print "Posicionando menu desplegable"
 
 	def borrarSeleccion(self):
 		""""""

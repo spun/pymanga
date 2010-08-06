@@ -54,10 +54,7 @@ class Preferences(gtk.Dialog):
 	def close(self, widget=None, other=None):
 		""""""
 		self.destroy()
-		
-		
-		
-		
+
 	def changeLibraryFolder(self, widget=None):
 		print "Cambiando"
 
@@ -71,7 +68,7 @@ class Preferences(gtk.Dialog):
 			direccion=dialog.get_filename()
 			saveaction=True
 		dialog.destroy()
-		
+
 		print direccion
 
 
