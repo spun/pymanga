@@ -20,115 +20,144 @@ class Visor:
 
 	def __init__(self, manga):
 		""""""
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.window.connect("delete_event", self.delete)
-		self.window.resize(700, 700)
-		self.window.set_icon_from_file(cons.ICON_PROGRAM)
-		self.window.set_border_width(0)
-		self.window.connect('key-press-event', self.topwindow_keypress)
-
 		# Variables
-		self.manga_select=False
+		self.zoomLevel=100
+		self.zoomMode="Normal"
 		self.status_fullscreen=False
 		self.image_num = 1
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
 
-		# Caja contenedora de la ventana
-		vbox1 = gtk.VBox()
-		vbox1.show()
-		self.window.add(vbox1)
+		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window.connect("delete_event", self.delete)
+		self.window.resize(700, 700)
+		self.window.set_icon_from_file(cons.ICON_PROGRAM)
+		self.window.set_border_width(0)
+
+		vboxAdm = gtk.VBox()
+		vboxAdm.show()
+		self.window.add(vboxAdm)
 
 		# Toolbar
-		self.toolbar1 = gtk.Toolbar()
-		self.toolbar1.show()
-		vbox1.pack_start(self.toolbar1, False, False, 0)
+		self.toolbar = gtk.Toolbar()
+		self.toolbar.show()
+		vboxAdm.pack_start(self.toolbar, False, False, 0)
 
-		self.toolbar1.set_style(gtk.TOOLBAR_BOTH)
-		self.toolbar1.get_icon_size()
+		self.toolbar.set_style(gtk.TOOLBAR_ICONS)
 
-		toolbutton3 = gtk.ToolButton(gtk.STOCK_GO_BACK)
-		toolbutton3.show()
-		self.toolbar1.add (toolbutton3)
-		toolbutton3.connect('clicked',  self.prev_image)
+		toolButtonBack = gtk.ToolButton(gtk.STOCK_GO_BACK)
+		toolButtonBack.show()
+		self.toolbar.add (toolButtonBack)
+		toolButtonBack.connect('clicked',  self.prev_image)
 
-		toolbutton4 = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
-		toolbutton4.show()
-		self.toolbar1.add (toolbutton4)
-		toolbutton4.connect('clicked',  self.next_image)
+		toolButtonNext = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
+		toolButtonNext.show()
+		self.toolbar.add (toolButtonNext)
+		toolButtonNext.connect('clicked',  self.next_image)
 
-		separatortoolitem1 = gtk.SeparatorToolItem()
-		separatortoolitem1.show()
-		self.toolbar1.add (separatortoolitem1)
+		toolSeparator = gtk.SeparatorToolItem()
+		self.toolbar.add (toolSeparator)
+		toolSeparator.show()
 
-		toolitem3 = gtk.ToolItem();
-		toolitem3.show()
-		self.toolbar1.add (toolitem3)
+		toolItem1 = gtk.ToolItem();
+		toolItem1.show()
+		self.toolbar.add (toolItem1)
 
-		label2 = gtk.Label(" Pagina ")
-		label2.show ()
-		toolitem3.add (label2)
+		pageLabel = gtk.Label(" Pagina ")
+		toolItem1.add(pageLabel)
+		pageLabel.show ()
 
-		toolitem4 = gtk.ToolItem()
-		toolitem4.show()
-		self.toolbar1.add (toolitem4)
+		toolItem2 = gtk.ToolItem()
+		self.toolbar.add (toolItem2)
+		toolItem2.show()
 
 		self.page_pos = gtk.Entry()
+		toolItem2.add (self.page_pos)
 		self.page_pos.show()
-		toolitem4.add (self.page_pos)
 
 		self.page_pos.connect("activate", self.goto_image, self.page_pos)
 		self.page_pos.set_width_chars (3)
 		self.page_pos.set_text("-")
 
-		toolitem7 = gtk.ToolItem();
-		toolitem7.show()
-		self.toolbar1.add (toolitem7)
+		toolItem3 = gtk.ToolItem();
+		self.toolbar.add (toolItem3)
+		toolItem3.show()
 
-		label3 = gtk.Label(" de "+self.manga.numpaginas)
-		label3.show ()
-		toolitem7.add (label3)
+		label2 = gtk.Label(" de "+self.manga.numpaginas)
+		label2.show()
+		toolItem3.add(label2)
 
-		separatortoolitem2 = gtk.SeparatorToolItem()
-		separatortoolitem2.show()
-		self.toolbar1.add (separatortoolitem2)
+		toolSeparator2 = gtk.SeparatorToolItem()
+		self.toolbar.add (toolSeparator2)
+		toolSeparator2.show()
 
-		toolbutton5 = gtk.ToolButton(gtk.STOCK_FULLSCREEN)
-		toolbutton5.show()
-		self.toolbar1.add (toolbutton5)
-		toolbutton5.connect('clicked',  self.full)
+		toolButtonBack = gtk.ToolButton(gtk.STOCK_ZOOM_IN)
+		toolButtonBack.show()
+		self.toolbar.add (toolButtonBack)
+		toolButtonBack.connect('clicked',  self.changeZoomLevel, "up")
 
-		separatortoolitem3 = gtk.SeparatorToolItem()
-		separatortoolitem3.show()
-		self.toolbar1.add (separatortoolitem3)
+		toolButtonNext = gtk.ToolButton(gtk.STOCK_ZOOM_OUT)
+		toolButtonNext.show()
+		self.toolbar.add (toolButtonNext)
+		toolButtonNext.connect('clicked',  self.changeZoomLevel, "down")
 
-		toolbutton6 = gtk.ToolButton(gtk.STOCK_QUIT)
-		toolbutton6.show()
-		self.toolbar1.add (toolbutton6)
-		toolbutton6.connect('clicked',  self.delete)
+		toolButtonBack = gtk.ToolButton(gtk.STOCK_ZOOM_100)
+		toolButtonBack.show()
+		self.toolbar.add (toolButtonBack)
+		toolButtonBack.connect('clicked',  self.changeZoomLevel, "reset")
 
-		# Scrolled window
-		event_box = gtk.EventBox()
-		vbox1.pack_start(event_box, True, True, 0)
-		event_box.show()
-		event_box.set_events(gtk.gdk.BUTTON_PRESS_MASK)
-		event_box.connect("button_press_event", self.button_clicked)
+		toolButtonNext = gtk.ToolButton(gtk.STOCK_ZOOM_FIT)
+		toolButtonNext.show()
+		self.toolbar.add (toolButtonNext)
+		toolButtonNext.connect('clicked',  self.changeZoomLevel, "adj")
 
-		self.scrolledwindow1 = gtk.ScrolledWindow()
-		event_box.add(self.scrolledwindow1)
-		self.scrolledwindow1.show()
+		toolSeparator3 = gtk.SeparatorToolItem()
+		self.toolbar.add (toolSeparator3)
+		toolSeparator3.show()
 
-		self.scrolledwindow1.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.vadj = self.scrolledwindow1.get_vadjustment()
-		self.vadj.connect('changed',self.rescroll)
+		toolButtonFull = gtk.ToolButton(gtk.STOCK_FULLSCREEN)
+		self.toolbar.add (toolButtonFull)
+		toolButtonFull.show()
+		toolButtonFull.connect('clicked',  self.full)
 
-		# Imagen
+		toolSeparator4 = gtk.SeparatorToolItem()
+		toolSeparator4.show()
+		self.toolbar.add (toolSeparator4)
+
+		toolButtonQuit = gtk.ToolButton(gtk.STOCK_QUIT)
+		self.toolbar.add (toolButtonQuit)
+		toolButtonQuit.show()
+		toolButtonQuit.connect('clicked',  self.delete)
+
+		self.scrolledwindow = gtk.ScrolledWindow()
+		self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		vboxAdm.pack_start(self.scrolledwindow, True, True, 0)
+		self.scrolledwindow.show()
+
+		self.viewport = gtk.Viewport()
+		self.scrolledwindow.add(self.viewport)
+		self.viewport.show()
+
+		self.bgcolor = gtk.gdk.Color(0, 0, 0) # Default to black
+		self.viewport.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
+		self.viewport.add_events(gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.BUTTON2_MOTION_MASK) # No están por defecto, los agrego
+		self.viewport.connect('button-press-event',   self.on_button_pressed)
+		self.viewport.connect('button-release-event', self.on_button_released)
+		self.viewport.connect('motion-notify-event',  self.on_mouse_moved)
+		self.window.connect('key-press-event',        self.on_key_press) # Lo conecto a la ventana, ya que siempre tiene el foco
+
+
+		self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_MEDIA+"/loader.gif")
+		self.ancho_pixbuf = float(self.pixbuf.get_width())
+		self.alto_pixbuf = float(self.pixbuf.get_height())
 		self.image = gtk.Image()
+		self.image.set_from_pixbuf(self.pixbuf)
+		self.viewport.add(self.image)
 		self.image.show()
-		self.scrolledwindow1.add_with_viewport(self.image)
 
 		# Slideshow control:
 		self.slideshow_window = gtk.Window(gtk.WINDOW_POPUP)
+		self.slideshow_window.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
 		self.slideshow_controls = gtk.HBox()
 		self.ss_back = gtk.Button()
 		self.ss_back.add(gtk.image_new_from_stock(gtk.STOCK_GO_BACK, gtk.ICON_SIZE_BUTTON))
@@ -149,6 +178,10 @@ class Visor:
 		self.ss_exit.set_property('can-focus', False)
 		self.ss_exit.connect('clicked', self.full)
 
+		self.ss_back.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
+		self.ss_exit.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
+		self.ss_forward.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
+
 		self.slideshow_controls.pack_start(self.ss_exit, False, False, 0)
 		self.slideshow_controls.pack_start(self.ss_back, False, False, 0)
 		self.slideshow_controls.pack_start(self.ss_forward, False, False, 0)
@@ -158,17 +191,90 @@ class Visor:
 		screen = self.window.get_screen()
 		self.slideshow_window.set_screen(screen)
 
-		self.set_image(self.image_num)
 		self.window.show()
+		self.set_image(self.image_num)
+
+	def on_button_pressed(self, widget=None, event=None):
+		""""""
+		if event.button == 1 and event.type == gtk.gdk.BUTTON_PRESS:
+			self.next_image(widget)
+		elif event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
+			self.prev_image(widget)
+		elif event.button == 2:
+			self.viewport.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.FLEUR))
+			self.prevmousex = event.x_root
+			self.prevmousey = event.y_root
+
+	def on_button_released(self, widget=None, event=None):
+		""""""
+		if event.button == 2:
+			self.viewport.window.set_cursor(None)
+
+	def on_mouse_moved(self, widget, event):
+		""""""
+		# Ver: http://www.pygtk.org/pygtk2tutorial-es/sec-EventHandling.html
+		if event.is_hint:
+			x, y, state = event.window.get_pointer()
+		else:
+			state = event.state
+		x, y = event.x_root, event.y_root
+		if state & gtk.gdk.BUTTON2_MASK:
+			offset_x = self.prevmousex - x
+			offset_y = self.prevmousey - y
+			self._move_image(offset_x, offset_y)
+		self.prevmousex = x
+		self.prevmousey = y
+
+	def on_key_press(self, widget=None, event=None):
+		""""""
+		print event
+		if event.keyval == gtk.gdk.keyval_from_name('Left'):
+			self.prev_image(self)
+		elif event.keyval == gtk.gdk.keyval_from_name('Right'):
+			self.next_image(self)
+		elif event.keyval == gtk.gdk.keyval_from_name('Up'):
+			self.scroll_up(self)
+		elif event.keyval == gtk.gdk.keyval_from_name('Down'):
+			self.scroll_down(self)
+		shortcut = gtk.accelerator_name(event.keyval, event.state)
+		if "Escape" in shortcut:
+			if self.status_fullscreen:
+				self.full(self)
+			else:
+				self.window.destroy()
+
+	def _move_image(self, offset_x, offset_y):
+		""""""
+		vport = self.viewport
+		xadjust = vport.props.hadjustment
+		newx = xadjust.value + offset_x
+		yadjust = vport.props.vadjustment
+		newy = yadjust.value + offset_y
+		# Si las cosas están dentro de los bordes, seteo
+		if (newx >= xadjust.lower) and (newx <= (xadjust.upper - xadjust.page_size)):
+			xadjust.value = newx
+			vport.set_hadjustment(xadjust)
+		if (newy >= yadjust.lower) and (newy <= (yadjust.upper - yadjust.page_size)):
+			yadjust.value = newy
+			vport.set_vadjustment(yadjust)
 
 	def set_image(self, num):
 		""""""
 		if num <= int(self.manga.numpaginas) and num >= 1:
 			self.image_num = num
 			digadd=3-len(str(num))
-			self.image.set_from_file(self.directorio+"/"+(digadd*"0")+str(self.image_num)+".jpg")
+			self.pixbuf = gtk.gdk.pixbuf_new_from_file(self.directorio+"/"+(digadd*"0")+str(self.image_num)+".jpg")
+			self.image.set_from_pixbuf(self.pixbuf)
 			self.page_pos.set_text(str(self.image_num))
 			self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
+			self.ancho_pixbuf = float(self.pixbuf.get_width())
+			self.alto_pixbuf = float(self.pixbuf.get_height())
+			if self.zoomMode=="Normal":
+				self.update_image(self.zoomLevel)
+			elif self.zoomMode=="AdjX":
+				self.changeZoomLevel(None, "adj")
+
+			self.rescroll()
 			return True
 		else:
 			print "No se pudo cambiar la pagina"
@@ -188,13 +294,13 @@ class Visor:
 		self.set_image(int(entry_text))
 		return True
 
-	def rescroll(self, widget):
+	def rescroll(self, widget=None):
 		""""""
-		self.scrolledwindow1.get_vadjustment().set_value(0)
+		self.scrolledwindow.get_vadjustment().set_value(0)
 
 	def scroll_up(self, widget):
 		""""""
-		yadjust = self.scrolledwindow1.get_vadjustment()
+		yadjust = self.scrolledwindow.get_vadjustment()
 		vActual=yadjust.get_value()
 		newy=vActual-60
 		if newy >= yadjust.lower and newy <= yadjust.upper - yadjust.page_size:
@@ -205,7 +311,7 @@ class Visor:
 
 	def scroll_down(self, widget):
 		""""""
-		yadjust = self.scrolledwindow1.get_vadjustment()
+		yadjust = self.scrolledwindow.get_vadjustment()
 		vActual=yadjust.get_value()
 		newy=vActual+60
 		if newy >= yadjust.lower and newy <= yadjust.upper - yadjust.page_size:
@@ -219,37 +325,42 @@ class Visor:
 		if self.status_fullscreen:
 			self.window.unfullscreen()
 			self.status_fullscreen=False
-			self.toolbar1.show()
+			self.toolbar.show()
 			self.slideshow_window.hide_all()
 		else:
 			self.window.fullscreen()
 			self.status_fullscreen=True
 			# Ocultamos la barra de heramientas y de busqueda
-			self.toolbar1.hide()
+			self.toolbar.hide()
 			# Mostramos la barra de control de pantalla completa
 			self.slideshow_window.show_all()
 
-	def topwindow_keypress(self, widget, event):
+	def changeZoomLevel(self, widget, zoom_ratio):
 		""""""
-		print event
-		if event.keyval == gtk.gdk.keyval_from_name('Left'):
-			self.prev_image(self)
-		elif event.keyval == gtk.gdk.keyval_from_name('Right'):
-			self.next_image(self)
-		elif event.keyval == gtk.gdk.keyval_from_name('Up'):
-			self.scroll_up(self)
-		elif event.keyval == gtk.gdk.keyval_from_name('Down'):
-			self.scroll_down(self)
-		shortcut = gtk.accelerator_name(event.keyval, event.state)
-		if "Escape" in shortcut:
-			if self.status_fullscreen:
-				self.full(self)
-			else:
-				self.window.destroy()
+		zoom=self.zoomLevel
+		self.zoomMode="Normal"
+		if zoom_ratio=="up":
+			zoom+=15
+		elif zoom_ratio=="down":
+			zoom-=15
+		elif zoom_ratio=="reset":
+			zoom=100
+		elif zoom_ratio=="adj":
+			rect = self.viewport.get_allocation()
+			zoom=(rect.width*100.0)/self.ancho_pixbuf
+			self.zoomMode="AdjX"
+		self.update_image(zoom)
 
-	def button_clicked(self, widget, event):
+	def update_image(self,  zoom_ratio):
 		""""""
-		if event.button == 1 and event.type == gtk.gdk.BUTTON_PRESS:
-			self.next_image(widget)
-		elif event.button == 3 and event.type == gtk.gdk.BUTTON_PRESS:
-			self.prev_image(widget)
+		relacion=zoom_ratio/100.0
+		ancho = int(self.ancho_pixbuf*relacion)
+		alto = int(self.alto_pixbuf*relacion)
+		scaled_buf = self.pixbuf.scale_simple(ancho, alto, gtk.gdk.INTERP_BILINEAR)
+		self.image.set_from_pixbuf(scaled_buf)
+		self.zoomLevel=zoom_ratio
+
+if __name__ == "__main__":
+	m=lib_submanga.Manga("Naruto", "505", "83567", "CONCEPT", "20")
+	v=Visor(m)
+	gtk.main()
