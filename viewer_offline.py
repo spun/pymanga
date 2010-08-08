@@ -26,7 +26,7 @@ class Visor:
 		self.zoomLevel=100
 		self.zoomMode="Normal"
 		self.status_fullscreen=False
-		self.image_num = 1
+		self.image_num = 0
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
 
@@ -153,7 +153,8 @@ class Visor:
 		self.window.connect('key-press-event',        self.on_key_press) # Lo conecto a la ventana, ya que siempre tiene el foco
 
 
-		self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_MEDIA+"/loader.gif")
+
+		self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_MEDIA+"question-icon.png")
 		self.ancho_pixbuf = float(self.pixbuf.get_width())
 		self.alto_pixbuf = float(self.pixbuf.get_height())
 		self.image = gtk.Image()
@@ -198,7 +199,7 @@ class Visor:
 		self.slideshow_window.set_screen(screen)
 
 		self.window.show()
-		self.set_image(self.image_num)
+		self.set_image(1)
 
 	def on_button_pressed(self, widget=None, event=None):
 		""""""
@@ -267,21 +268,28 @@ class Visor:
 	def set_image(self, num):
 		""""""
 		if num <= int(self.manga.numpaginas) and num >= 1:
-			self.image_num = num
 			digadd=3-len(str(num))
-			self.pixbuf = gtk.gdk.pixbuf_new_from_file(self.directorio+"/"+(digadd*"0")+str(self.image_num)+".jpg")
-			self.image.set_from_pixbuf(self.pixbuf)
-			self.page_pos.set_text(str(self.image_num))
-			self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
-			self.ancho_pixbuf = float(self.pixbuf.get_width())
-			self.alto_pixbuf = float(self.pixbuf.get_height())
-			if self.zoomMode=="Normal":
-				self.update_image(self.zoomLevel)
-			elif self.zoomMode=="AdjX":
-				self.changeZoomLevel(None, "adj")
+			imgUbic=self.directorio+"/"+(digadd*"0")+str(num)+".jpg"
+			if os.path.exists(imgUbic):				
+				self.pixbuf = gtk.gdk.pixbuf_new_from_file(imgUbic)
+				self.image.set_from_pixbuf(self.pixbuf)
+				self.page_pos.set_text(str(num))
+				self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
+				self.ancho_pixbuf = float(self.pixbuf.get_width())
+				self.alto_pixbuf = float(self.pixbuf.get_height())
+				if self.zoomMode=="Normal":
+					self.update_image(self.zoomLevel)
+				elif self.zoomMode=="AdjX":
+					self.changeZoomLevel(None, "adj")
+			
+				self.image_num = num
+				self.rescroll()
+				return True
+			else:
+				print "No existe "+imgUbic
+				return False
+				
 
-			self.rescroll()
-			return True
 		else:
 			print "No se pudo cambiar la pagina"
 			return False
