@@ -15,7 +15,7 @@ class Config():
 		if not os.path.exists(cons.CONFIG_PATH + CONF):
 			self.createDefaultConfig()
 			self.configured = False
-
+			print "aaa"
 
 		if not self.cfg.read([cons.CONFIG_PATH + CONF]):
 			print "No existe el archivo"
@@ -42,6 +42,11 @@ class Config():
 		self.cfg.add_section("main")
 		self.cfg.set("main","mainWindowGeometry",value)
 		self.cfg.set("main","mainTabSelected","0")
+
+		print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+		self.cfg.add_section("viewer")
+		self.cfg.set("viewer","viewerBackground","#000")
+
 
 
 if __name__ == "__main__":

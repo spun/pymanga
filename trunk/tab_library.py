@@ -19,8 +19,10 @@ import zipfile
 
 class TreeLibrary(gtk.ScrolledWindow):
 	""""""
-	def __init__(self):
+	def __init__(self, config):
 		""""""
+		self.configuration = config
+
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		self.tvLibrary = gtk.TreeView(gtk.TreeStore(gtk.gdk.Pixbuf, str, str, int,   bool, str,  str, str))
@@ -214,7 +216,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 			numpaginas=npaginas[1]
 
 		manga=lib_submanga.Manga(nombre, numero, codigo, fansub, numpaginas)
-		viewer_offline.Visor(manga)
+		viewer_offline.Visor(manga, self.configuration)
 
 	def redescargarSeleccion(self):
 		""""""

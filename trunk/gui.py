@@ -58,7 +58,7 @@ class Gui:
 			#~ ( "/Archivo/sep1",     None,         None, 0, "<Separator>" ),
 			( "/Archivo/Quit",     "<control>Q", gtk.main_quit, 0, None ),
 			( "/_Editar",      None,         None, 0, "<Branch>" ),
-			( "/Editar/_Preferencias",  None,         Preferences, 0, None ),
+			( "/Editar/_Preferencias",  None,         self.displayPreferences, 0, None ),
 			( "/Ay_uda",         None,         None, 0, "<LastBranch>" ),
 			( "/Ayuda/Acerca de",   None,         About, 0, None ),
 			)
@@ -95,7 +95,7 @@ class Gui:
 		self.notebook.show()
 
 		# Tab de biblioteca
-		self.biblioteca = tab_library.TreeLibrary()
+		self.biblioteca = tab_library.TreeLibrary(self.configuration)
 		label = gtk.Label("Biblioteca")
 		self.notebook.append_page(self.biblioteca, label)
 
@@ -131,7 +131,13 @@ class Gui:
 		elif page==1:
 			self.novedades.listar()
 
+
+	def displayPreferences(self, widget=None, event=None):
+		""""""
+		Preferences(self.configuration)
+
 	def saveToQuit(self):
+		""""""
 		x, y = self.window.get_position()
 		allocation=self.window.allocation
 		width = allocation.width
@@ -141,7 +147,6 @@ class Gui:
 
 		tabSelected=self.notebook.get_current_page()
 		self.configuration.setValue("main","mainTabSelected",str(tabSelected))
-
 
 
 def main():
