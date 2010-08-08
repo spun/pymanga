@@ -18,8 +18,10 @@ class Visor:
 		#gtk.main_quit()
 		return False
 
-	def __init__(self, manga):
+	def __init__(self, manga, config):
 		""""""
+		self.configuration = config
+
 		# Variables
 		self.zoomLevel=100
 		self.zoomMode="Normal"
@@ -27,6 +29,11 @@ class Visor:
 		self.image_num = 1
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
+
+
+
+		col=self.configuration.getValue("viewer","viewerBackground")
+		self.bgcolor = gtk.gdk.color_parse(col)
 
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.connect("delete_event", self.delete)
@@ -138,7 +145,6 @@ class Visor:
 		self.scrolledwindow.add(self.viewport)
 		self.viewport.show()
 
-		self.bgcolor = gtk.gdk.Color(0, 0, 0) # Default to black
 		self.viewport.modify_bg(gtk.STATE_NORMAL, self.bgcolor)
 		self.viewport.add_events(gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.BUTTON2_MOTION_MASK) # No están por defecto, los agrego
 		self.viewport.connect('button-press-event',   self.on_button_pressed)
