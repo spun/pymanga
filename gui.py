@@ -100,12 +100,12 @@ class Gui:
 		self.notebook.append_page(self.biblioteca, label)
 
 		# Tab de novedades
-		self.novedades = tab_new.TreeNews(self.biblioteca)
+		self.novedades = tab_new.TreeNews(self.biblioteca, self.configuration)
 		label = gtk.Label("Novedades")
 		self.notebook.append_page(self.novedades, label)
 
 		# Tab de busquedas
-		busqueda = tab_search.TreeSearch(self.biblioteca)
+		busqueda = tab_search.TreeSearch(self.biblioteca, self.configuration)
 		label = gtk.Label("Buscar")
 		self.notebook.append_page(busqueda, label)
 

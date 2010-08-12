@@ -16,9 +16,10 @@ import viewer
 
 class TreeSearch(gtk.VBox):
 	""""""
-	def __init__(self, biblioteca):
+	def __init__(self, biblioteca, config):
 		""""""
 		self.biblioteca=biblioteca
+		self.configuration = config
 
 		# Caja contenedor
 		gtk.VBox.__init__(self, False, 5)
@@ -206,7 +207,7 @@ class TreeSearch(gtk.VBox):
 			treeselection = self.tvSearch.get_selection()
 			model, iter = treeselection.get_selected()
 			text = model.get_value(iter, 0)
-			viewer.Visor(self.resBusquedas.getManga(text-1))
+			viewer.Visor(self.resBusquedas.getManga(text-1), self.configuration)
 
 		if event.button == 3:
 			print "second click"
@@ -253,7 +254,7 @@ class TreeSearch(gtk.VBox):
 			treeselection = self.tvSearch.get_selection()
 			model, iter = treeselection.get_selected()
 			text = model.get_value(iter, 0)
-			viewer.Visor(self.resBusquedas.getManga(text-1))
+			viewer.Visor(self.resBusquedas.getManga(text-1), self.configuration)
 		elif accion == "VerEnWeb":
 			self.openInWebbrowser()
 		print "Seleccionado: ", path, accion

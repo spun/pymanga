@@ -21,31 +21,6 @@ class Preferences(gtk.Dialog):
 
 		self.configuration = config
 
-		frame1 = gtk.Frame(" Dirección de la biblioteca ")
-		frame1.set_border_width(10)
-		self.vbox.pack_start(frame1, False, True, 0)
-		frame1.show()
-
-		hbox = gtk.HBox()
-		hbox.set_border_width(10)
-		frame1.add(hbox)
-		hbox.show()
-
-		label1 = gtk.Label(cons.PATH_LIBRARY)
-		hbox.pack_start(label1, False, True, 0)
-		label1.show()
-
-		hbbox = gtk.HButtonBox()
-		hbbox.set_layout(gtk.BUTTONBOX_END)
-		hbox.pack_start(hbbox, True, True, 10)
-		hbbox.show()
-
-		button = gtk.Button("Cambiar")
-		button.connect("clicked", self.changeLibraryFolder)
-		hbbox.pack_start(button)
-		button.show()
-
-
 		frame2 = gtk.Frame(" Color de fondo del visor ")
 		frame2.set_border_width(10)
 		self.vbox.pack_start(frame2, False, True, 0)
