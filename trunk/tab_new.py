@@ -15,9 +15,10 @@ import viewer
 
 class TreeNews(gtk.ScrolledWindow):
 	""""""
-	def __init__(self, biblioteca):
+	def __init__(self, biblioteca, config):
 		""""""
 		self.biblioteca=biblioteca
+		self.configuration = config
 
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -150,7 +151,7 @@ class TreeNews(gtk.ScrolledWindow):
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 0)
 		manga=self.novedades.getManga(text-1)
-		viewer.Visor(manga)
+		viewer.Visor(manga, self.configuration)
 
 	def descargarSeleccion(self):
 		""""""

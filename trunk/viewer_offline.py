@@ -30,8 +30,6 @@ class Visor:
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
 
-
-
 		col=self.configuration.getValue("viewer","viewerBackground")
 		self.bgcolor = gtk.gdk.color_parse(col)
 
@@ -84,7 +82,7 @@ class Visor:
 
 		self.page_pos.connect("activate", self.goto_image, self.page_pos)
 		self.page_pos.set_width_chars (3)
-		self.page_pos.set_text("-")
+		self.page_pos.set_text("0")
 
 		toolItem3 = gtk.ToolItem();
 		self.toolbar.add (toolItem3)
@@ -151,8 +149,6 @@ class Visor:
 		self.viewport.connect('button-release-event', self.on_button_released)
 		self.viewport.connect('motion-notify-event',  self.on_mouse_moved)
 		self.window.connect('key-press-event',        self.on_key_press) # Lo conecto a la ventana, ya que siempre tiene el foco
-
-
 
 		self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_MEDIA+"question-icon.png")
 		self.ancho_pixbuf = float(self.pixbuf.get_width())
@@ -270,7 +266,7 @@ class Visor:
 		if num <= int(self.manga.numpaginas) and num >= 1:
 			digadd=3-len(str(num))
 			imgUbic=self.directorio+"/"+(digadd*"0")+str(num)+".jpg"
-			if os.path.exists(imgUbic):				
+			if os.path.exists(imgUbic):
 				self.pixbuf = gtk.gdk.pixbuf_new_from_file(imgUbic)
 				self.image.set_from_pixbuf(self.pixbuf)
 				self.page_pos.set_text(str(num))
@@ -281,14 +277,14 @@ class Visor:
 					self.update_image(self.zoomLevel)
 				elif self.zoomMode=="AdjX":
 					self.changeZoomLevel(None, "adj")
-			
+
 				self.image_num = num
 				self.rescroll()
 				return True
 			else:
 				print "No existe "+imgUbic
 				return False
-				
+
 
 		else:
 			print "No se pudo cambiar la pagina"
