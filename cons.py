@@ -7,7 +7,7 @@ import locale
 
 # Constantes del proyecto
 PROGRAM_NAME = "pyManga"
-PROGRAM_VERSION = "0.1.3 beta"
+PROGRAM_VERSION = "0.1.4 alpha"
 WEBPAGE = "http://code.google.com/p/pymanga/"
 DOC = "http://code.google.com/p/pymanga/"
 
@@ -33,3 +33,4 @@ LOGO_PROGRAM = PATH_MEDIA + "logo.png"
 ICON_OPEN = PATH_MEDIA + "open.png"
 ICON_RELOAD = PATH_MEDIA + "reload.png"
 PREFERENCES_ICON = PATH_MEDIA + "preferences-icon.png"
+INFO_ICON = PATH_MEDIA + "information_icon.png"

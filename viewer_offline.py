@@ -265,7 +265,7 @@ class Visor:
 		""""""
 		if num <= int(self.manga.numpaginas) and num >= 1:
 			digadd=3-len(str(num))
-			imgUbic=self.directorio+"/"+(digadd*"0")+str(num)+".jpg"
+			imgUbic=self.directorio+(digadd*"0")+str(num)+".jpg"
 			if os.path.exists(imgUbic):
 				self.pixbuf = gtk.gdk.pixbuf_new_from_file(imgUbic)
 				self.image.set_from_pixbuf(self.pixbuf)

@@ -56,7 +56,7 @@ class Gui:
 			#~ ( "/Archivo/_Save",    "<control>S", self.print_hello, 0, None ),
 			#~ ( "/Archivo/Save _As", None,         None, 0, None ),
 			#~ ( "/Archivo/sep1",     None,         None, 0, "<Separator>" ),
-			( "/Archivo/Quit",     "<control>Q", gtk.main_quit, 0, None ),
+			( "/Archivo/Salir",     "<control>Q", gtk.main_quit, 0, None ),
 			( "/_Editar",      None,         None, 0, "<Branch>" ),
 			( "/Editar/_Preferencias",  None,         self.displayPreferences, 0, None ),
 			( "/Ay_uda",         None,         None, 0, "<LastBranch>" ),
