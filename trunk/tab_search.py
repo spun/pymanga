@@ -14,6 +14,8 @@ import lib_submanga
 import downloader
 import viewer
 
+import desc_dialog
+
 class TreeSearch(gtk.VBox):
 	""""""
 	def __init__(self, biblioteca, config):
@@ -228,6 +230,7 @@ class TreeSearch(gtk.VBox):
 		# Items del menu
 		ver = gtk.MenuItem("Ver sin descargar")
 		descargar = gtk.MenuItem("Descargar")
+		info = gtk.MenuItem("Información")
 		verWeb = gtk.MenuItem("Ver en submanga.com")
 
 		# Agregar los items al menu
@@ -235,11 +238,15 @@ class TreeSearch(gtk.VBox):
 		menu.append(descargar)
 		sep = gtk.SeparatorMenuItem()
 		menu.append(sep)
+		menu.append(info)
 		menu.append(verWeb)
+
 		# Se conectan las funciones de retrollamada a la senal "activate"
 		ver.connect_object("activate", self.seleccionar_origen, path, "Ver")
 		descargar.connect_object("activate", self.seleccionar_origen, path, "Descargar")
+		info.connect_object("activate", self.seleccionar_origen, path, "Info")
 		verWeb.connect_object("activate", self.seleccionar_origen, path, "VerEnWeb")
+
 		menu.show_all()
 		menu.popup(None, None, None, boton, tiempo, None)
 
@@ -257,6 +264,9 @@ class TreeSearch(gtk.VBox):
 			viewer.Visor(self.resBusquedas.getManga(text-1), self.configuration)
 		elif accion == "VerEnWeb":
 			self.openInWebbrowser()
+		elif accion == "Info":
+			self.openInfoDialog()
+
 		print "Seleccionado: ", path, accion
 
 	def iniciarDescarga(self):
@@ -276,3 +286,14 @@ class TreeSearch(gtk.VBox):
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 4)
 		webbrowser.open("http://submanga.com/"+text)
+
+	def openInfoDialog(self):
+		""""""
+		treeselection = self.tvSearch.get_selection()
+		model, iter = treeselection.get_selected()
+		text1 = model.get_value(iter, 1)
+		text2 = model.get_value(iter, 2)
+		text3 = model.get_value(iter, 4)
+		m=lib_submanga.Manga(text1, text2, text3)
+
+		desc_dialog.Info(m)

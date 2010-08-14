@@ -206,7 +206,6 @@ class Visor:
 
 
 		threading.Thread(target=self.initialInfoManga, args=()).start()
-
 		threading.Thread(target=self.set_image, args=("1")).start()
 
 
