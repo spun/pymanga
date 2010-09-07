@@ -7,7 +7,7 @@ import locale
 
 # Constantes del proyecto
 PROGRAM_NAME = "pyManga"
-PROGRAM_VERSION = "0.1.4 alpha"
+PROGRAM_VERSION = "0.1.4 beta"
 WEBPAGE = "http://code.google.com/p/pymanga/"
 DOC = "http://code.google.com/p/pymanga/"
 

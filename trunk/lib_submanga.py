@@ -133,19 +133,20 @@ class Manga:
 		while True:
 			linea = f.readline()
 			if not linea: break
-			encontrado = linea.find('src="./leer?mode=abajo&n=1&m=')
-			if encontrado != -1:
-				tamPatron=len('src="./leer?mode=abajo&n=1&m=')
-				origen=encontrado+tamPatron
+			encontradoPag = linea.find('</option></select>')
+			encontradoScan = linea.find('<a href="./scanlation/')
+			if encontradoPag != -1 and encontradoScan != -1:
 
-				while linea[origen]!="&":
-					num=num+linea[origen]
+				origen = encontradoPag-1;
+				while linea[origen]!=">":
+					num=linea[origen]+num
+					origen=origen-1
+
+				origen = encontradoScan+len('<a href="./scanlation/');
+				while linea[origen]!='"':
+					fansub=fansub+linea[origen]
 					origen=origen+1
-				origen=origen+1
-				resto=linea[origen:]
-				resto=resto.split('&')
-				fansubc=resto[2].split('=')
-				fansub=fansubc[1]
+
 		f.close()
 		self.numpaginas=num
 		self.fansub = fansub.replace("_"," ")
@@ -252,5 +253,9 @@ class Busqueda:
 		return len(self.resultados)
 
 if __name__ == "__main__":
-	n = Busqueda("Soul Eater", "")
-	print n.numMangas()
+	m=Manga("Gantz", "306", "51545", fansub="CONCEPT", numpaginas="")
+	print m.numpaginas
+	print m.fansub
+	m.getExtraInfo()
+	print m.numpaginas
+	print m.fansub
