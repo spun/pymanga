@@ -53,9 +53,31 @@ class Info(gtk.Dialog):
 
 	def getImagen(self):
 		""""""
+		
+		
 		nombre=self.manga.nombre.replace(" ","_")
+
+		url="http://submanga.com/"+nombre
+		f = urllib2.urlopen(url)
+		imageName=""
+		seguir=True
+		while seguir:
+			linea = f.readline()
+			if not linea: break
+
+			encontrado = linea.find('http://submanga.com/static/media/')
+			if encontrado != -1:
+				cont=encontrado+len('http://submanga.com/static/media/')
+				while linea[cont]!='"':
+					imageName=imageName+linea[cont]
+					cont=cont+1
+				seguir=False
+		f.close()
+
+		
+
 		try:
-			direccion="http://submanga.com/static/media/"+nombre+".jpg"
+			direccion="http://submanga.com/static/media/"+imageName
 			dir_downloads = cons.PATH_TEMP
 			imagen_local="imgManga.jpg"
 			image = urllib.URLopener()
