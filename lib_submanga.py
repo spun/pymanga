@@ -96,27 +96,23 @@ class Manga:
 	def getDirectorio(self):
 		""""""
 		if self.directorio == "":
-			direccion_manga= "http://submanga.com/leer?mode=abajo&n=1&id="+str(self.codigo)
+			direccion_manga= "http://submanga.com/c/"+str(self.codigo)
 			f = urllib2.urlopen(direccion_manga)
 			while True:
 				linea = f.readline()
 				if not linea: break
-				encontrado = linea.find('var u = "')
+				encontrado = linea.find('src="http://img.submanga.com:8080/')
 				if encontrado != -1:
 					break
 			f.close()
 
-			cont = encontrado+len('var u = "http://img.submanga.com:8080/')
+			cont = encontrado+len('src="http://img.submanga.com:8080/')
 			direccion = ""
-			completo=False
-			while completo==False:
-				if linea[cont]!='"':
-					direccion = direccion+linea[cont]
-					cont=cont+1
-				else:
-					completo = True
+			while linea[cont]!='"':
+				direccion = direccion+linea[cont]
+				cont=cont+1
 
-			self.directorio=direccion
+			self.directorio=direccion.replace("1.jpg", "")
 		return self.directorio
 
 	def getImagen(self, pag):

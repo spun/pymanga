@@ -206,8 +206,7 @@ class Visor:
 
 
 		threading.Thread(target=self.initialInfoManga, args=()).start()
-		threading.Thread(target=self.set_image, args=("1")).start()
-
+		threading.Thread(target=self.set_image, args=(1,)).start()
 
 
 
@@ -276,13 +275,13 @@ class Visor:
 			vport.set_vadjustment(yadjust)
 
 
-	def set_image(self, numb):
+	def set_image(self, num):
 		""""""
 		context_id = self.statusbar.get_context_id("Estado de descarga de imagenes")
-		self.statusbar.push(context_id, "Descargando imagen "+numb+", por favor espere...")
-		num=int(numb)
+		self.statusbar.push(context_id, "Descargando imagen "+str(num)+", por favor espere...")
+
 		dir_downloads = cons.PATH_TEMP
-		dominio = 'img.submanga.com:8080'
+		dominio = 'img.submanga.com'
 		imagen_local = 'img_temp.jpg'
 		try:
 				# conectamos con el servidor
@@ -318,16 +317,16 @@ class Visor:
 
 	def next_image(self, widget):
 		""""""
-		threading.Thread(target=self.set_image, args=(str(self.image_num+1))).start()
+		threading.Thread(target=self.set_image, args=(self.image_num+1,)).start()
 
 	def prev_image(self, widget):
 		""""""
-		threading.Thread(target=self.set_image, args=(str(self.image_num-1))).start()
+		threading.Thread(target=self.set_image, args=(self.image_num-1,)).start()
 
 	def goto_image(self, widget, entry):
 		""""""
 		entry_text = entry.get_text()
-		threading.Thread(target=self.set_image, args=(entry_text)).start()
+		threading.Thread(target=self.set_image, args=(int(entry_text),)).start()
 
 		return True
 
