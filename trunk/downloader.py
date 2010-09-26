@@ -45,13 +45,13 @@ class Downloader:
 		""""""
 		realizado=False
 		dir_downloads = cons.PATH_LIBRARY+self.manga.codigo
-		dominio = 'img.submanga.com:8080'
+		dominio = 'img.submanga.com'
 		directorio=self.manga.getDirectorio()
 		image = urllib.URLopener()
 		try:
 			digadd=3-len(str(num))
 			imagen_local = (digadd*"0")+str(num)+'.jpg'
-			image.retrieve("http://img.submanga.com:8080/"+self.manga.getImagen(num), dir_downloads + '/' + imagen_local)
+			image.retrieve("http://img.submanga.com/"+self.manga.getImagen(num), dir_downloads + '/' + imagen_local)
 			print "Imagen "+str(num)+" descargada"
 			realizado=True
 		except:
