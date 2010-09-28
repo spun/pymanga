@@ -287,7 +287,6 @@ class Visor:
 		if os.path.exists(imgUbic):
 			os.remove(imgUbic)
 
-
 		dominio = 'img.submanga.com'
 		directorio=self.manga.getDirectorio()
 		image = urllib.URLopener()
