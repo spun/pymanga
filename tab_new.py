@@ -103,14 +103,10 @@ class TreeNews(gtk.ScrolledWindow):
 			boton = event.button # obtenemos el boton que se presiono
 			pos = (event.x, event.y) # obtenemos las coordenadas
 			tiempo = event.time # obtenemos el tiempo
-			# widget es TreeView (widget.get_name())
-			# Obteniendo datos a partir de coordenadas de evento
-			path, columna, xdefondo, ydefondo = widget.get_path_at_pos(event.x, event.y)
-			# TreeView.get_path_at_pos(event.x, event.y) devuelve:
-			# * La ruta de acceso en el punto especificado (x, y), en relacion con las coordenadas
-			self.crear_menu_emergente(widget, boton, pos, tiempo, path)
 
-	def crear_menu_emergente(self, widget, boton, pos, tiempo, path):
+			self.crear_menu_emergente(widget, boton, pos, tiempo)
+
+	def crear_menu_emergente(self, widget, boton, pos, tiempo):
 		""""""
 		# un menu para agregar o eliminar directorios o archivos
 		menu = gtk.Menu()
@@ -130,15 +126,15 @@ class TreeNews(gtk.ScrolledWindow):
 		menu.append(verWeb)
 
 		# Se conectan las funciones de retrollamada a la senal "activate"
-		ver.connect_object("activate", self.seleccionar_origen, path, "Ver")
-		descargar.connect_object("activate", self.seleccionar_origen, path, "Descargar")
-		info.connect_object("activate", self.seleccionar_origen, path, "Info")
-		verWeb.connect_object("activate", self.seleccionar_origen, path, "VerEnWeb")
+		ver.connect_object("activate", self.seleccionar_origen, "Ver")
+		descargar.connect_object("activate", self.seleccionar_origen, "Descargar")
+		info.connect_object("activate", self.seleccionar_origen, "Info")
+		verWeb.connect_object("activate", self.seleccionar_origen, "VerEnWeb")
 
 		menu.show_all()
 		menu.popup(None, None, None, boton, tiempo, None)
 
-	def seleccionar_origen(self, path, accion):
+	def seleccionar_origen(self, accion):
 		""""""
 		# Recibe el path de la fila seleccionada en el modelo y la accion a realizar
 		if accion == "Ver":
@@ -151,9 +147,6 @@ class TreeNews(gtk.ScrolledWindow):
 			self.abrirEnWeb()
 		elif accion == "Info":
 			self.openInfoDialog()
-
-		print "Seleccionado: ", path, accion
-
 
 
 	def abrirSeleccion(self):
