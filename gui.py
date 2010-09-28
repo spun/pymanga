@@ -35,6 +35,46 @@ class Gui:
 
 		return item_factory.get_widget("<main>")
 
+	def get_bar_menu(self):
+		""""""
+		menubar = gtk.MenuBar()
+		menubar.show()
+
+		filemenu = gtk.Menu()
+		filemenu.show()
+		filem = gtk.MenuItem("_Archivo")
+		filem.set_submenu(filemenu)
+		filem.show()
+		exitmenu = gtk.MenuItem("Salir")
+		exitmenu.show()
+		exitmenu.connect("activate", gtk.main_quit)
+		filemenu.append(exitmenu)
+		menubar.append(filem)
+
+		editmenu = gtk.Menu()
+		editmenu.show()
+		editm = gtk.MenuItem("Editar")
+		editm.set_submenu(editmenu)
+		editm.show()
+		preferencesmenu = gtk.MenuItem("Preferencias")
+		preferencesmenu.show()
+		preferencesmenu.connect("activate", self.displayPreferences)
+		editmenu.append(preferencesmenu)
+		menubar.append(editm)
+
+		helpmenu = gtk.Menu()
+		helpmenu.show()
+		helpm = gtk.MenuItem("Ayuda")
+		helpm.set_submenu(helpmenu)
+		helpm.show()
+		aboutmenu = gtk.MenuItem("Acerca de")
+		aboutmenu.show()
+		aboutmenu.connect("activate", About)
+		helpmenu.append(aboutmenu)
+		menubar.append(helpm)
+
+		return menubar
+
 	def __init__(self, conf):
 		""""""
 		#configuration
@@ -49,26 +89,14 @@ class Gui:
 		geometry=self.configuration.getValue("main","mainWindowGeometry")
 		self.window.parse_geometry(geometry)
 
-		self.menu_items = (
-			( "/_Archivo",         None,         None, 0, "<Branch>" ),
-			#~ ( "/Archivo/_New",     "<control>N", self.print_hello, 0, None ),
-			#~ ( "/Archivo/_Open",    "<control>O", self.print_hello, 0, None ),
-			#~ ( "/Archivo/_Save",    "<control>S", self.print_hello, 0, None ),
-			#~ ( "/Archivo/Save _As", None,         None, 0, None ),
-			#~ ( "/Archivo/sep1",     None,         None, 0, "<Separator>" ),
-			( "/Archivo/Salir",     "<control>Q", gtk.main_quit, 0, None ),
-			( "/_Editar",      None,         None, 0, "<Branch>" ),
-			( "/Editar/_Preferencias",  None,         self.displayPreferences, 0, None ),
-			( "/Ay_uda",         None,         None, 0, "<LastBranch>" ),
-			( "/Ayuda/Acerca de",   None,         About, 0, None ),
-			)
 
 		# Caja global
 		vboxAdm = gtk.VBox()
 		self.window.add(vboxAdm)
 		vboxAdm.show()
 
-		menubar = self.get_main_menu(self.window)
+		# Barra de menus
+		menubar = self.get_bar_menu()
 		vboxAdm.pack_start(menubar, False, True, 0)
 		menubar.show()
 
