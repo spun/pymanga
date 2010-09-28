@@ -4,7 +4,7 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
-import httplib
+import urllib, urllib2
 import threading
 gtk.gdk.threads_init()
 
@@ -281,23 +281,29 @@ class Visor:
 		self.statusbar.push(context_id, "Descargando imagen "+str(num)+", por favor espere...")
 
 		dir_downloads = cons.PATH_TEMP
-		dominio = 'img.submanga.com'
-		imagen_local = 'img_temp.jpg'
-		try:
-				# conectamos con el servidor
-				conn = httplib.HTTPConnection(dominio)
-				# hacemos la peticion a la imagen
-				conn.request ("GET", '/' + self.manga.getImagen(num))
-				r = conn.getresponse()
-				# abrimos o creamos el fichero donde vamos a guardar la imagen
-				fichero = file( dir_downloads + '/' + imagen_local, "wb" )
-				# guardamos la imagen en el fichero
-				fichero.write(r.read())
-				# y cerramos el fichero
-				fichero.close()
 
+		# Si ya existe una imagen anterior la borramos
+		imgUbic=dir_downloads+"img_temp.jpg"
+		if os.path.exists(imgUbic):
+			os.remove(imgUbic)
+
+
+		dominio = 'img.submanga.com'
+		directorio=self.manga.getDirectorio()
+		image = urllib.URLopener()
+		try:
+			imagen_local = "img_temp.jpg"
+			image.retrieve("http://img.submanga.com/"+self.manga.getImagen(num), dir_downloads + '/' + imagen_local)
+			print "Imagen "+str(num)+" descargada"
+
+			self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_TEMP+"/img_temp.jpg")
+			self.image.set_from_pixbuf(self.pixbuf)
+
+			# Si se ha descargado la imagen la mostramos
+			if os.path.exists(imgUbic):
 				self.pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_TEMP+"/img_temp.jpg")
 				self.image.set_from_pixbuf(self.pixbuf)
+
 				self.page_pos.set_text(str(num))
 				self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
 				self.ancho_pixbuf = float(self.pixbuf.get_width())
@@ -311,9 +317,11 @@ class Visor:
 				self.rescroll()
 
 		except:
-				print "No se ha podido descargar la imagen"
+			print "No se ha podido descargar la imagen"
+			realizado=False
 
 		self.statusbar.pop(context_id)
+
 
 	def next_image(self, widget):
 		""""""
