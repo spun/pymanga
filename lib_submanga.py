@@ -101,12 +101,12 @@ class Manga:
 			while True:
 				linea = f.readline()
 				if not linea: break
-				encontrado = linea.find('src="http://img.submanga.com:8080/')
+				encontrado = linea.find('src="http://img.submanga.com:8081/')
 				if encontrado != -1:
 					break
 			f.close()
 
-			cont = encontrado+len('src="http://img.submanga.com:8080/')
+			cont = encontrado+len('src="http://img.submanga.com:8081/')
 			direccion = ""
 			while linea[cont]!='"':
 				direccion = direccion+linea[cont]
