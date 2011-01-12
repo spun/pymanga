@@ -19,58 +19,50 @@ class Novedades:
 		num=""
 		cod=""
 		numeroMangas=0
-		mode=0
 		while fin==False:
 			linea = f.readline()
 			if not linea: break
-			# Si buscamos un manga
-			if mode==0:
-				encontrado = linea.find('<td><a href="http://submanga.com/')
-				if encontrado != -1:
-					completo=False
-					cont = encontrado+len('<td><a href="http://submanga.com/')
 
-					parte=0
-					nom=""
-					num=""
-					cod=""
-					while completo==False:
-						if linea[cont]!='"':
-							if linea[cont]=='/':
-								parte=parte+1
-							else:
-								if parte==0:
-									nom = nom+linea[cont]
-								elif parte==1:
-									num = num+linea[cont]
-								elif parte==2:
-									cod = cod+linea[cont]
+			encontradoManga = 0;
+			encontradoFansub = 0;
 
-							cont=cont+1
-						else:
-							completo = True
-					mode=1
-			# Si buscamos una scanlation
-			else:
-				encontrado = linea.find('<td class="grey s"><a rel="nofollow" href="http://submanga.com/'+nom+'/scanlation/')
-				if encontrado != -1:
-					cont = encontrado+len('<td class="grey s"><a rel="nofollow" href="http://submanga.com/'+nom+'/scanlation/')
-					fansub=""
-					while linea[cont]!='"' and linea[cont+1]!='>':
-						fansub+=linea[cont]
-						cont=cont+1
+			etiquetaManga = "<td class=\"s\"><a href=\"http://submanga.com/";
+			etiquetaFansub = "/scanlation/";
 
-					nom=nom.replace("_"," ")
-					num=num.replace("_"," ")
-					fansub=fansub.replace("_"," ")
-					manga = Manga(nom,num,cod,fansub)
-					self.resultados.append(manga)
+			tamEtiquetaManga = len(etiquetaManga);
+			tamEtiquetaFansub = len(etiquetaFansub);
 
-					numeroMangas=numeroMangas+1
-					mode=0
+			encontradoManga = linea.find(etiquetaManga);
 
-					if numeroMangas>=numres:
-						fin=True
+			origen=0;
+			result = "";
+			fansub = "";
+
+			while encontradoManga!=-1:
+				origen=encontradoManga+tamEtiquetaManga;
+				result=""
+				while linea[origen]!='"':
+					result=result+linea[origen]
+					origen=origen+1
+				result=result.replace("_"," ")
+
+				encontradoFansub = linea.find(etiquetaFansub, encontradoManga)
+				origen=encontradoFansub+tamEtiquetaFansub
+				fansub=""
+				while linea[origen]!='"':
+					fansub=fansub+linea[origen]
+					origen=origen+1
+				fansub=fansub.replace(".","")
+
+				list1 = result.split("/");
+				manga = Manga(list1[0],list1[1],list1[2], fansub.replace("_"," "));
+				self.resultados.append(manga)
+				numeroMangas=numeroMangas+1
+
+				encontradoManga = linea.find(etiquetaManga, encontradoManga+1);
+
+				if numeroMangas>=numres:
+					encontradoManga=-1
 		f.close()
 
 	def getManga(self, num):
@@ -96,7 +88,7 @@ class Manga:
 	def getDirectorio(self):
 		""""""
 		if self.directorio == "":
-			direccion_manga= "http://submanga.com/c/"+str(self.codigo)
+			direccion_manga= "http://submanga.com/c/"+str(self.codigo)+"/1"
 			f = urllib2.urlopen(direccion_manga)
 			while True:
 				linea = f.readline()
@@ -185,32 +177,25 @@ class Busqueda:
 		while True:
 			linea = f.readline()
 			if not linea: break
-			encontrado = linea.find('<td><a href="http://submanga.com/'+nameManga+'/')
-			if encontrado != -1:
-				cont = encontrado+len('<td><a href="http://submanga.com/'+nameManga+'/')
 
-				completo=False
-				modo=0
-				numang=""
-				numChapter=""
-				while completo==False:
-					if modo==0:
-						if linea[cont]!='/':
-							numChapter = numChapter+linea[cont]
-						else:
-							modo=1
-					else:
-						if linea[cont]!='"':
-							numang = numang+linea[cont]
-						else:
-							completo = True
-					cont=cont+1
+			fin = False
+			origen=0
+			encontrado=0
+			while fin == False:
+				result=""
+				encontrado=linea.find('<td class="s"><a href="http://submanga.com/', encontrado+1)
+				if encontrado != -1:
+					origen = encontrado+len('<td class="s"><a href="http://submanga.com/')
 
-				name=nameManga.replace("_"," ")
-				numChapter=numChapter.replace("_"," ")
-				manga = Manga(name,numChapter, numang)
-				self.resultados.append(manga)
+					while linea[origen]!='"':
+						result=result+linea[origen]
+						origen=origen+1
 
+					list1 = result.split("/");
+					manga = Manga(list1[0],list1[1],list1[2]);
+					self.resultados.append(manga)
+				else:
+					fin=True
 		f.close()
 
 	def busquedaExacta(self, numres=10):
@@ -221,22 +206,25 @@ class Busqueda:
 		while True:
 			linea = f.readline()
 			if not linea: break
-			encontrado = linea.find('<td><a href="http://submanga.com/'+nameManga+'/'+str(self.numero)+'/')
-			if encontrado != -1:
-				cont = encontrado+len('<td><a href="http://submanga.com/'+nameManga+'/'+str(self.numero)+'/')
 
-				completo=False
-				numang=""
-				while completo==False:
-					if linea[cont]!='"':
-						numang = numang+linea[cont]
-						cont=cont+1
-					else:
-						completo = True
+			fin = False
+			origen=0
+			encontrado=0
+			while fin == False:
+				result=""
+				encontrado=linea.find('<td class="s"><a href="http://submanga.com/'+nameManga+'/'+str(self.numero)+'/', encontrado+1)
+				if encontrado != -1:
+					origen = encontrado+len('<td class="s"><a href="http://submanga.com/')
 
-				nameManga=nameManga.replace("_"," ")
-				manga = Manga(nameManga,str(self.numero), numang)
-				self.resultados.append(manga)
+					while linea[origen]!='"':
+						result=result+linea[origen]
+						origen=origen+1
+
+					list1 = result.split("/");
+					manga = Manga(list1[0],list1[1],list1[2]);
+					self.resultados.append(manga)
+				else:
+					fin=True
 		f.close()
 
 
@@ -249,9 +237,13 @@ class Busqueda:
 		return len(self.resultados)
 
 if __name__ == "__main__":
-	m=Manga("Gantz", "306", "51545", fansub="CONCEPT", numpaginas="")
-	print m.numpaginas
-	print m.fansub
-	m.getExtraInfo()
-	print m.numpaginas
-	print m.fansub
+	#~ m=Manga("Gantz", "306", "51545", fansub="CONCEPT", numpaginas="")
+	#~ print m.numpaginas
+	#~ print m.fansub
+	#~ m.getExtraInfo()
+	#~ print m.numpaginas
+	#~ print m.fansub
+	#~ print m.getDirectorio()
+	b=Busqueda()
+	b.realizarBusqueda("Naruto", "")
+	print b.resultados
