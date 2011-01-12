@@ -53,8 +53,8 @@ class Info(gtk.Dialog):
 
 	def getImagen(self):
 		""""""
-		
-		
+
+
 		nombre=self.manga.nombre.replace(" ","_")
 
 		url="http://submanga.com/"+nombre
@@ -74,7 +74,7 @@ class Info(gtk.Dialog):
 				seguir=False
 		f.close()
 
-		
+
 
 		try:
 			direccion="http://submanga.com/static/media/"+imageName
@@ -104,32 +104,30 @@ class Info(gtk.Dialog):
 		url="http://submanga.com/"+nombre
 		f = urllib2.urlopen(url)
 		info=""
-		comienzo=False
-		seguir=True
-		while seguir:
-			linea = f.readline()
-			if not linea: break
 
-			encontrado = linea.find('<div id="info" class="cb u pad"><p>')
+		linea = f.read()
+		if linea:
+			encontrado = linea.find('src="http://submanga.com/static')
+			encontrado = linea.find('<p>',encontrado+1)
+			encontrado = linea.find('<p>',encontrado+1)
+
 			if encontrado != -1:
-				pos=encontrado+len('<div id="info" class="cb u pad"><p>')
-				finl=len(linea)-len('</p></div><div id="more"></div> ')
+				pos=encontrado+len('<p>')
+				finl=encontrado = linea.find('</p>',encontrado+1)
 				info=linea[pos:finl]
-				comienzo=True
-				break
 
-		f.close()
+			f.close()
 
-		info=info.replace("<br/>","\n")
-		textview = gtk.TextView()
-		textbuffer = textview.get_buffer()
-		textbuffer.set_text(info)
-		self.infoHbox.pack_start(textview, True, True, 0)
-		textview.show()
-		textview.set_wrap_mode(gtk.WRAP_WORD)
-		textview.set_left_margin(10)
-		textview.set_cursor_visible(False)
-		textview.set_editable(False)
+			info=info.replace("<br/>","\n")
+			textview = gtk.TextView()
+			textbuffer = textview.get_buffer()
+			textbuffer.set_text(info)
+			self.infoHbox.pack_start(textview, True, True, 0)
+			textview.show()
+			textview.set_wrap_mode(gtk.WRAP_WORD)
+			textview.set_left_margin(10)
+			textview.set_cursor_visible(False)
+			textview.set_editable(False)
 
 
 if __name__ == "__main__":

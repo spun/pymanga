@@ -11,7 +11,7 @@ import webbrowser
 import cons
 
 NAME = cons.PROGRAM_NAME
-COPYRIGHT = "© 2010 " + cons.PROGRAM_NAME
+COPYRIGHT = "© 2011 " + cons.PROGRAM_NAME
 AUTHORS = ["neo"]
 LICENSE = """
 	This program is free software: you can redistribute it and/or modify
