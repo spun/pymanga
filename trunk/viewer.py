@@ -252,6 +252,8 @@ class Visor:
 			self.scroll_up(self)
 		elif event.keyval == gtk.gdk.keyval_from_name('Down'):
 			self.scroll_down(self)
+		elif event.keyval == gtk.gdk.keyval_from_name('F11'):
+			self.full(self)
 		shortcut = gtk.accelerator_name(event.keyval, event.state)
 		if "Escape" in shortcut:
 			if self.status_fullscreen:

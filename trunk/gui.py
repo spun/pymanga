@@ -12,6 +12,7 @@ import viewer
 import cons
 import tab_library
 import tab_new
+import tab_featured
 import tab_search
 from about import About
 from preferences import Preferences
@@ -131,6 +132,11 @@ class Gui:
 		self.novedades = tab_new.TreeNews(self.biblioteca, self.configuration)
 		label = gtk.Label("Novedades")
 		self.notebook.append_page(self.novedades, label)
+		
+		# Tab de destacados
+		self.destacados = tab_featured.TreeNews(self.biblioteca, self.configuration)
+		label = gtk.Label("Destacados")
+		self.notebook.append_page(self.destacados, label)
 
 		# Tab de busquedas
 		busqueda = tab_search.TreeSearch(self.biblioteca, self.configuration)
