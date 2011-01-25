@@ -74,6 +74,68 @@ class Novedades:
 		return len(self.resultados)
 
 
+class Destacados:
+	""""""
+	def __init__(self):
+		""""""
+		self.resultados=[]
+
+	def realizarBusqueda(self, numres=10):
+		""""""
+		self.resultados[:].remove
+		f = urllib2.urlopen("http://submanga.com")
+		
+		linea = f.readline()
+		if linea:
+			numeroMangas=0
+			encontradoManga = 0;
+			encontradoFansub = 0;
+
+			etiquetaManga = "<td><a href=\"http://submanga.com/"
+			etiquetaFansub = "<span class=\"grey s\">"
+		
+			tamEtiquetaManga = len(etiquetaManga);
+			tamEtiquetaFansub = len(etiquetaFansub);
+
+			encontradoManga = linea.find(etiquetaManga);
+
+			origen=0;
+			result = "";
+			fansub = "";
+
+			while encontradoManga!=-1:
+				origen=encontradoManga+tamEtiquetaManga;
+				result=""
+				while linea[origen]!='"':
+					result=result+linea[origen]
+					origen=origen+1
+				result=result.replace("_"," ")
+
+				encontradoFansub = linea.find(etiquetaFansub, encontradoManga)
+				origen=encontradoFansub+tamEtiquetaFansub
+				fansub=""
+				while linea[origen]!='<':
+					fansub=fansub+linea[origen]
+					origen=origen+1
+
+				list1 = result.split("/");
+				manga = Manga(list1[0],list1[1],list1[2], fansub);
+				self.resultados.append(manga)
+				numeroMangas=numeroMangas+1
+
+				encontradoManga = linea.find(etiquetaManga, encontradoManga+1);
+		
+		f.close()
+
+	def getManga(self, num):
+		""""""
+		return self.resultados[num]
+
+	def numMangas(self):
+		""""""
+		return len(self.resultados)
+
+
 class Manga:
 	""""""
 	def __init__(self, nombre, numero, codigo, fansub="CONCEPT", numpaginas=""):
