@@ -164,6 +164,8 @@ class Gui:
 			self.biblioteca.listar()
 		elif page==1:
 			self.novedades.listar()
+		elif page==2:
+			self.destacados.listar()
 
 
 	def displayPreferences(self, widget=None, event=None):

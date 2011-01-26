@@ -24,7 +24,7 @@ class TreeNews(gtk.ScrolledWindow):
 
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.tvNovedades = gtk.TreeView(gtk.TreeStore(int, str, str, str, str))
+		self.tvNovedades = gtk.TreeView(gtk.TreeStore(int, str, str, str, str, str))
 		self.tvNovedades.show()
 		self.add(self.tvNovedades)
 
@@ -57,11 +57,18 @@ class TreeNews(gtk.ScrolledWindow):
 		tree_fansub.set_sort_column_id(3)
 		self.tvNovedades.append_column(tree_fansub)
 
+		tree_date = gtk.TreeViewColumn('Fecha')
+		date_cell = gtk.CellRendererText()
+		tree_date.pack_start(date_cell, False)
+		tree_date.add_attribute(date_cell, 'text', 4)
+		tree_date.set_sort_column_id(4)
+		self.tvNovedades.append_column(tree_date)
+
 		tree_id = gtk.TreeViewColumn('ID Manga')
 		id_cell = gtk.CellRendererText()
 		tree_id.pack_start(id_cell, True)
-		tree_id.add_attribute(id_cell, 'text', 4)
-		tree_id.set_sort_column_id(4)
+		tree_id.add_attribute(id_cell, 'text', 5)
+		tree_id.set_sort_column_id(5)
 		self.tvNovedades.append_column(tree_id)
 
 		self.tvNovedades.add_events(gtk.gdk.BUTTON_PRESS_MASK)
@@ -84,12 +91,13 @@ class TreeNews(gtk.ScrolledWindow):
 		#self.vaciar_lista()
 		#time.sleep(5)
 		self.novedades = lib_submanga.Novedades()
-		numMangas=10
-		self.novedades.realizarBusqueda(numMangas)
+		numDias=3
+		self.novedades.realizarBusqueda(numDias)
 
-		for i in range(numMangas):
+		for i in range(self.novedades.numMangas()):
 			novManga=self.novedades.getManga(i)
-			self.tvNovedades.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
+			self.tvNovedades.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub,
+			                                    novManga.fecha, novManga.codigo])
 		gtk.gdk.threads_leave()
 
 	def button_clicked(self, widget, event):
