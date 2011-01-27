@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
@@ -21,13 +20,14 @@ else:
 	PATH = os.path.join(sys.path[0], "")
 	DEFAULT_PATH = os.path.join(os.path.expanduser("~"), "")
 
-#CONFIG_PATH = os.path.join(DEFAULT_PATH, ".pymanga" ,"")
+CONFIG_PATH = os.path.join(DEFAULT_PATH, ".pymanga" ,"")
+#CONFIG_PATH = os.path.join(PATH, ".pymanga" ,"")
 
-CONFIG_PATH = os.path.join(PATH, ".pymanga" ,"")
 # Direciones utiles
-PATH_TEMP = os.path.join(PATH, "temp", "")
+#PATH_TEMP = os.path.join(PATH, "temp", "")
+PATH_TEMP = os.path.join(CONFIG_PATH, "temp", "")
 PATH_MEDIA = os.path.join(PATH, "media", "")
-PATH_LIBRARY = os.path.join(PATH, "library", "")
+PATH_LIBRARY = os.path.join(CONFIG_PATH, "library", "")
 ICON_PROGRAM = PATH_MEDIA + "icon.png"
 LOGO_PROGRAM = PATH_MEDIA + "logo.png"
 ICON_OPEN = PATH_MEDIA + "open.png"

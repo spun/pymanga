@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import httplib
@@ -62,9 +61,6 @@ class Downloader:
 
 	def crearDirectorio(self):
 		""""""
-		if not os.path.exists(cons.PATH_LIBRARY):
-			os.mkdir(cons.PATH_LIBRARY)
-
 		directorio=cons.PATH_LIBRARY+self.manga.codigo
 		if os.path.exists(directorio):
 			print "ya existe"

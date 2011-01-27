@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import ConfigParser
 import cons
@@ -15,6 +17,10 @@ class Config():
 		if not os.path.exists(cons.CONFIG_PATH + CONF):
 			self.createDefaultConfig()
 			self.configured = False
+		if not os.path.exists(cons.PATH_TEMP):
+			os.mkdir(cons.PATH_TEMP)
+		if not os.path.exists(cons.PATH_LIBRARY):
+			os.mkdir(cons.PATH_LIBRARY)
 
 		if not self.cfg.read([cons.CONFIG_PATH + CONF]):
 			print "No existe el archivo"
@@ -41,6 +47,9 @@ class Config():
 		self.cfg.add_section("main")
 		self.cfg.set("main","mainWindowGeometry",value)
 		self.cfg.set("main","mainTabSelected","0")
+		
+		self.cfg.add_section("new")
+		self.cfg.set("new","newDay","1")
 
 		self.cfg.add_section("viewer")
 		self.cfg.set("viewer","viewerBackground","#000")

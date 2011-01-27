@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -17,10 +16,11 @@ import desc_dialog
 
 class TreeNews(gtk.ScrolledWindow):
 	""""""
-	def __init__(self, biblioteca, config):
+	def __init__(self, biblioteca, config, statusbar):
 		""""""
 		self.biblioteca=biblioteca
 		self.configuration = config
+		self.statusbar = statusbar
 
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -68,7 +68,7 @@ class TreeNews(gtk.ScrolledWindow):
 		self.tvDestacados.connect("button-press-event", self.button_clicked)
 
 		self.show()
-		self.listar()
+		#self.listar()
 
 	def listar(self):
 		""""""
@@ -81,6 +81,7 @@ class TreeNews(gtk.ScrolledWindow):
 		#context_id = self.statusbar.get_context_id("Estado de actualizacion de destacados")
 		#self.statusbar.push(context_id, "Actualizando destacados...")
 		gtk.gdk.threads_enter()
+		self.statusbar.push(0, "Actualizando destacados... Espere por favor")
 		#self.vaciar_lista()
 		#time.sleep(5)
 		self.destacados = lib_submanga.Destacados()
@@ -89,6 +90,7 @@ class TreeNews(gtk.ScrolledWindow):
 		for i in range(self.destacados.numMangas()):
 			novManga=self.destacados.getManga(i)
 			self.tvDestacados.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
+		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 
 	def button_clicked(self, widget, event):

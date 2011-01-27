@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -18,10 +17,11 @@ import desc_dialog
 
 class TreeSearch(gtk.VBox):
 	""""""
-	def __init__(self, biblioteca, config):
+	def __init__(self, biblioteca, config, statusbar):
 		""""""
 		self.biblioteca=biblioteca
 		self.configuration = config
+		self.statusbar = statusbar
 
 		# Caja contenedor
 		gtk.VBox.__init__(self, False, 5)
@@ -162,6 +162,7 @@ class TreeSearch(gtk.VBox):
 		""""""
 		self.urlBar.get_children()[3].show()
 		gtk.gdk.threads_enter()
+		self.statusbar.push(0, "Buscando... Espere por favor")
 		url = self.urlBar.get_children()[1].get_text()
 
 		self.resBusquedas=lib_submanga.Busqueda()
@@ -171,6 +172,7 @@ class TreeSearch(gtk.VBox):
 
 		self.tvSearch.get_model().clear()
 		self.tvSearch.get_model().append(None, [1,m.nombre, m.numero, m.fansub, m.codigo])
+		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 		self.urlBar.get_children()[3].hide()
 
@@ -185,6 +187,7 @@ class TreeSearch(gtk.VBox):
 		""""""
 		self.searchBar.get_children()[5].show()
 		gtk.gdk.threads_enter()
+		self.statusbar.push(0, "Buscando... Espere por favor")
 
 		name = self.searchBar.get_children()[1].get_text()
 		chapter = self.searchBar.get_children()[3].get_text()
@@ -199,6 +202,7 @@ class TreeSearch(gtk.VBox):
 			novManga=self.resBusquedas.getManga(i)
 			self.tvSearch.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
 
+		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 		self.searchBar.get_children()[5].hide()
 

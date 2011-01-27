@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import urllib, urllib2
+import time
 
 class Novedades:
 	""""""
@@ -9,14 +9,14 @@ class Novedades:
 		""""""
 		self.resultados=[]
 
-	def realizarBusqueda(self, numres=1):
+	def realizarBusqueda(self, numres):
 		""""""
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
 		
 		numeroDias=0
 		
-		etiquetaManga = "<td class=\"s\"><a rel=\"nofollow\" href=\"http://submanga.com/";
+		etiquetaManga = "<td class=\"s\"><a rel=\"nofollow\" href=\"http://submanga.com/"
 		etiquetaFansub = "/scanlation/"
 		etiquetaFecha = "<th class=\"l\" colspan=\"3\"><a name=\""
 
@@ -29,9 +29,11 @@ class Novedades:
 		encontradoFecha = 0
 
 		origen=0
+		linea = ""
 		result = ""
 		fansub = ""
-		fecha=""
+		fecha = ""
+		auxFecha = ""
 		recientes = 0
 		
 		while True:
@@ -49,14 +51,15 @@ class Novedades:
 				while encontradoManga!=-1:
 					if encontradoFecha < encontradoManga and encontradoFecha != -1:
 						origen=encontradoFecha+tamEtiquetaFecha
-						aux=fecha
+						aux=auxFecha
 						fecha=""
 						while linea[origen]!='"':
 							fecha=fecha+linea[origen]
 							origen=origen+1
 
 						encontradoFecha = linea.find(etiquetaFecha, encontradoFecha+1)
-						if aux != fecha:
+						auxFecha = time.strptime(fecha, "%d/%m/%Y")
+						if aux != auxFecha:
 							numeroDias = numeroDias + 1
 						if numeroDias>numres: break
 
@@ -95,12 +98,13 @@ class Novedades:
 		#En la pagina inicial aparece una lista mas actualizada que en la primera hoja de recientes.
 		#En la pagina inicial y la primera hoja de recientes, se repiten mangas.
 		#En todas las paginas aparecen los mangas de 50 en 50.
-		index = 0
-		for i in range(50):
-			if self.resultados[50].codigo >= self.resultados[i].codigo:
-				index = i+1
-				break
-		self.resultados = self.resultados[0:index] + self.resultados[51:]
+		if len(self.resultados) > 50:
+			index = 0
+			for i in range(50):
+				if self.resultados[50].codigo >= self.resultados[i].codigo:
+					index = i+1
+					break
+			self.resultados = self.resultados[0:index] + self.resultados[51:]
 
 	def getManga(self, num):
 		""""""
@@ -121,7 +125,7 @@ class Destacados:
 		""""""
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
-		
+		linea = ""
 		encontradoManga = 0;
 		etiquetaManga = "<td><a href=\"http://submanga.com/"
 		
@@ -284,16 +288,25 @@ class Busqueda:
 			encontrado=0
 			while fin == False:
 				result=""
-				encontrado=linea.find('<td class="s"><a href="http://submanga.com/', encontrado+1)
+				encontrado=linea.find('<td class="s"><a href="http://submanga.com/', encontrado)
 				if encontrado != -1:
 					origen = encontrado+len('<td class="s"><a href="http://submanga.com/')
 
 					while linea[origen]!='"':
 						result=result+linea[origen]
 						origen=origen+1
+					result=result.replace("_"," ")
+						
+					encontrado = linea.find("/scanlation/", encontrado)
+					origen=encontrado+len("/scanlation/")
+					fansub=""
+					while linea[origen]!='"':
+						fansub=fansub+linea[origen]
+						origen=origen+1
+					fansub=fansub.replace("_"," ")
 
 					list1 = result.split("/");
-					manga = Manga(list1[0],list1[1],list1[2]);
+					manga = Manga(list1[0],list1[1],list1[2],fansub);
 					self.resultados.append(manga)
 				else:
 					fin=True
@@ -320,6 +333,7 @@ class Busqueda:
 					while linea[origen]!='"':
 						result=result+linea[origen]
 						origen=origen+1
+					result=result.replace("_"," ")
 
 					list1 = result.split("/");
 					manga = Manga(list1[0],list1[1],list1[2]);
