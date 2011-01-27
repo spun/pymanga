@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -28,6 +27,7 @@ class Visor:
 		self.zoomLevel=100
 		self.zoomMode="Normal"
 		self.status_fullscreen=False
+		self.status_adj=False
 		self.image_num = 0
 		self.manga=manga
 		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
@@ -254,6 +254,17 @@ class Visor:
 			self.scroll_down(self)
 		elif event.keyval == gtk.gdk.keyval_from_name('F11'):
 			self.full(self)
+		elif event.keyval == gtk.gdk.keyval_from_name('plus'):
+			self.changeZoomLevel(self, "up")
+		elif event.keyval == gtk.gdk.keyval_from_name('minus'):
+			self.changeZoomLevel(self, "down")
+		elif event.keyval == gtk.gdk.keyval_from_name('a'):
+			if self.status_adj:
+				self.changeZoomLevel(self, "reset")
+				self.status_adj=False
+			else:
+				self.changeZoomLevel(self, "adj")
+				self.status_adj=True
 		shortcut = gtk.accelerator_name(event.keyval, event.state)
 		if "Escape" in shortcut:
 			if self.status_fullscreen:
@@ -326,16 +337,19 @@ class Visor:
 
 	def next_image(self, widget):
 		""""""
-		threading.Thread(target=self.set_image, args=(self.image_num+1,)).start()
+		if self.image_num+1 <= int(self.manga.numpaginas):
+			threading.Thread(target=self.set_image, args=(self.image_num+1,)).start()
 
 	def prev_image(self, widget):
 		""""""
-		threading.Thread(target=self.set_image, args=(self.image_num-1,)).start()
+		if self.image_num-1 >= 1:
+			threading.Thread(target=self.set_image, args=(self.image_num-1,)).start()
 
 	def goto_image(self, widget, entry):
 		""""""
 		entry_text = entry.get_text()
-		threading.Thread(target=self.set_image, args=(int(entry_text),)).start()
+		if int(entry_text) <= int(self.manga.numpaginas) and int(entry_text) >= 1:
+			threading.Thread(target=self.set_image, args=(int(entry_text),)).start()
 
 		return True
 

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -122,6 +121,13 @@ class Gui:
 		self.notebook.set_tab_pos(gtk.POS_TOP)
 		vboxAdm.pack_start(self.notebook, True, True, 0)
 		self.notebook.show()
+		
+		# Barra de estado
+		self.statusbar = gtk.Statusbar()
+		self.context_id = self.statusbar.get_context_id("Users")
+		vboxAdm.pack_end(self.statusbar, False, False, 0)
+		self.statusbar.push(0, "Listo")
+		self.statusbar.show()
 
 		# Tab de biblioteca
 		self.biblioteca = tab_library.TreeLibrary(self.configuration)
@@ -129,31 +135,24 @@ class Gui:
 		self.notebook.append_page(self.biblioteca, label)
 
 		# Tab de novedades
-		self.novedades = tab_new.TreeNews(self.biblioteca, self.configuration)
+		self.novedades = tab_new.TreeNews(self.biblioteca, self.configuration, self.statusbar)
 		label = gtk.Label("Novedades")
 		self.notebook.append_page(self.novedades, label)
 		
 		# Tab de destacados
-		self.destacados = tab_featured.TreeNews(self.biblioteca, self.configuration)
+		self.destacados = tab_featured.TreeNews(self.biblioteca, self.configuration, self.statusbar)
 		label = gtk.Label("Destacados")
 		self.notebook.append_page(self.destacados, label)
 
 		# Tab de busquedas
-		busqueda = tab_search.TreeSearch(self.biblioteca, self.configuration)
+		busqueda = tab_search.TreeSearch(self.biblioteca, self.configuration, self.statusbar)
 		label = gtk.Label("Buscar")
 		self.notebook.append_page(busqueda, label)
 
 		# Tab con el foco al iniciar
 		tabSelected=self.configuration.getValue("main","mainTabSelected")
 		self.notebook.set_current_page(int(tabSelected))
-
-		# Barra de estado (completamente innecesaria)
-		self.statusbar = gtk.Statusbar()
-		self.context_id = self.statusbar.get_context_id("Users")
-		vboxAdm.pack_end(self.statusbar, False, False, 0)
-		self.statusbar.push(0, "Listo")
-		self.statusbar.show()
-
+		
 		self.window.show()
 
 	def refresh_buttom(self, widget):
@@ -171,6 +170,7 @@ class Gui:
 	def displayPreferences(self, widget=None, event=None):
 		""""""
 		Preferences(self.configuration)
+		
 
 	def saveToQuit(self):
 		""""""

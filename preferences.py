@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -20,6 +19,40 @@ class Preferences(gtk.Dialog):
 		self.set_title(cons.PROGRAM_NAME+" - Preferencias ")
 
 		self.configuration = config
+
+		frame1 = gtk.Frame(" Novedades ")
+		frame1.set_border_width(10)
+		self.vbox.pack_start(frame1, False, True, 0)
+		frame1.show()
+
+		hbox1 = gtk.HBox()
+		hbox1.set_border_width(10)
+		frame1.add(hbox1)
+		hbox1.show()
+		
+		self.new=int(self.configuration.getValue("new","newDay"))
+		
+		self.buttonNew = gtk.RadioButton(None, "Último día")
+		self.buttonNew.connect("toggled", self.newcall, 1)
+		if self.new == 1:
+			self.buttonNew.set_active(True)
+		hbox1.pack_start(self.buttonNew, True, False, 0)
+		self.buttonNew.show()
+
+		self.buttonNew = gtk.RadioButton(self.buttonNew, "Últimos 3 días")
+		self.buttonNew.connect("toggled", self.newcall, 3)
+		if self.new == 3:
+			self.buttonNew.set_active(True)
+		hbox1.pack_start(self.buttonNew, True, False, 0)
+		self.buttonNew.show()
+
+		self.buttonNew = gtk.RadioButton(self.buttonNew, "Última semana")
+		self.buttonNew.connect("toggled", self.newcall, 7)
+		if self.new == 7:
+			self.buttonNew.set_active(True)
+		hbox1.pack_start(self.buttonNew, True, False, 0)
+		self.buttonNew.show()
+
 
 		frame2 = gtk.Frame(" Color de fondo del visor ")
 		frame2.set_border_width(10)
@@ -62,6 +95,10 @@ class Preferences(gtk.Dialog):
 	def close(self, widget=None, other=None):
 		""""""
 		self.destroy()
+	
+	def newcall(self, widget, day):
+		""""""
+		self.new = day
 
 	def changeLibraryFolder(self, widget=None):
 		print "Cambiando"
@@ -82,6 +119,7 @@ class Preferences(gtk.Dialog):
 	def saveToQuit(self, widget=None):
 		color=self.buttonColor.get_color().to_string()
 		self.configuration.setValue("viewer","viewerBackground",color)
+		self.configuration.setValue("new","newDay",str(self.new))
 		self.close(self)
 
 
