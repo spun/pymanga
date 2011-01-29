@@ -40,6 +40,8 @@ class Visor:
 		self.window.resize(700, 700)
 		self.window.set_icon_from_file(cons.ICON_PROGRAM)
 		self.window.set_border_width(0)
+		self.window.set_flags(gtk.CAN_FOCUS)
+		self.window.grab_focus()
 		self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Cargando...")
 
 
@@ -265,6 +267,11 @@ class Visor:
 			else:
 				self.changeZoomLevel(self, "adj")
 				self.status_adj=True
+		elif event.keyval == gtk.gdk.keyval_from_name('c'):
+			if self.slideshow_window.get_opacity() == 1:
+				self.slideshow_window.set_opacity(0)
+			else:
+				self.slideshow_window.set_opacity(1)
 		shortcut = gtk.accelerator_name(event.keyval, event.state)
 		if "Escape" in shortcut:
 			if self.status_fullscreen:
@@ -337,16 +344,19 @@ class Visor:
 
 	def next_image(self, widget):
 		""""""
+		self.image.set_from_file(cons.PATH_MEDIA+"/loader.gif")
 		if self.image_num+1 <= int(self.manga.numpaginas):
 			threading.Thread(target=self.set_image, args=(self.image_num+1,)).start()
 
 	def prev_image(self, widget):
 		""""""
+		self.image.set_from_file(cons.PATH_MEDIA+"/loader.gif")
 		if self.image_num-1 >= 1:
 			threading.Thread(target=self.set_image, args=(self.image_num-1,)).start()
 
 	def goto_image(self, widget, entry):
 		""""""
+		self.image.set_from_file(cons.PATH_MEDIA+"/loader.gif")
 		entry_text = entry.get_text()
 		if int(entry_text) <= int(self.manga.numpaginas) and int(entry_text) >= 1:
 			threading.Thread(target=self.set_image, args=(int(entry_text),)).start()

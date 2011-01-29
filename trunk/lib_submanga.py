@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import urllib, urllib2
-import time
+from datetime import datetime
+import notifications
 
 class Novedades:
 	""""""
 	def __init__(self):
 		""""""
 		self.resultados=[]
+		self.n=notifications.Notification()
 
 	def realizarBusqueda(self, numres):
 		""""""
+		self.n.notify("Actualizar Novedades","Actualizando lista... Espere por favor")
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
 		
@@ -27,42 +30,44 @@ class Novedades:
 		encontradoManga = 0
 		encontradoFansub = 0
 		encontradoFecha = 0
-
+		
 		origen=0
 		linea = ""
 		result = ""
 		fansub = ""
 		fecha = ""
-		auxFecha = ""
+		auxFecha = datetime.strptime("31/12/9999", "%d/%m/%Y")
 		recientes = 0
+		repetidos = 0 #numero de los primeros mangas en los que puede haber alguno repetido
 		
 		while True:
 			linea = f.readline()
 			if not linea: break
-			encontradoManga = linea.find(etiquetaManga);
+			encontradoManga = linea.find(etiquetaManga)
 			if encontradoManga != -1: break	
-				
+
 		while True:
 			if linea:
-				encontradoManga = linea.find(etiquetaManga)
 				tamEtiquetaManga = len(etiquetaManga)		
 				encontradoFecha = linea.find(etiquetaFecha)
 
 				while encontradoManga!=-1:
 					if encontradoFecha < encontradoManga and encontradoFecha != -1:
 						origen=encontradoFecha+tamEtiquetaFecha
-						aux=auxFecha
 						fecha=""
 						while linea[origen]!='"':
 							fecha=fecha+linea[origen]
 							origen=origen+1
-
 						encontradoFecha = linea.find(etiquetaFecha, encontradoFecha+1)
-						auxFecha = time.strptime(fecha, "%d/%m/%Y")
-						if aux != auxFecha:
+						
+						if auxFecha > datetime.strptime(fecha, "%d/%m/%Y"):
 							numeroDias = numeroDias + 1
+							auxFecha = datetime.strptime(fecha, "%d/%m/%Y")
+						elif auxFecha < datetime.strptime(fecha, "%d/%m/%Y"):
+							numeroDias = numeroDias - 1
+							auxFecha = datetime.strptime(fecha, "%d/%m/%Y")
 						if numeroDias>numres: break
-
+					
 					origen=encontradoManga+tamEtiquetaManga;
 					result=""
 					while linea[origen]!='"':
@@ -81,30 +86,37 @@ class Novedades:
 					list1 = result.split("/");
 					manga = Manga(list1[0],list1[1],list1[2], fansub, "", fecha);
 					self.resultados.append(manga)
+					if numeroDias == 1:
+						repetidos = len(self.resultados)
 			
 					encontradoManga = linea.find(etiquetaManga, encontradoManga+1)
 					
 			f.close()
-			if numeroDias>numres: break
+			if numeroDias>numres and recientes >=1: break
 			recientes = recientes + 1
 			f = urllib2.urlopen("http://submanga.com/p/" + str(recientes))
 			etiquetaManga = "<td class=\"s\"><a href=\"http://submanga.com/"
 			while True:
 				linea = f.readline()
 				if not linea: break
-				encontradoManga = linea.find(etiquetaManga);
+				encontradoManga = linea.find(etiquetaManga)
 				if encontradoManga != -1: break
 			
 		#En la pagina inicial aparece una lista mas actualizada que en la primera hoja de recientes.
 		#En la pagina inicial y la primera hoja de recientes, se repiten mangas.
+		#En la primera hoja de recientes suele haber mangas que faltan en la principal.
 		#En todas las paginas aparecen los mangas de 50 en 50.
-		if len(self.resultados) > 50:
-			index = 0
-			for i in range(50):
-				if self.resultados[50].codigo >= self.resultados[i].codigo:
-					index = i+1
-					break
-			self.resultados = self.resultados[0:index] + self.resultados[51:]
+		resultadoRepetidos = sorted(self.resultados[:repetidos], key=lambda manga: manga.codigo, reverse=True)
+		index=0
+		while True:
+			if resultadoRepetidos[index].codigo != resultadoRepetidos[index+1].codigo:
+				index=index+1
+			else:
+				del resultadoRepetidos[index]
+			if index == len(resultadoRepetidos)-1: break
+		self.resultados = resultadoRepetidos + self.resultados[repetidos:]
+		self.n.notify("Actualizar Novedades","Lista actualizada con "+str(len(self.resultados))+" mangas")
+		
 
 	def getManga(self, num):
 		""""""
@@ -120,9 +132,11 @@ class Destacados:
 	def __init__(self):
 		""""""
 		self.resultados=[]
+		self.n=notifications.Notification()
 
 	def realizarBusqueda(self, numres=10):
 		""""""
+		self.n.notify("Actualizar Destacados","Actualizando lista... Espere por favor")
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
 		linea = ""
@@ -168,6 +182,7 @@ class Destacados:
 				encontradoManga = linea.find(etiquetaManga, encontradoManga+1);
 		
 		f.close()
+		self.n.notify("Actualizar Destacados","Lista actualizada con los 10 más destacados")
 
 	def getManga(self, num):
 		""""""
@@ -251,6 +266,7 @@ class Busqueda:
 		self.nombre=""
 		self.numero=""
 		self.resultados=[]
+		self.n=notifications.Notification()
 
 
 	def getFromDirect(self, url):
@@ -311,6 +327,7 @@ class Busqueda:
 				else:
 					fin=True
 		f.close()
+		self.n.notify("Búsqueda global","Búsqueda finalizada")
 
 	def busquedaExacta(self, numres=10):
 		""""""
@@ -341,6 +358,7 @@ class Busqueda:
 				else:
 					fin=True
 		f.close()
+		self.n.notify("Búsqueda exacta","Búsqueda finalizada")
 
 
 	def getManga(self, num):

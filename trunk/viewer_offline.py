@@ -17,7 +17,7 @@ class Visor:
 		#gtk.main_quit()
 		return False
 
-	def __init__(self, manga, config):
+	def __init__(self, manga, config, directorio):
 		""""""
 		self.configuration = config
 
@@ -28,7 +28,7 @@ class Visor:
 		self.status_adj=False
 		self.image_num = 0
 		self.manga=manga
-		self.directorio=os.path.join(cons.PATH_LIBRARY, self.manga.codigo, "")
+		self.directorio=os.path.join(directorio, self.manga.codigo, "")
 
 		col=self.configuration.getValue("viewer","viewerBackground")
 		self.bgcolor = gtk.gdk.color_parse(col)
@@ -38,6 +38,8 @@ class Visor:
 		self.window.resize(700, 700)
 		self.window.set_icon_from_file(cons.ICON_PROGRAM)
 		self.window.set_border_width(0)
+		self.window.set_flags(gtk.CAN_FOCUS)
+		self.window.grab_focus()
 
 		vboxAdm = gtk.VBox()
 		vboxAdm.show()
@@ -81,7 +83,7 @@ class Visor:
 		self.page_pos.show()
 
 		self.page_pos.connect("activate", self.goto_image, self.page_pos)
-		self.page_pos.set_width_chars (3)
+		self.page_pos.set_width_chars(3)
 		self.page_pos.set_text("0")
 
 		toolItem3 = gtk.ToolItem();
@@ -189,7 +191,7 @@ class Visor:
 		self.slideshow_controls.pack_start(self.ss_back, False, False, 0)
 		self.slideshow_controls.pack_start(self.ss_forward, False, False, 0)
 		self.slideshow_window.add(self.slideshow_controls)
-
+		
 		(xpos, ypos) = self.window.get_position()
 		screen = self.window.get_screen()
 		self.slideshow_window.set_screen(screen)
@@ -252,6 +254,11 @@ class Visor:
 			else:
 				self.changeZoomLevel(self, "adj")
 				self.status_adj=True
+		elif event.keyval == gtk.gdk.keyval_from_name('c'):
+			if self.slideshow_window.get_opacity() == 1:
+				self.slideshow_window.set_opacity(0)
+			else:
+				self.slideshow_window.set_opacity(1)
 		shortcut = gtk.accelerator_name(event.keyval, event.state)
 		if "Escape" in shortcut:
 			if self.status_fullscreen:
