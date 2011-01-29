@@ -12,7 +12,6 @@ gtk.gdk.threads_init()
 import cons
 import viewer_offline
 import lib_submanga
-import notifications
 import downloader
 import zipfile
 
@@ -21,21 +20,24 @@ class TreeLibrary(gtk.ScrolledWindow):
 	def __init__(self, config):
 		""""""
 		self.configuration = config
+		self.directorio = cons.PATH_LIBRARY
 
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.tvLibrary = gtk.TreeView(gtk.TreeStore(gtk.gdk.Pixbuf, str, str, int,   bool, str,  str, str))
+		self.tvLibrary = gtk.TreeView(gtk.TreeStore(int, str, str, str, str, str))
 		self.tvLibrary.show()
 		self.add(self.tvLibrary)
 
 		#tree columns
-		tree_icon = gtk.TreeViewColumn('')
-		icon_cell = gtk.CellRendererPixbuf()
-		tree_icon.pack_start(icon_cell, False)
-		tree_icon.add_attribute(icon_cell, 'pixbuf', 0)
-		self.tvLibrary.append_column(tree_icon)
+		tree_nid = gtk.TreeViewColumn('#')
+		nid_cell = gtk.CellRendererText()
+		tree_nid.pack_start(nid_cell, True)
+		tree_nid.add_attribute(nid_cell, 'text', 0)
+		tree_nid.set_sort_column_id(0)
+		self.tvLibrary.append_column(tree_nid)
 
 		tree_name = gtk.TreeViewColumn('Nombre')
+		tree_name.set_property('resizable', True)
 		name_cell = gtk.CellRendererText()
 		tree_name.pack_start(name_cell, False)
 		tree_name.add_attribute(name_cell, 'text', 1)
@@ -43,55 +45,49 @@ class TreeLibrary(gtk.ScrolledWindow):
 		self.tvLibrary.append_column(tree_name)
 
 		tree_chapter = gtk.TreeViewColumn('Número')
+		tree_chapter.set_property('resizable', True)
 		chapter_cell = gtk.CellRendererText()
 		tree_chapter.pack_start(chapter_cell, False)
 		tree_chapter.add_attribute(chapter_cell, 'text', 2)
 		tree_chapter.set_sort_column_id(2)
 		self.tvLibrary.append_column(tree_chapter)
 
-		tree_progress = gtk.TreeViewColumn('Progreso')
-		tree_progress.set_min_width(150)
-		progress_cell = gtk.CellRendererProgress()
-		tree_progress.pack_start(progress_cell, True)
-		tree_progress.add_attribute(progress_cell, 'value', 3)
-		tree_progress.add_attribute(progress_cell, 'visible', 4)
-		tree_progress.set_sort_column_id(3)
-		self.tvLibrary.append_column(tree_progress)
-
 		tree_fansub = gtk.TreeViewColumn('Fansub')
+		tree_fansub.set_property('resizable', True)
 		fansub_cell = gtk.CellRendererText()
 		tree_fansub.pack_start(fansub_cell, True)
-		tree_fansub.add_attribute(fansub_cell, 'text', 5)
-		tree_fansub.set_sort_column_id(5)
+		tree_fansub.add_attribute(fansub_cell, 'text', 3)
+		tree_fansub.set_sort_column_id(3)
 		self.tvLibrary.append_column(tree_fansub)
 
+		tree_imgnum = gtk.TreeViewColumn('Imágenes')
+		tree_imgnum.set_property('resizable', True)
+		imgnum_cell = gtk.CellRendererText()
+		tree_imgnum.pack_start(imgnum_cell, True)
+		tree_imgnum.add_attribute(imgnum_cell, 'text', 4)
+		tree_imgnum.set_sort_column_id(4)
+		self.tvLibrary.append_column(tree_imgnum)		
+		
 		tree_id = gtk.TreeViewColumn('ID Manga')
 		id_cell = gtk.CellRendererText()
 		tree_id.pack_start(id_cell, True)
-		tree_id.add_attribute(id_cell, 'text', 6)
-		tree_id.set_sort_column_id(6)
+		tree_id.add_attribute(id_cell, 'text', 5)
+		tree_id.set_sort_column_id(5)
 		self.tvLibrary.append_column(tree_id)
-
-		tree_imgnum = gtk.TreeViewColumn('Imágenes')
-		imgnum_cell = gtk.CellRendererText()
-		tree_imgnum.pack_start(imgnum_cell, True)
-		tree_imgnum.add_attribute(imgnum_cell, 'text', 7)
-		tree_imgnum.set_sort_column_id(7)
-		self.tvLibrary.append_column(tree_imgnum)
 
 		self.tvLibrary.add_events(gtk.gdk.BUTTON_PRESS_MASK)
 		self.tvLibrary.connect("button-press-event", self.button_clicked)
 
-		self.ok_icon = self.tvLibrary.render_icon(gtk.STOCK_YES, gtk.ICON_SIZE_MENU)
-		self.down_icon = self.tvLibrary.render_icon(gtk.STOCK_GO_DOWN, gtk.ICON_SIZE_MENU)
 		self.show()
 		self.listar()
 
 	def listar(self):
 		""""""
+		index=0
 		self.tvLibrary.get_model().clear()
-		for root,dirs,files in os.walk(cons.PATH_LIBRARY):
+		for root,dirs,files in os.walk(self.directorio):
 			for file in [f for f in files if f.lower().endswith("txt")]:
+				index=index+1
 				fichero= os.path.join(root, file)
 				f = open(fichero)
 				nombre = f.readline()
@@ -104,9 +100,10 @@ class TreeLibrary(gtk.ScrolledWindow):
 				fansub=fansub.replace("\n","")
 				imagenes = f.readline()
 				imagenes=imagenes.replace("\n","")
-
-				self.tvLibrary.get_model().append(None, [self.ok_icon, nombre, numero, 100, True, fansub, codigo, imagenes])
+				
+				self.tvLibrary.get_model().append(None, [index, nombre, numero, fansub, imagenes, codigo])
 				f.close()
+		self.tvLibrary.grab_focus()
 
 	def button_clicked(self, widget, event):
 		""""""
@@ -120,7 +117,6 @@ class TreeLibrary(gtk.ScrolledWindow):
 			boton = event.button # obtenemos el boton que se presiono
 			pos = (event.x, event.y) # obtenemos las coordenadas
 			tiempo = event.time # obtenemos el tiempo
-
 			self.crear_menu_emergente(widget, boton, pos, tiempo)
 
 	def crear_menu_emergente(self, widget, boton, pos, tiempo):
@@ -128,6 +124,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 		# un menu para agregar o eliminar directorios o archivos
 		menu = gtk.Menu()
 		# Items del menu
+		
 		ver = gtk.MenuItem("Ver capitulo")
 		borrar = gtk.MenuItem("Borrar de la biblioteca")
 		redescargar = gtk.MenuItem("Volver a descargar")
@@ -135,6 +132,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 		verWeb = gtk.MenuItem("Ver en submanga.com")
 
 		# Agregar los items al menu
+		#menu.append(ver)
 		menu.append(ver)
 		menu.append(borrar)
 		menu.append(redescargar)
@@ -152,6 +150,7 @@ class TreeLibrary(gtk.ScrolledWindow):
 		savemenu.append(saveascbz)
 
 		# Se conectan las funciones de retrollamada a la senal "activate"
+		#ver.connect_object("activate", self.seleccionar_origen, "Ver")
 		ver.connect_object("activate", self.seleccionar_origen, "Ver")
 		borrar.connect_object("activate", self.seleccionar_origen, "Borrar")
 		redescargar.connect_object("activate", self.seleccionar_origen, "Redescargar")
@@ -187,11 +186,12 @@ class TreeLibrary(gtk.ScrolledWindow):
 		""""""
 		treeselection = self.tvLibrary.get_selection()
 		model, iter = treeselection.get_selected()
-		text = model.get_value(iter, 6)
-		directorio=cons.PATH_LIBRARY+text
-
+		text = model.get_value(iter, 5)
+		directorio=self.directorio+text
+		
 		if os.path.exists(directorio):
 			shutil.rmtree(directorio)
+		
 		self.deleteRow(iter)
 
 	def abrirSeleccion(self):
@@ -200,15 +200,15 @@ class TreeLibrary(gtk.ScrolledWindow):
 		model, iter = treeselection.get_selected()
 		nombre = model.get_value(iter, 1)
 		numero = model.get_value(iter, 2)
-		codigo = model.get_value(iter, 6)
-		fansub = model.get_value(iter, 5)
-		numpaginas = model.get_value(iter, 7)
+		codigo = model.get_value(iter, 5)
+		fansub = model.get_value(iter, 3)
+		numpaginas = model.get_value(iter, 4)
 		npaginas=numpaginas.split("/")
 		if len(npaginas)==2:
 			numpaginas=npaginas[1]
 
 		manga=lib_submanga.Manga(nombre, numero, codigo, fansub, numpaginas)
-		viewer_offline.Visor(manga, self.configuration)
+		viewer_offline.Visor(manga, self.configuration, self.directorio)
 
 	def redescargarSeleccion(self):
 		""""""
@@ -216,61 +216,37 @@ class TreeLibrary(gtk.ScrolledWindow):
 		model, iter = treeselection.get_selected()
 		nombre = model.get_value(iter, 1)
 		capitulo = model.get_value(iter, 2)
-		codigo = model.get_value(iter, 6)
-		fansub = model.get_value(iter, 5)
-		m=lib_submanga.Manga(nombre, capitulo, codigo, fansub)
+		codigo = model.get_value(iter, 5)
+		fansub = model.get_value(iter, 3)
+		manga=lib_submanga.Manga(nombre, capitulo, codigo, fansub)
 
 		self.borrarSeleccion()
-		self.descargarManga(m)
 
-	def descargarManga(self, manga):
-		""""""
 		descarga=downloader.Downloader(manga, self)
 		threading.Thread(target=descarga.iniciarDescarga, args=()).start()
-
-	def addRow(self, nombre, numero,fansub, codigo, imagenes):
-		""""""
-		i=self.tvLibrary.get_model().append(None, [self.down_icon, nombre, numero, 0, True, fansub, codigo, imagenes])
-		return i
 
 	def deleteRow(self, a):
 		""""""
 		model=self.tvLibrary.get_model()
 		model.remove(a)
 
-	def refreshProgress(self, iter, newProgress, numImg):
-		""""""
-		model=self.tvLibrary.get_model()
-		model.set_value(iter, 3, newProgress)
-		imageInfo = model.get_value(iter, 7)
-		imageInfo = imageInfo.split('/')
-		if len(imageInfo)==1:
-			model.set_value(iter, 7, str(numImg)+"/"+imageInfo[0])
-		else:
-			model.set_value(iter, 7, str(numImg)+"/"+imageInfo[1])
-
-		if newProgress == 100:
-			model.set_value(iter, 0, self.ok_icon)
-			#model.set_value(iter, 4, False)
-			model.set_value(iter, 7, str(numImg))
-			n=notifications.Notification()
-			n.notify("Descarga completa","Ha terminado la descarga de "+model.get_value(iter, 1)+" "+model.get_value(iter, 2))
-
-
 	def abrirEnWeb(self):
 		""""""
 		treeselection = self.tvLibrary.get_selection()
 		model, iter = treeselection.get_selected()
-		text = model.get_value(iter, 6)
+		text = model.get_value(iter, 5)
 		webbrowser.open("http://submanga.com/"+text)
-
+		
+	def getPath(self):
+		""""""
+		return self.directorio
 
 	def saveAs(self, tipo):
 		""""""
 		treeselection = self.tvLibrary.get_selection()
 		model, iter = treeselection.get_selected()
-		text = model.get_value(iter, 6)
-		directorio=cons.PATH_LIBRARY+text
+		text = model.get_value(iter, 5)
+		directorio=self.directorio+text
 		name=model.get_value(iter, 1)
 		num=model.get_value(iter, 2)
 		namefile=name+"_"+num+"."+tipo

@@ -17,11 +17,10 @@ import desc_dialog
 
 class TreeSearch(gtk.VBox):
 	""""""
-	def __init__(self, biblioteca, config, statusbar):
+	def __init__(self, descargas, config):
 		""""""
-		self.biblioteca=biblioteca
+		self.descargas=descargas
 		self.configuration = config
-		self.statusbar = statusbar
 
 		# Caja contenedor
 		gtk.VBox.__init__(self, False, 5)
@@ -107,7 +106,7 @@ class TreeSearch(gtk.VBox):
 		self.swSearch.add(self.tvSearch)
 
 		#tree columns
-		tree_nid = gtk.TreeViewColumn('')
+		tree_nid = gtk.TreeViewColumn('#')
 		nid_cell = gtk.CellRendererText()
 		tree_nid.pack_start(nid_cell, True)
 		tree_nid.add_attribute(nid_cell, 'text', 0)
@@ -115,6 +114,7 @@ class TreeSearch(gtk.VBox):
 		self.tvSearch.append_column(tree_nid)
 
 		tree_name = gtk.TreeViewColumn('Nombre')
+		tree_name.set_property('resizable', True)
 		name_cell = gtk.CellRendererText()
 		tree_name.pack_start(name_cell, True)
 		tree_name.add_attribute(name_cell, 'text', 1)
@@ -122,14 +122,15 @@ class TreeSearch(gtk.VBox):
 		self.tvSearch.append_column(tree_name)
 
 		tree_chapter = gtk.TreeViewColumn('Número')
+		tree_chapter.set_property('resizable', True)
 		chapter_cell = gtk.CellRendererText()
 		tree_chapter.pack_start(chapter_cell, False)
 		tree_chapter.add_attribute(chapter_cell, 'text', 2)
 		tree_chapter.set_sort_column_id(2)
 		self.tvSearch.append_column(tree_chapter)
 
-
 		tree_fansub = gtk.TreeViewColumn('Fansub')
+		tree_fansub.set_property('resizable', True)
 		fansub_cell = gtk.CellRendererText()
 		tree_fansub.pack_start(fansub_cell, True)
 		tree_fansub.add_attribute(fansub_cell, 'text', 3)
@@ -162,7 +163,6 @@ class TreeSearch(gtk.VBox):
 		""""""
 		self.urlBar.get_children()[3].show()
 		gtk.gdk.threads_enter()
-		self.statusbar.push(0, "Buscando... Espere por favor")
 		url = self.urlBar.get_children()[1].get_text()
 
 		self.resBusquedas=lib_submanga.Busqueda()
@@ -172,7 +172,6 @@ class TreeSearch(gtk.VBox):
 
 		self.tvSearch.get_model().clear()
 		self.tvSearch.get_model().append(None, [1,m.nombre, m.numero, m.fansub, m.codigo])
-		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 		self.urlBar.get_children()[3].hide()
 
@@ -187,7 +186,6 @@ class TreeSearch(gtk.VBox):
 		""""""
 		self.searchBar.get_children()[5].show()
 		gtk.gdk.threads_enter()
-		self.statusbar.push(0, "Buscando... Espere por favor")
 
 		name = self.searchBar.get_children()[1].get_text()
 		chapter = self.searchBar.get_children()[3].get_text()
@@ -202,7 +200,6 @@ class TreeSearch(gtk.VBox):
 			novManga=self.resBusquedas.getManga(i)
 			self.tvSearch.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
 
-		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 		self.searchBar.get_children()[5].hide()
 
@@ -251,8 +248,9 @@ class TreeSearch(gtk.VBox):
 	def seleccionar_origen(self, accion):
 		""""""
 		if accion == "Descargar":
-			gtk.gdk.threads_init()
-			threading.Thread(target=self.iniciarDescarga, args=()).start()
+			#gtk.gdk.threads_init()
+			#threading.Thread(target=self.iniciarDescarga, args=()).start()
+			self.iniciarDescarga()
 			# self.iniciarDescarga(self.manga)
 		elif accion == "Ver":
 			treeselection = self.tvSearch.get_selection()
@@ -266,14 +264,16 @@ class TreeSearch(gtk.VBox):
 
 	def iniciarDescarga(self):
 		""""""
-		gtk.gdk.threads_enter()
+		#gtk.gdk.threads_enter()
 		treeselection = self.tvSearch.get_selection()
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 0)
 		manga=self.resBusquedas.getManga(text-1)
-		descarga=downloader.Downloader(manga, self.biblioteca)
-		descarga.iniciarDescarga()
-		gtk.gdk.threads_leave()
+		descarga=downloader.Downloader(manga, self.descargas)
+		#iter = self.descargas.getIter(manga.codigo)
+		threading.Thread(target=descarga.iniciarDescarga, args=()).start()
+		#descarga.iniciarDescarga()
+		#gtk.gdk.threads_leave()
 
 	def openInWebbrowser(self):
 		""""""

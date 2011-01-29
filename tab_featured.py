@@ -14,13 +14,12 @@ import viewer
 
 import desc_dialog
 
-class TreeNews(gtk.ScrolledWindow):
+class TreeFeatured(gtk.ScrolledWindow):
 	""""""
-	def __init__(self, biblioteca, config, statusbar):
+	def __init__(self, descargas, config):
 		""""""
-		self.biblioteca=biblioteca
+		self.descargas=descargas
 		self.configuration = config
-		self.statusbar = statusbar
 
 		gtk.ScrolledWindow.__init__(self)
 		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -29,7 +28,7 @@ class TreeNews(gtk.ScrolledWindow):
 		self.add(self.tvDestacados)
 
 		#tree columns
-		tree_nid = gtk.TreeViewColumn('')
+		tree_nid = gtk.TreeViewColumn('#')
 		nid_cell = gtk.CellRendererText()
 		tree_nid.pack_start(nid_cell, True)
 		tree_nid.add_attribute(nid_cell, 'text', 0)
@@ -37,6 +36,7 @@ class TreeNews(gtk.ScrolledWindow):
 		self.tvDestacados.append_column(tree_nid)
 
 		tree_name = gtk.TreeViewColumn('Nombre')
+		tree_name.set_property('resizable', True)
 		name_cell = gtk.CellRendererText()
 		tree_name.pack_start(name_cell, True)
 		tree_name.add_attribute(name_cell, 'text', 1)
@@ -44,6 +44,7 @@ class TreeNews(gtk.ScrolledWindow):
 		self.tvDestacados.append_column(tree_name)
 
 		tree_chapter = gtk.TreeViewColumn('Número')
+		tree_chapter.set_property('resizable', True)
 		chapter_cell = gtk.CellRendererText()
 		tree_chapter.pack_start(chapter_cell, False)
 		tree_chapter.add_attribute(chapter_cell, 'text', 2)
@@ -51,6 +52,7 @@ class TreeNews(gtk.ScrolledWindow):
 		self.tvDestacados.append_column(tree_chapter)
 
 		tree_fansub = gtk.TreeViewColumn('Fansub')
+		tree_fansub.set_property('resizable', True)
 		fansub_cell = gtk.CellRendererText()
 		tree_fansub.pack_start(fansub_cell, True)
 		tree_fansub.add_attribute(fansub_cell, 'text', 3)
@@ -81,7 +83,6 @@ class TreeNews(gtk.ScrolledWindow):
 		#context_id = self.statusbar.get_context_id("Estado de actualizacion de destacados")
 		#self.statusbar.push(context_id, "Actualizando destacados...")
 		gtk.gdk.threads_enter()
-		self.statusbar.push(0, "Actualizando destacados... Espere por favor")
 		#self.vaciar_lista()
 		#time.sleep(5)
 		self.destacados = lib_submanga.Destacados()
@@ -90,7 +91,6 @@ class TreeNews(gtk.ScrolledWindow):
 		for i in range(self.destacados.numMangas()):
 			novManga=self.destacados.getManga(i)
 			self.tvDestacados.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
-		self.statusbar.push(0, "Listo")
 		gtk.gdk.threads_leave()
 
 	def button_clicked(self, widget, event):
@@ -141,8 +141,9 @@ class TreeNews(gtk.ScrolledWindow):
 		if accion == "Ver":
 			self.abrirSeleccion()
 		elif accion == "Descargar":
-			gtk.gdk.threads_init()
-			threading.Thread(target=self.descargarSeleccion, args=()).start()
+			#gtk.gdk.threads_init()
+			#threading.Thread(target=self.descargarSeleccion, args=()).start()
+			self.descargarSeleccion()
 			#~ self.iniciarDescarga(self.manga)
 		elif accion == "VerEnWeb":
 			self.abrirEnWeb()
@@ -160,16 +161,18 @@ class TreeNews(gtk.ScrolledWindow):
 
 	def descargarSeleccion(self):
 		""""""
+		#gtk.gdk.threads_enter()
 		treeselection = self.tvDestacados.get_selection()
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 0)
-
+		
 		manga=self.destacados.getManga(text-1)
-
-		gtk.gdk.threads_enter()
-		descarga=downloader.Downloader(manga, self.biblioteca)
-		descarga.iniciarDescarga()
-		gtk.gdk.threads_leave()
+		
+		descarga=downloader.Downloader(manga, self.descargas)
+		#iter = self.descargas.getIter(manga.codigo)
+		threading.Thread(target=descarga.iniciarDescarga, args=()).start()
+		#descarga.iniciarDescarga()
+		#gtk.gdk.threads_leave()
 
 	def abrirEnWeb(self):
 		""""""

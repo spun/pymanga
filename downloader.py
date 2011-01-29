@@ -5,33 +5,50 @@ import sys
 import os
 import urllib, urllib2
 import shutil
+import glob
+import notifications
 
 import lib_submanga
 import cons
 
 class Downloader:
 	""""""
-	def __init__(self, manga, biblio):
+	def __init__(self, manga, descargas):
 		""""""
 		self.manga=manga
-		self.biblioteca=biblio
-		self.estado=False
+		self.descargas=descargas
+		self.n=notifications.Notification()
+		self.directorio = cons.PATH_TEMP
+		self.biblioteca = cons.PATH_LIBRARY
 
-	def iniciarDescarga(self):
+	def iniciarDescarga(self, iter=-1, continuar=False):
 		""""""
-		self.estado=True
-		self.crearDirectorio()
-		self.manga.getExtraInfo()
-		self.itera=self.agregarDescarga()
-		self.procesarDescarga()
-		self.creaFicheroInfo()
-		self.estado=False
+		self.existe=self.crearDirectorio(continuar)
+		if not self.existe:
+			self.manga.getExtraInfo()
+			self.creaFicheroInfo()
+			if iter == -1:
+				self.itera=self.agregarDescarga()
+			else:
+				self.itera = iter
+			self.procesarDescarga()
 
 	def procesarDescarga(self):
 		""""""
-		limit=self.manga.numpaginas
+		self.n.notify("Descargando manga","Ha empezado la descarga de "+self.manga.nombre+" "+self.manga.numero)
 		numImg=1
-		while numImg<=int(limit) and self.estado==True:
+		archivos = glob.glob(self.directorio+"/"+self.manga.codigo+"/*.jpg")
+		if len(archivos) > 0:
+			#Sobreescribir ultima imagen si se creo un archivo sin contendio(0 bytes)
+			#No suele pasar, pero alguna vez se ha creado una imagen asi al bloquearse al programa
+			if os.stat(archivos[-1]).st_size == 0:
+				numImg = len(archivos)
+			else:
+				numImg = len(archivos)+1
+		
+		self.actualizaProgreso(numImg)
+		limit=self.manga.numpaginas
+		while numImg<=int(limit):
 			accion=self.descargarImagen(numImg)
 			if accion==False:
 				print "No se pudo descargar la imagen "+str(numImg)+ ". Reintentando..."
@@ -43,7 +60,7 @@ class Downloader:
 	def descargarImagen(self, num):
 		""""""
 		realizado=False
-		dir_downloads = cons.PATH_LIBRARY+self.manga.codigo
+		dir_downloads = self.directorio+self.manga.codigo
 		dominio = 'img.submanga.com'
 		directorio=self.manga.getDirectorio()
 		image = urllib.URLopener()
@@ -59,31 +76,42 @@ class Downloader:
 
 		return realizado
 
-	def crearDirectorio(self):
+	def crearDirectorio(self, continuar):
 		""""""
-		directorio=cons.PATH_LIBRARY+self.manga.codigo
-		if os.path.exists(directorio):
-			print "ya existe"
-			shutil.rmtree(directorio)
-		os.mkdir(directorio)
+		directorio=self.directorio+self.manga.codigo
+		biblioteca=self.biblioteca+self.manga.codigo
+		n=notifications.Notification()
+		if os.path.exists(biblioteca):
+			self.n.notify("Manga descargado","El manga "+self.manga.nombre+" "+self.manga.numero+" ya se encuentra en la Biblioteca")
+			return True
+		elif os.path.exists(directorio):
+			#shutil.rmtree(directorio)
+			if continuar:
+				return False
+			else:
+				self.n.notify("Manga descargado","El manga "+self.manga.nombre+" "+self.manga.numero+" ya esta en Descargas")
+				return True
+		else:
+			os.mkdir(directorio)
+			return False
 
 	def actualizaProgreso(self, n):
 		""""""
 		if n==self.manga.numpaginas:
-			self.biblioteca.refreshProgress(self.itera, 100, n)
+			self.descargas.refreshProgress(self.itera, 100, n)
 		else:
-			self.biblioteca.refreshProgress(self.itera, (n*100)/int(self.manga.numpaginas) , n)
+			self.descargas.refreshProgress(self.itera, (n*100)/int(self.manga.numpaginas) , n)
 
 	def agregarDescarga(self):
 		""""""
 		m=self.manga
-		i=self.biblioteca.addRow(m.nombre, m.numero,m.fansub, m.codigo, m.numpaginas)
+		i=self.descargas.addRow(m.nombre, m.numero, m.fansub, m.numpaginas, m.codigo)
 		return i
 
 	def creaFicheroInfo(self):
 		""""""
 		m=self.manga
-		f = open (cons.PATH_LIBRARY+m.codigo+"/infomanga.txt", "w")
+		f = open (self.directorio+m.codigo+"/infomanga.txt", "w")
 		f.write(m.nombre+"\n")
 		f.write(m.numero+"\n")
 		f.write(m.codigo+"\n")

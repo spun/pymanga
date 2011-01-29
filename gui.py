@@ -13,6 +13,7 @@ import tab_library
 import tab_new
 import tab_featured
 import tab_search
+import tab_download
 from about import About
 from preferences import Preferences
 
@@ -123,32 +124,38 @@ class Gui:
 		self.notebook.show()
 		
 		# Barra de estado
-		self.statusbar = gtk.Statusbar()
-		self.context_id = self.statusbar.get_context_id("Users")
-		vboxAdm.pack_end(self.statusbar, False, False, 0)
-		self.statusbar.push(0, "Listo")
-		self.statusbar.show()
+		#self.statusbar = gtk.Statusbar()
+		#self.context_id = self.statusbar.get_context_id("Users")
+		#vboxAdm.pack_end(self.statusbar, False, False, 0)
+		#self.statusbar.push(0, " Listo")
+		#self.statusbar.show()
 
 		# Tab de biblioteca
 		self.biblioteca = tab_library.TreeLibrary(self.configuration)
 		label = gtk.Label("Biblioteca")
 		self.notebook.append_page(self.biblioteca, label)
+		
+		# Tab de descargas
+		self.descargas = tab_download.TreeDownload(self.biblioteca, self.configuration)
 
 		# Tab de novedades
-		self.novedades = tab_new.TreeNews(self.biblioteca, self.configuration, self.statusbar)
+		self.novedades = tab_new.TreeNew(self.descargas, self.configuration)
 		label = gtk.Label("Novedades")
 		self.notebook.append_page(self.novedades, label)
 		
 		# Tab de destacados
-		self.destacados = tab_featured.TreeNews(self.biblioteca, self.configuration, self.statusbar)
+		self.destacados = tab_featured.TreeFeatured(self.descargas, self.configuration)
 		label = gtk.Label("Destacados")
 		self.notebook.append_page(self.destacados, label)
 
 		# Tab de busquedas
-		busqueda = tab_search.TreeSearch(self.biblioteca, self.configuration, self.statusbar)
+		busqueda = tab_search.TreeSearch(self.descargas, self.configuration)
 		label = gtk.Label("Buscar")
 		self.notebook.append_page(busqueda, label)
-
+		
+		label = gtk.Label("Descargas")
+		self.notebook.append_page(self.descargas, label)
+		
 		# Tab con el foco al iniciar
 		tabSelected=self.configuration.getValue("main","mainTabSelected")
 		self.notebook.set_current_page(int(tabSelected))
@@ -165,7 +172,7 @@ class Gui:
 			self.novedades.listar()
 		elif page==2:
 			self.destacados.listar()
-
+		
 
 	def displayPreferences(self, widget=None, event=None):
 		""""""
