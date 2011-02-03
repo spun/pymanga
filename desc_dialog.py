@@ -3,57 +3,45 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import threading
 import urllib, urllib2
-
 import cons
 import lib_submanga
-import config
 
-class Info(gtk.Dialog):
+class Info():
 	""""""
-	def close(self, widget=None, other=None):
+	def __init__(self, config):
 		""""""
-		self.destroy()
-		#gtk.main_quit()
-
-
-	def __init__(self, manga):
+		builder = config.builder
+		
+		#Get objects
+		self.InfoDialog = builder.get_object("InfoDialog")
+		self.imageinfo = builder.get_object("imageinfo")
+		self.textinfo = builder.get_object("textinfo")
+		
+		#Get signals
+		#LLamar a hide() en lugar de destroy() al cerrar la ventana
+		self.InfoDialog.connect("response", self.InfoDialog.hide_on_delete)
+		
+	
+	def open(self, manga):
 		""""""
-		gtk.Dialog.__init__(self)
-		self.set_icon_from_file(cons.INFO_ICON)
-		self.connect("response", self.close)
-		self.resize(600,500)
-		self.set_title("Información de \""+manga.nombre+"\"")
+		self.InfoDialog.set_title("Cargando información...")
+		textbuffer = self.textinfo.get_buffer()
+		textbuffer.set_text("")
+		self.imageinfo.clear()
 		self.manga=manga
-
-		self.infoHbox = gtk.HBox()
-		self.vbox.pack_start(self.infoHbox, False, False, 0)
-		self.infoHbox.show()
-
-		viewport = gtk.Viewport()
-		self.infoHbox.pack_start(viewport, False, False, 0)
-		viewport.show()
-
-		self.image = gtk.Image()
-		viewport.add(self.image)
-		self.image.show()
-
-
-		self.getImagen()
-		self.getInfoText()
-
-		close_button = gtk.Button(None, gtk.STOCK_CLOSE)
-		self.action_area.pack_start(close_button)
-		close_button.connect("clicked", self.close)
-		close_button.show()
-
-		self.show()
-
-
+		
+		gtk.gdk.threads_init()
+		
+		threading.Thread(target=self.getImagen(), args=()).start()
+		threading.Thread(target=self.getInfoText(), args=()).start()
+		
+		self.InfoDialog.run()
+		
+		
 	def getImagen(self):
 		""""""
-
-
 		nombre=self.manga.nombre.replace(" ","_")
 
 		url="http://submanga.com/"+nombre
@@ -85,16 +73,16 @@ class Info(gtk.Dialog):
 			pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_TEMP+"imgManga.jpg")
 			#~ ancho_pixbuf = float(pixbuf.get_width())
 			#~ alto_pixbuf = float(pixbuf.get_height())
-			self.image.set_from_pixbuf(pixbuf)
 		except:
 			print "No se pudo descargar"
 			realizado=False
 			pixbuf = gtk.gdk.pixbuf_new_from_file(cons.PATH_MEDIA+"question-icon.png")
 			#~ ancho_pixbuf = float(pixbuf.get_width())
 			#~ alto_pixbuf = float(pixbuf.get_height())
-			self.image.set_from_pixbuf(pixbuf)
-
-		return realizado
+			
+		self.imageinfo.set_from_pixbuf(pixbuf)
+		self.InfoDialog.set_title("Información de \""+self.manga.nombre+"\"")
+		
 
 	def getInfoText(self):
 		""""""
@@ -118,18 +106,7 @@ class Info(gtk.Dialog):
 			f.close()
 
 			info=info.replace("<br/>","\n")
-			textview = gtk.TextView()
-			textbuffer = textview.get_buffer()
-			textbuffer.set_text(info)
-			self.infoHbox.pack_start(textview, True, True, 0)
-			textview.show()
-			textview.set_wrap_mode(gtk.WRAP_WORD)
-			textview.set_left_margin(10)
-			textview.set_cursor_visible(False)
-			textview.set_editable(False)
+			textbuffer = self.textinfo.get_buffer()
+			textbuffer.set_text("\n" + info + "\n")
 
 
-if __name__ == "__main__":
-	m=lib_submanga.Manga("Bleach", "505", "83567", "CONCEPT", "20")
-	i = Info(m)
-	gtk.main()

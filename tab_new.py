@@ -10,74 +10,32 @@ gtk.gdk.threads_init()
 import cons
 import lib_submanga
 import downloader
-import viewer
 
-import desc_dialog
-
-class TreeNew(gtk.ScrolledWindow):
+class TreeNew():
 	""""""
-	def __init__(self, descargas, config):
+	def __init__(self, descargas, config, visor, desc_dialog):
 		""""""
 		self.descargas=descargas
 		self.configuration = config
+		builder = config.builder
+		self.visor = visor
+		self.desc_dialog = desc_dialog
 
-		gtk.ScrolledWindow.__init__(self)
-		self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.tvNovedades = gtk.TreeView(gtk.TreeStore(int, str, str, str, str, str))
-		self.tvNovedades.show()
-		self.add(self.tvNovedades)
+		#Get objects
+		self.tvNew = builder.get_object("tvNew")
+		self.menuNew = builder.get_object("menuNew")
+		verNew = builder.get_object("verNew")
+		descargarNew = builder.get_object("descargarNew")
+		infoNew = builder.get_object("infoNew")
+		verWebNew = builder.get_object("verWebNew")
+		
+		#Get signals
+		self.tvNew.connect("button-press-event", self.button_clicked)
+		verNew.connect("activate", self.abrirSeleccion)
+		descargarNew.connect("activate", self.descargarSeleccion)
+		infoNew.connect("activate", self.openInfoDialog)
+		verWebNew.connect("activate", self.abrirEnWeb)
 
-		#tree columns
-		tree_nid = gtk.TreeViewColumn('#')
-		nid_cell = gtk.CellRendererText()
-		tree_nid.pack_start(nid_cell, True)
-		tree_nid.add_attribute(nid_cell, 'text', 0)
-		tree_nid.set_sort_column_id(0)
-		self.tvNovedades.append_column(tree_nid)
-
-		tree_name = gtk.TreeViewColumn('Nombre')
-		tree_name.set_property('resizable', True)
-		name_cell = gtk.CellRendererText()
-		tree_name.pack_start(name_cell, True)
-		tree_name.add_attribute(name_cell, 'text', 1)
-		tree_name.set_sort_column_id(1)
-		self.tvNovedades.append_column(tree_name)
-
-		tree_chapter = gtk.TreeViewColumn('Número')
-		tree_chapter.set_property('resizable', True)
-		chapter_cell = gtk.CellRendererText()
-		tree_chapter.pack_start(chapter_cell, False)
-		tree_chapter.add_attribute(chapter_cell, 'text', 2)
-		tree_chapter.set_sort_column_id(2)
-		self.tvNovedades.append_column(tree_chapter)
-
-		tree_fansub = gtk.TreeViewColumn('Fansub')
-		tree_fansub.set_property('resizable', True)
-		fansub_cell = gtk.CellRendererText()
-		tree_fansub.pack_start(fansub_cell, True)
-		tree_fansub.add_attribute(fansub_cell, 'text', 3)
-		tree_fansub.set_sort_column_id(3)
-		self.tvNovedades.append_column(tree_fansub)
-
-		tree_date = gtk.TreeViewColumn('Fecha')
-		tree_date.set_property('resizable', True)
-		date_cell = gtk.CellRendererText()
-		tree_date.pack_start(date_cell, False)
-		tree_date.add_attribute(date_cell, 'text', 4)
-		tree_date.set_sort_column_id(4)
-		self.tvNovedades.append_column(tree_date)
-
-		tree_id = gtk.TreeViewColumn('ID Manga')
-		id_cell = gtk.CellRendererText()
-		tree_id.pack_start(id_cell, True)
-		tree_id.add_attribute(id_cell, 'text', 5)
-		tree_id.set_sort_column_id(5)
-		self.tvNovedades.append_column(tree_id)
-
-		self.tvNovedades.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-		self.tvNovedades.connect("button-press-event", self.button_clicked)
-
-		self.show()
 		#self.listar()
 
 	def listar(self):
@@ -87,7 +45,7 @@ class TreeNew(gtk.ScrolledWindow):
 
 	def actualizarNovedades(self):
 		""""""
-		self.tvNovedades.get_model().clear()
+		self.tvNew.get_model().clear()
 		#context_id = self.statusbar.get_context_id("Estado de actualizacion de novedades")
 		gtk.gdk.threads_enter()
 		#self.statusbar.push(0, " Actualizando novedades... Espere por favor")
@@ -99,80 +57,39 @@ class TreeNew(gtk.ScrolledWindow):
 
 		for i in range(self.novedades.numMangas()):
 			novManga=self.novedades.getManga(i)
-			self.tvNovedades.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub,
-			                                    novManga.fecha, novManga.codigo])
+			self.tvNew.get_model().append([i+1, novManga.nombre, int(novManga.numero), novManga.fansub,novManga.fecha, int(novManga.codigo)])
 		gtk.gdk.threads_leave()
 
 	def button_clicked(self, widget, event):
 		""""""
 		if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS:
 			print "double click"
-			self.abrirSeleccion()
+			self.abrirSeleccion(widget)
 
 		if event.button == 3:
-			print "middle click"
-			boton = event.button # obtenemos el boton que se presiono
-			pos = (event.x, event.y) # obtenemos las coordenadas
-			tiempo = event.time # obtenemos el tiempo
+			x = int(event.x)
+			y = int(event.y)
+			time = event.time
+			pthinfo = widget.get_path_at_pos(x, y)
+			if pthinfo is not None:
+				path, col, cellx, celly = pthinfo
+				widget.grab_focus()
+				widget.set_cursor( path, col, 0)
+				self.menuNew.popup( None, None, None, event.button, time)
 
-			self.crear_menu_emergente(widget, boton, pos, tiempo)
 
-	def crear_menu_emergente(self, widget, boton, pos, tiempo):
+	def abrirSeleccion(self, widget):
 		""""""
-		# un menu para agregar o eliminar directorios o archivos
-		menu = gtk.Menu()
-		# Items del menu
-		ver = gtk.MenuItem("Ver sin descargar")
-		descargar = gtk.MenuItem("Descargar")
-		info = gtk.MenuItem("Información")
-		verWeb = gtk.MenuItem("Ver en submanga.com")
-
-
-		# Agregar los items al menu
-		menu.append(ver)
-		menu.append(descargar)
-		sep = gtk.SeparatorMenuItem()
-		menu.append(sep)
-		menu.append(info)
-		menu.append(verWeb)
-
-		# Se conectan las funciones de retrollamada a la senal "activate"
-		ver.connect_object("activate", self.seleccionar_origen, "Ver")
-		descargar.connect_object("activate", self.seleccionar_origen, "Descargar")
-		info.connect_object("activate", self.seleccionar_origen, "Info")
-		verWeb.connect_object("activate", self.seleccionar_origen, "VerEnWeb")
-
-		menu.show_all()
-		menu.popup(None, None, None, boton, tiempo, None)
-
-	def seleccionar_origen(self, accion):
-		""""""
-		# Recibe el path de la fila seleccionada en el modelo y la accion a realizar
-		if accion == "Ver":
-			self.abrirSeleccion()
-		elif accion == "Descargar":
-			#gtk.gdk.threads_init()
-			#threading.Thread(target=self.descargarSeleccion, args=()).start()
-			self.descargarSeleccion()
-			#~ self.iniciarDescarga(self.manga)
-		elif accion == "VerEnWeb":
-			self.abrirEnWeb()
-		elif accion == "Info":
-			self.openInfoDialog()
-
-
-	def abrirSeleccion(self):
-		""""""
-		treeselection = self.tvNovedades.get_selection()
+		treeselection = self.tvNew.get_selection()
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 0)
 		manga=self.novedades.getManga(text-1)
-		viewer.Visor(manga, self.configuration)
+		self.visor.open(True, manga)
 
-	def descargarSeleccion(self):
+	def descargarSeleccion(self, widget):
 		""""""
 		#gtk.gdk.threads_enter()
-		treeselection = self.tvNovedades.get_selection()
+		treeselection = self.tvNew.get_selection()
 		model, iter = treeselection.get_selected()
 		text = model.get_value(iter, 0)
 
@@ -184,23 +101,23 @@ class TreeNew(gtk.ScrolledWindow):
 		#descarga.iniciarDescarga()
 		#gtk.gdk.threads_leave()
 
-	def abrirEnWeb(self):
+	def abrirEnWeb(self, widget):
 		""""""
-		treeselection = self.tvNovedades.get_selection()
+		treeselection = self.tvNew.get_selection()
 		model, iter = treeselection.get_selected()
-		text = model.get_value(iter, 4)
+		text = str(model.get_value(iter, 5))
 		webbrowser.open("http://submanga.com/"+text)
 
-	def openInfoDialog(self):
+	def openInfoDialog(self, widget):
 		""""""
-		treeselection = self.tvNovedades.get_selection()
+		treeselection = self.tvNew.get_selection()
 		model, iter = treeselection.get_selected()
 		text1 = model.get_value(iter, 1)
-		text2 = model.get_value(iter, 2)
-		text3 = model.get_value(iter, 4)
+		text2 = str(model.get_value(iter, 2))
+		text3 = str(model.get_value(iter, 5))
 		m=lib_submanga.Manga(text1, text2, text3)
 
-		desc_dialog.Info(m)
+		self.desc_dialog.open(m)
 
 
 

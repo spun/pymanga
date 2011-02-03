@@ -13,144 +13,46 @@ import lib_submanga
 import downloader
 import viewer
 
-import desc_dialog
-
-class TreeSearch(gtk.VBox):
+class TreeSearch():
 	""""""
-	def __init__(self, descargas, config):
+	def __init__(self, descargas, config, visor, desc_dialog):
 		""""""
 		self.descargas=descargas
 		self.configuration = config
+		builder = config.builder
+		self.visor = visor
+		self.desc_dialog = desc_dialog
 
-		# Caja contenedor
-		gtk.VBox.__init__(self, False, 5)
-
-		frameUrl = gtk.Frame(" Obtener desde una dirección ")
-		self.pack_start(frameUrl, False, True, 0)
-		frameUrl.show()
-
-		self.urlBar = gtk.HBox()
-		frameUrl.add(self.urlBar)
-		self.urlBar.show()
-
-		textUrl = gtk.Label(" Dirección del manga ")
-		self.urlBar.pack_start(textUrl, False, True, 0)
-		textUrl.show ()
-
-		entryUrl = gtk.Entry()
-		self.urlBar.pack_start(entryUrl, False, True, 0)
-		entryUrl.show()
-		entryUrl.set_width_chars(40)
-		entryUrl.connect("activate", self.getFromUrl)
-		#entryUrl.set_text("http://submanga.com/Soul_Eater/76/82218")
-
-		# Boton de busqueda
-		buttonUrl = gtk.Button("Validar dirección")
-		self.urlBar.pack_start(buttonUrl, False, False, 0)
-		buttonUrl.show()
-		buttonUrl.connect("clicked", self.getFromUrl)
-
-		pixbufanim = gtk.gdk.PixbufAnimation(cons.PATH_MEDIA+"search-loader.gif")
-		image = gtk.Image()
-		image.set_from_animation(pixbufanim)
-		self.urlBar.pack_start(image, False, False, 5)
-
-		frameSearch = gtk.Frame(" Buscar ")
-		self.pack_start(frameSearch, False, True, 0)
-		frameSearch.show()
-
-		self.searchBar = gtk.HBox()
-		frameSearch.add(self.searchBar)
-		self.searchBar.show()
-
-		labelName = gtk.Label(" Nombre ")
-		self.searchBar.pack_start(labelName, False, True, 0)
-		labelName.show ()
-
-		# Entrada de texto para el nombre del manga
-		entryName = gtk.Entry()
-		self.searchBar.pack_start(entryName, False, True, 0)
-		entryName.show()
-		entryName.connect("activate", self.getFromSearch)
-		#entryName.set_text("Soul Eater")
-		#
-
-		labelChapter = gtk.Label(" Capítulo ")
-		self.searchBar.pack_start(labelChapter, False, True, 0)
-		labelChapter.show ()
-
-		entryChapter = gtk.Entry()
-		self.searchBar.pack_start(entryChapter, False, True, 0)
-		entryChapter.set_width_chars(8)
-		entryChapter.show()
-		entryChapter.connect("activate", self.getFromSearch)
-		#entryChapter.set_text("505")
-
-		# Boton de busqueda
-		buttonSearch = gtk.Button("Buscar")
-		self.searchBar.pack_start(buttonSearch, False, False, 0)
-		buttonSearch.show()
-		buttonSearch.connect("clicked", self.getFromSearch)
-
-		pixbufanim = gtk.gdk.PixbufAnimation(cons.PATH_MEDIA+"search-loader.gif")
-		image = gtk.Image()
-		image.set_from_animation(pixbufanim)
-		self.searchBar.pack_start(image, False, False, 5)
-
-
-		# Listado
-		self.swSearch = gtk.ScrolledWindow()
-		self.swSearch.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.tvSearch = gtk.TreeView(gtk.TreeStore(int, str, str, str, str))
-		self.tvSearch.show()
-		self.swSearch.add(self.tvSearch)
-
-		#tree columns
-		tree_nid = gtk.TreeViewColumn('#')
-		nid_cell = gtk.CellRendererText()
-		tree_nid.pack_start(nid_cell, True)
-		tree_nid.add_attribute(nid_cell, 'text', 0)
-		tree_nid.set_sort_column_id(0)
-		self.tvSearch.append_column(tree_nid)
-
-		tree_name = gtk.TreeViewColumn('Nombre')
-		tree_name.set_property('resizable', True)
-		name_cell = gtk.CellRendererText()
-		tree_name.pack_start(name_cell, True)
-		tree_name.add_attribute(name_cell, 'text', 1)
-		tree_name.set_sort_column_id(1)
-		self.tvSearch.append_column(tree_name)
-
-		tree_chapter = gtk.TreeViewColumn('Número')
-		tree_chapter.set_property('resizable', True)
-		chapter_cell = gtk.CellRendererText()
-		tree_chapter.pack_start(chapter_cell, False)
-		tree_chapter.add_attribute(chapter_cell, 'text', 2)
-		tree_chapter.set_sort_column_id(2)
-		self.tvSearch.append_column(tree_chapter)
-
-		tree_fansub = gtk.TreeViewColumn('Fansub')
-		tree_fansub.set_property('resizable', True)
-		fansub_cell = gtk.CellRendererText()
-		tree_fansub.pack_start(fansub_cell, True)
-		tree_fansub.add_attribute(fansub_cell, 'text', 3)
-		tree_fansub.set_sort_column_id(3)
-		self.tvSearch.append_column(tree_fansub)
-
-		tree_id = gtk.TreeViewColumn('ID Manga')
-		id_cell = gtk.CellRendererText()
-		tree_id.pack_start(id_cell, True)
-		tree_id.add_attribute(id_cell, 'text', 4)
-		tree_id.set_sort_column_id(4)
-		self.tvSearch.append_column(tree_id)
-
-
-		self.tvSearch.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+		#Get objects
+		self.tvSearch = builder.get_object("tvSearch")
+		self.menuSearch = builder.get_object("menuSearch")
+		verSearch = builder.get_object("verSearch")
+		descargarSearch = builder.get_object("descargarSearch")
+		infoSearch = builder.get_object("infoSearch")
+		verWebSearch = builder.get_object("verWebSearch")
+		self.entryUrl = builder.get_object("entryurl")
+		self.buttonUrl = builder.get_object("buttonurl")
+		self.imageUrl = builder.get_object("imageurl")
+		self.entryName = builder.get_object("entryname")
+		self.entryChapter = builder.get_object("entrychapter")
+		self.buttonSearch = builder.get_object("buttonsearch")
+		self.imageSearch = builder.get_object("imagesearch")
+		
+		#Get signals
 		self.tvSearch.connect("button-press-event", self.button_clicked)
-
-		self.swSearch.show()
-		self.pack_start(self.swSearch, True, True, 0)
-		self.show()
+		verSearch.connect("activate", self.abrirSeleccion)
+		descargarSearch.connect("activate", self.iniciarDescarga)
+		infoSearch.connect("activate", self.openInfoDialog)
+		verWebSearch.connect("activate", self.openInWebbrowser)
+		self.entryUrl.connect("activate", self.getFromUrl)
+		self.buttonUrl.connect("clicked", self.getFromUrl)
+		self.entryName.connect("activate", self.getFromSearch)
+		self.entryChapter.connect("activate", self.getFromSearch)
+		self.buttonSearch.connect("clicked", self.getFromSearch)
+		
+		pixbufanim = gtk.gdk.PixbufAnimation(cons.PATH_MEDIA+"search-loader.gif")
+		self.imageUrl.set_from_animation(pixbufanim)
+		self.imageSearch.set_from_animation(pixbufanim)
 
 
 	def getFromUrl(self, widget):
@@ -161,9 +63,9 @@ class TreeSearch(gtk.VBox):
 
 	def listFromUrl(self):
 		""""""
-		self.urlBar.get_children()[3].show()
+		self.imageUrl.show()
 		gtk.gdk.threads_enter()
-		url = self.urlBar.get_children()[1].get_text()
+		url = self.entryUrl.get_text()
 
 		self.resBusquedas=lib_submanga.Busqueda()
 		self.resBusquedas.getFromDirect(url)
@@ -173,7 +75,7 @@ class TreeSearch(gtk.VBox):
 		self.tvSearch.get_model().clear()
 		self.tvSearch.get_model().append(None, [1,m.nombre, m.numero, m.fansub, m.codigo])
 		gtk.gdk.threads_leave()
-		self.urlBar.get_children()[3].hide()
+		self.imageUrl.hide()
 
 
 	def getFromSearch(self,widget):
@@ -184,11 +86,11 @@ class TreeSearch(gtk.VBox):
 
 	def listFromSearch(self):
 		""""""
-		self.searchBar.get_children()[5].show()
+		self.imageSearch.show()
 		gtk.gdk.threads_enter()
 
-		name = self.searchBar.get_children()[1].get_text()
-		chapter = self.searchBar.get_children()[3].get_text()
+		name = self.entryName.get_text()
+		chapter = self.entryChapter.get_text()
 
 		self.tvSearch.get_model().clear()
 		self.resBusquedas=lib_submanga.Busqueda()
@@ -198,69 +100,35 @@ class TreeSearch(gtk.VBox):
 
 		for i in range(numMangas):
 			novManga=self.resBusquedas.getManga(i)
-			self.tvSearch.get_model().append(None, [i+1,novManga.nombre, novManga.numero, novManga.fansub, novManga.codigo])
+			self.tvSearch.get_model().append([i+1,novManga.nombre, int(novManga.numero), novManga.fansub, int(novManga.codigo)])
 
 		gtk.gdk.threads_leave()
-		self.searchBar.get_children()[5].hide()
+		self.imageSearch.hide()
 
 
 	def button_clicked(self, widget, event):
 		""""""
 		if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS:
-			treeselection = self.tvSearch.get_selection()
-			model, iter = treeselection.get_selected()
-			text = model.get_value(iter, 0)
-			viewer.Visor(self.resBusquedas.getManga(text-1), self.configuration)
+			self.abrirSeleccion(widget)
 
 		if event.button == 3:
-			print "second click"
-			boton = event.button # obtenemos el boton que se presiono
-			pos = (event.x, event.y) # obtenemos las coordenadas
-			tiempo = event.time # obtenemos el tiempo
-			self.crear_menu_emergente(widget, boton, pos, tiempo)
+			x = int(event.x)
+			y = int(event.y)
+			time = event.time
+			pthinfo = widget.get_path_at_pos(x, y)
+			if pthinfo is not None:
+				path, col, cellx, celly = pthinfo
+				widget.grab_focus()
+				widget.set_cursor( path, col, 0)
+				self.menuSearch.popup( None, None, None, event.button, time)
 
-	def crear_menu_emergente(self, widget, boton, pos, tiempo):
+
+	def abrirSeleccion(self, widget):
 		""""""
-		menu = gtk.Menu()
-		# Items del menu
-		ver = gtk.MenuItem("Ver sin descargar")
-		descargar = gtk.MenuItem("Descargar")
-		info = gtk.MenuItem("Información")
-		verWeb = gtk.MenuItem("Ver en submanga.com")
-
-		# Agregar los items al menu
-		menu.append(ver)
-		menu.append(descargar)
-		sep = gtk.SeparatorMenuItem()
-		menu.append(sep)
-		menu.append(info)
-		menu.append(verWeb)
-
-		# Se conectan las funciones de retrollamada a la senal "activate"
-		ver.connect_object("activate", self.seleccionar_origen, "Ver")
-		descargar.connect_object("activate", self.seleccionar_origen, "Descargar")
-		info.connect_object("activate", self.seleccionar_origen, "Info")
-		verWeb.connect_object("activate", self.seleccionar_origen, "VerEnWeb")
-
-		menu.show_all()
-		menu.popup(None, None, None, boton, tiempo, None)
-
-	def seleccionar_origen(self, accion):
-		""""""
-		if accion == "Descargar":
-			#gtk.gdk.threads_init()
-			#threading.Thread(target=self.iniciarDescarga, args=()).start()
-			self.iniciarDescarga()
-			# self.iniciarDescarga(self.manga)
-		elif accion == "Ver":
-			treeselection = self.tvSearch.get_selection()
-			model, iter = treeselection.get_selected()
-			text = model.get_value(iter, 0)
-			viewer.Visor(self.resBusquedas.getManga(text-1), self.configuration)
-		elif accion == "VerEnWeb":
-			self.openInWebbrowser()
-		elif accion == "Info":
-			self.openInfoDialog()
+		treeselection = self.tvSearch.get_selection()
+		model, iter = treeselection.get_selected()
+		text = model.get_value(iter, 0)
+		self.visor.open(True, self.resBusquedas.getManga(text-1))
 
 	def iniciarDescarga(self):
 		""""""
@@ -291,4 +159,4 @@ class TreeSearch(gtk.VBox):
 		text3 = model.get_value(iter, 4)
 		m=lib_submanga.Manga(text1, text2, text3)
 
-		desc_dialog.Info(m)
+		self.desc_dialog.open(m)
