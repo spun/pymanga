@@ -83,8 +83,21 @@ class Novedades:
 						origen=origen+1
 					fansub=fansub.replace("_"," ")
 
-					list1 = result.split("/");
-					manga = Manga(list1[0],list1[1],list1[2], fansub, "", fecha);
+					list1 = result.split("/")
+					
+					capitulo = ""
+					genero = ""
+					for i in range(len(list1[1])):
+						if list1[1][i].isdigit():
+							capitulo = capitulo + list1[1][i]
+						else:
+							genero = genero + list1[1][i]
+					if not capitulo.isdigit():
+						capitulo = "0"
+					if genero != "":
+						list1[0] = list1[0] + " | " + genero
+					
+					manga = Manga(list1[0],capitulo,list1[2], fansub, "", fecha)
 					self.resultados.append(manga)
 					if numeroDias == 1:
 						repetidos = len(self.resultados)
@@ -175,8 +188,21 @@ class Destacados:
 					fansub=fansub+linea[origen]
 					origen=origen+1
 
-				list1 = result.split("/");
-				manga = Manga(list1[0],list1[1],list1[2], fansub);
+				list1 = result.split("/")
+				
+				capitulo = ""
+				genero = ""
+				for i in range(len(list1[1])):
+					if list1[1][i].isdigit():
+						capitulo = capitulo + list1[1][i]
+					else:
+						genero = genero + list1[1][i]
+				if not capitulo.isdigit():
+					capitulo = "0"
+				if genero != "":
+					list1[0] = list1[0] + " | " + genero
+						
+				manga = Manga(list1[0],capitulo,list1[2], fansub)
 				self.resultados.append(manga)
 
 				encontradoManga = linea.find(etiquetaManga, encontradoManga+1);
@@ -321,8 +347,21 @@ class Busqueda:
 						origen=origen+1
 					fansub=fansub.replace("_"," ")
 
-					list1 = result.split("/");
-					manga = Manga(list1[0],list1[1],list1[2],fansub);
+					list1 = result.split("/")
+					
+					capitulo = ""
+					genero = ""
+					for i in range(len(list1[1])):
+						if list1[1][i].isdigit():
+							capitulo = capitulo + list1[1][i]
+						else:
+							genero = genero + list1[1][i]
+					if not capitulo.isdigit():
+						capitulo = "0"
+					if genero != "":
+						list1[0] = list1[0] + " | " + genero
+					
+					manga = Manga(list1[0],capitulo,list1[2],fansub)
 					self.resultados.append(manga)
 				else:
 					fin=True
@@ -351,9 +390,30 @@ class Busqueda:
 						result=result+linea[origen]
 						origen=origen+1
 					result=result.replace("_"," ")
-
-					list1 = result.split("/");
-					manga = Manga(list1[0],list1[1],list1[2]);
+					
+					encontrado = linea.find("/scanlation/", encontrado)
+					origen=encontrado+len("/scanlation/")
+					fansub=""
+					while linea[origen]!='"':
+						fansub=fansub+linea[origen]
+						origen=origen+1
+					fansub=fansub.replace("_"," ")
+					
+					list1 = result.split("/")
+					
+					capitulo = ""
+					genero = ""
+					for i in range(len(list1[1])):
+						if list1[1][i].isdigit():
+							capitulo = capitulo + list1[1][i]
+						else:
+							genero = genero + list1[1][i]
+					if not capitulo.isdigit():
+						capitulo = "0"
+					if genero != "":
+						list1[0] = list1[0] + " | " + genero
+					
+					manga = Manga(list1[0],capitulo,list1[2],fansub)
 					self.resultados.append(manga)
 				else:
 					fin=True

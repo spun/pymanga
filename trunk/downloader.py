@@ -25,6 +25,7 @@ class Downloader:
 		""""""
 		self.existe=self.crearDirectorio(continuar)
 		if not self.existe:
+			self.n.notify("Descargando manga","Ha empezado la descarga de "+self.manga.nombre+" "+self.manga.numero)
 			self.manga.getExtraInfo()
 			self.creaFicheroInfo()
 			if iter == -1:
@@ -35,7 +36,6 @@ class Downloader:
 
 	def procesarDescarga(self):
 		""""""
-		self.n.notify("Descargando manga","Ha empezado la descarga de "+self.manga.nombre+" "+self.manga.numero)
 		numImg=1
 		archivos = glob.glob(self.directorio+"/"+self.manga.codigo+"/*.jpg")
 		if len(archivos) > 0:

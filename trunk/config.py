@@ -3,6 +3,7 @@
 import os
 import ConfigParser
 import cons
+import gtk
 
 
 CONF = "conf"
@@ -24,7 +25,12 @@ class Config():
 
 		if not self.cfg.read([cons.CONFIG_PATH + CONF]):
 			print "No existe el archivo"
-
+			
+		#Set the Glade file and signals
+		gladefile = "pymanga.glade"
+		self.builder = gtk.Builder()
+		self.builder.add_from_file(gladefile)
+		
 	def setValue(self, section, option, value):
 		""""""
 		if self.cfg.has_option(section, option):
