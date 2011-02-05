@@ -105,7 +105,7 @@
             <child>
               <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Archivo</property>
+                <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu1">
@@ -125,7 +125,7 @@
             <child>
               <object class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Editar</property>
+                <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
@@ -145,7 +145,7 @@
             <child>
               <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Ay_uda</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu3">
@@ -174,7 +174,7 @@
             <child>
               <object class="GtkToolButton" id="refreshbutton">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton1</property>
+                <property name="label">toolbutton1</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
               </object>
@@ -220,7 +220,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                        <property name="title">Nombre</property>
+                        <property name="title">Name</property>
                         <property name="sort_column_id">1</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
@@ -232,7 +232,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn3">
-                        <property name="title">N&#xFA;mero</property>
+                        <property name="title">Number</property>
                         <property name="sort_column_id">2</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
@@ -256,7 +256,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn4">
-                        <property name="title">Im&#xE1;genes</property>
+                        <property name="title">Images</property>
                         <property name="sort_column_id">4</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext5"/>
@@ -286,7 +286,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="xalign">0.4699999988079071</property>
-                <property name="label" translatable="yes">Biblioteca</property>
+                <property name="label" translatable="yes">Library</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -318,7 +318,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn7">
-                        <property name="title">Nombre</property>
+                        <property name="title">Name</property>
                         <property name="sort_column_id">1</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext20"/>
@@ -330,7 +330,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn8">
-                        <property name="title">N&#xFA;mero</property>
+                        <property name="title">Number</property>
                         <property name="sort_column_id">2</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext21"/>
@@ -354,7 +354,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn10">
-                        <property name="title">Fecha</property>
+                        <property name="title">Date</property>
                         <property name="sort_column_id">0</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext23"/>
@@ -386,7 +386,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Novedades</property>
+                <property name="label" translatable="yes">New</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -419,7 +419,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn13">
-                        <property name="title">Nombre</property>
+                        <property name="title">Name</property>
                         <property name="sort_column_id">1</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext9"/>
@@ -431,7 +431,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn14">
-                        <property name="title">N&#xFA;mero</property>
+                        <property name="title">Number</property>
                         <property name="sort_column_id">2</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext10"/>
@@ -475,7 +475,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Destacados</property>
+                <property name="label" translatable="yes">Featured</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -504,7 +504,7 @@
                             <child>
                               <object class="GtkLabel" id="label8">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Direcci&#xF3;n del manga</property>
+                                <property name="label" translatable="yes">URL manga</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -525,7 +525,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="buttonurl">
-                                <property name="label" translatable="yes">Validar direcci&#xF3;n</property>
+                                <property name="label" translatable="yes">Validate URL</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -552,7 +552,7 @@
                       <object class="GtkLabel" id="label6">
                         <property name="visible">True</property>
                         <property name="xpad">3</property>
-                        <property name="label" translatable="yes">Obtener desde una direcci&#xF3;n</property>
+                        <property name="label" translatable="yes">Obtained from a URL</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>
@@ -579,7 +579,7 @@
                             <child>
                               <object class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Nombre</property>
+                                <property name="label" translatable="yes">Name</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -601,7 +601,7 @@
                             <child>
                               <object class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Cap&#xED;tulo</property>
+                                <property name="label" translatable="yes">Chapter</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -622,7 +622,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="buttonsearch">
-                                <property name="label" translatable="yes">Buscar</property>
+                                <property name="label" translatable="yes">Search</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -649,7 +649,7 @@
                       <object class="GtkLabel" id="label7">
                         <property name="visible">True</property>
                         <property name="xpad">3</property>
-                        <property name="label" translatable="yes">Buscar</property>
+                        <property name="label" translatable="yes">Search</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>
@@ -685,7 +685,7 @@
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn18">
-                            <property name="title">Nombre</property>
+                            <property name="title">Name</property>
                             <property name="sort_column_id">1</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext26"/>
@@ -697,7 +697,7 @@
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn19">
-                            <property name="title">N&#xFA;mero</property>
+                            <property name="title">Number</property>
                             <property name="sort_column_id">2</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext27"/>
@@ -746,7 +746,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Buscar</property>
+                <property name="label" translatable="yes">Search</property>
               </object>
               <packing>
                 <property name="position">3</property>
@@ -778,7 +778,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn23">
-                        <property name="title">Nombre</property>
+                        <property name="title">Name</property>
                         <property name="sort_column_id">2</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext13"/>
@@ -790,7 +790,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn24">
-                        <property name="title">N&#xFA;mero</property>
+                        <property name="title">Number</property>
                         <property name="sort_column_id">3</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext14"/>
@@ -805,7 +805,7 @@
                         <property name="sizing">fixed</property>
                         <property name="fixed_width">150</property>
                         <property name="max_width">300</property>
-                        <property name="title">Progreso</property>
+                        <property name="title">Progress</property>
                         <property name="sort_column_id">4</property>
                         <child>
                           <object class="GtkCellRendererProgress" id="cellrenderertext15">
@@ -832,7 +832,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn27">
-                        <property name="title">Im&#xE1;genes</property>
+                        <property name="title">Images</property>
                         <property name="sort_column_id">8</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext17"/>
@@ -864,7 +864,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Descargas</property>
+                <property name="label" translatable="yes">Downloads</property>
               </object>
               <packing>
                 <property name="position">4</property>
@@ -883,7 +883,7 @@
     <property name="width_request">500</property>
     <property name="height_request">500</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">pyManga - Preferencias</property>
+    <property name="title" translatable="yes">pyManga - Preferences</property>
     <property name="resizable">False</property>
     <property name="icon">media/preferences-icon.png</property>
     <property name="type_hint">normal</property>
@@ -914,7 +914,7 @@
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkRadioButton" id="newpreferences">
-                            <property name="label" translatable="yes">&#xDA;ltimo d&#xED;a</property>
+                            <property name="label" translatable="yes">Last day</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">False</property>
@@ -928,7 +928,7 @@
                         </child>
                         <child>
                           <object class="GtkRadioButton" id="newpreferences2">
-                            <property name="label" translatable="yes">&#xDA;ltimos 3 d&#xED;as</property>
+                            <property name="label" translatable="yes">Last three days</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">False</property>
@@ -943,7 +943,7 @@
                         </child>
                         <child>
                           <object class="GtkRadioButton" id="newpreferences3">
-                            <property name="label" translatable="yes">&#xDA;ltima semana</property>
+                            <property name="label" translatable="yes">Last week</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">False</property>
@@ -964,7 +964,7 @@
                   <object class="GtkLabel" id="label11">
                     <property name="visible">True</property>
                     <property name="xpad">3</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Novedades&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;New&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -989,11 +989,12 @@
                     <child>
                       <object class="GtkHBox" id="hbox4">
                         <property name="visible">True</property>
-                        <property name="spacing">200</property>
                         <child>
                           <object class="GtkLabel" id="label13">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Selecciona el color de fondo</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">Select background color</property>
+                            <property name="width_chars">45</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1020,7 +1021,7 @@
                   <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
                     <property name="xpad">7</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Color de fondo de visor&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Background color viewfinder&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -1090,24 +1091,24 @@
   </object>
   <object class="GtkAboutDialog" id="aboutdialog">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Acerca de pyManga</property>
+    <property name="title" translatable="yes">About pyManga</property>
     <property name="window_position">center-always</property>
     <property name="icon">media/icon.png</property>
     <property name="type_hint">normal</property>
     <property name="program_name">pyManga</property>
     <property name="version">0.1.7 beta</property>
-    <property name="copyright" translatable="yes">&#xA9; 2011 pyManga</property>
-    <property name="comments" translatable="yes">Aplicaci&#xF3;n para descargar y ver mangas de submanga.com</property>
+    <property name="copyright">&#xA9; 2011 pyManga</property>
+    <property name="comments" translatable="yes">Application to download and view mangas submanga.com</property>
     <property name="website">http://code.google.com/p/pymanga/</property>
     <property name="license">This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>
-    <property name="authors">Autor: neo
+    <property name="authors">Author: neo
 mail: victornmatrix@gmail.com
 
-Contribuidor: GoThMoG
+Contributor: GoThMoG
 mail: balrogs.lord@gmail.com</property>
     <property name="logo">media/logo.png</property>
     <property name="wrap_license">True</property>
@@ -1212,7 +1213,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonback">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton1</property>
+                <property name="label">toolbutton1</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-go-back</property>
               </object>
@@ -1224,7 +1225,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonnext">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton2</property>
+                <property name="label">toolbutton2</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-go-forward</property>
               </object>
@@ -1248,7 +1249,7 @@ mail: balrogs.lord@gmail.com</property>
                 <child>
                   <object class="GtkLabel" id="label14">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes"> P&#xE1;gina </property>
+                    <property name="label" translatable="yes"> Page </property>
                   </object>
                 </child>
               </object>
@@ -1302,7 +1303,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonzoomup">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton8</property>
+                <property name="label">toolbutton8</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-zoom-in</property>
               </object>
@@ -1314,7 +1315,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonzoomdown">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton9</property>
+                <property name="label">toolbutton9</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-zoom-out</property>
               </object>
@@ -1326,7 +1327,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonzoomreset">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton10</property>
+                <property name="label">toolbutton10</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-zoom-100</property>
               </object>
@@ -1338,7 +1339,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonzoomadj">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton11</property>
+                <property name="label">toolbutton11</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-zoom-fit</property>
               </object>
@@ -1359,7 +1360,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonfull">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton13</property>
+                <property name="label">toolbutton13</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-fullscreen</property>
               </object>
@@ -1380,7 +1381,7 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkToolButton" id="toolbuttonquit">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">toolbutton15</property>
+                <property name="label">toolbutton15</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-quit</property>
               </object>
@@ -1444,7 +1445,7 @@ mail: balrogs.lord@gmail.com</property>
         <child>
           <object class="GtkToolButton" id="ss_back">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton1</property>
+            <property name="label">toolbutton1</property>
             <property name="use_underline">True</property>
             <property name="stock_id">gtk-go-back</property>
           </object>
@@ -1456,7 +1457,7 @@ mail: balrogs.lord@gmail.com</property>
         <child>
           <object class="GtkToolButton" id="ss_forward">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton2</property>
+            <property name="label">toolbutton2</property>
             <property name="use_underline">True</property>
             <property name="stock_id">gtk-go-forward</property>
           </object>
@@ -1468,7 +1469,7 @@ mail: balrogs.lord@gmail.com</property>
         <child>
           <object class="GtkToolButton" id="ss_exit">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">toolbutton8</property>
+            <property name="label">toolbutton8</property>
             <property name="use_underline">True</property>
             <property name="stock_id">gtk-leave-fullscreen</property>
           </object>
@@ -1485,28 +1486,28 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="verLibrary">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver cap&#xED;tulo</property>
+        <property name="label" translatable="yes">See chapter</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="borrarLibrary">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Borrar de la biblioteca</property>
+        <property name="label" translatable="yes">Remove library</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="redescargarLibrary">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Volver a descargar</property>
+        <property name="label" translatable="yes">Redownload</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="guardarcomoLibrary">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Guardar como...</property>
+        <property name="label" translatable="yes">Save as...</property>
         <property name="use_underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="menu5">
@@ -1514,14 +1515,14 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkMenuItem" id="guardarzipLibrary">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Archivo .zip</property>
+                <property name="label" translatable="yes">File .zip</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="guardarcbzLibrary">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Archivo .cbz</property>
+                <property name="label" translatable="yes">File .cbz</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
@@ -1537,7 +1538,7 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="submangaLibrary">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1547,14 +1548,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="verFeatured">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver sin descargar</property>
+        <property name="label" translatable="yes">See without download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="descargarFeatured">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Descargar</property>
+        <property name="label" translatable="yes">Download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1566,14 +1567,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="infoFeatured">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Informaci&#xF3;n</property>
+        <property name="label" translatable="yes">Information</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="verWebFeatured">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1583,14 +1584,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="verNew">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver sin descargar</property>
+        <property name="label" translatable="yes">See without download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="descargarNew">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Descargar</property>
+        <property name="label" translatable="yes">Download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1602,14 +1603,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="infoNew">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Informaci&#xF3;n</property>
+        <property name="label" translatable="yes">Information</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="verWebNew">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1619,35 +1620,35 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="guardarDownload">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Guardar en la biblioteca</property>
+        <property name="label" translatable="yes">Save in the library</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="verDownload">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver cap&#xED;tulo</property>
+        <property name="label" translatable="yes">See chapter</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="borrarDownload1">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Borrar del disco</property>
+        <property name="label" translatable="yes">Remove disk</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="redescargarDownload1">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Volver a descargar</property>
+        <property name="label" translatable="yes">Redownload</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="guardarcomoDownload">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Guardar como...</property>
+        <property name="label" translatable="yes">Save as...</property>
         <property name="use_underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="menu4">
@@ -1655,14 +1656,14 @@ mail: balrogs.lord@gmail.com</property>
             <child>
               <object class="GtkMenuItem" id="guardarzipDownload">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Archivo .zip</property>
+                <property name="label" translatable="yes">File .zip</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="guardarcbzDownload">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Archivo .cbz</property>
+                <property name="label" translatable="yes">File .cbz</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
@@ -1678,7 +1679,7 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="submangaDownload1">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1688,7 +1689,7 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="submangaDownload3">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1698,21 +1699,21 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="continuarDownload">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Continuar Descarga</property>
+        <property name="label" translatable="yes">Continue downloading</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="borrarDownload2">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Borrar del disco</property>
+        <property name="label" translatable="yes">Remove disk</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="redescargarDownload2">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Volver a descargar</property>
+        <property name="label" translatable="yes">Redownload</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1724,7 +1725,7 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="submangaDownload2">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1734,14 +1735,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="verSearch">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver sin descargar</property>
+        <property name="label" translatable="yes">See without download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="descargarSearch">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Descargar</property>
+        <property name="label" translatable="yes">Download</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -1753,14 +1754,14 @@ mail: balrogs.lord@gmail.com</property>
     <child>
       <object class="GtkMenuItem" id="infoSearch">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Informaci&#xF3;n</property>
+        <property name="label" translatable="yes">Information</property>
         <property name="use_underline">True</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="verWebSearch">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Ver en submanga.com</property>
+        <property name="label" translatable="yes">See in submanga.com</property>
         <property name="use_underline">True</property>
       </object>
     </child>

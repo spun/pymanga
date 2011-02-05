@@ -16,7 +16,6 @@ import tab_search
 import tab_download
 import viewer
 from desc_dialog import Info
-from about import About
 from preferences import Preferences
 
 class Gui:
@@ -33,6 +32,7 @@ class Gui:
 		preferencesmenu = builder.get_object("preferencesmenu")
 		aboutmenu = builder.get_object("aboutmenu")
 		refreshbutton = builder.get_object("refreshbutton")
+		self.aboutdialog = builder.get_object("aboutdialog")
 
 		#Connect signals
 		self.window.connect("delete-event", self.delete)
@@ -45,7 +45,6 @@ class Gui:
 		self.window.parse_geometry(geometry)
 		
 		self.preferences = Preferences(self.configuration)
-		self.about = About(self.configuration)
 		self.visor = viewer.Visor(self.configuration)
 		desc_dialog = Info(self.configuration)
 		self.biblioteca = tab_library.TreeLibrary(self.configuration, self.visor)
@@ -76,12 +75,13 @@ class Gui:
 
 	def displayPreferences(self, widget=None, event=None):
 		""""""
-		self.preferences.open()
-		self.visor.set_background(self.configuration.getValue("viewer","viewerBackground"))
+		color = self.preferences.open()
+		self.visor.set_background(color)
 	
 	def displayAbout(self, widget=None, event=None):
 		""""""
-		self.about.open()
+		self.aboutdialog.run()
+		self.aboutdialog.hide()
 		
 	def delete(self, widget, event=None):
 		""""""

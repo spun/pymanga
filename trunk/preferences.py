@@ -23,8 +23,6 @@ class Preferences():
 		self.newpreferences.connect("pressed", self.newcall, 1)
 		self.newpreferences2.connect("pressed", self.newcall, 3)
 		self.newpreferences3.connect("pressed", self.newcall, 7)
-		#LLamar a hide() en lugar de destroy() al cerrar la ventana
-		self.dialog.connect("response", self.dialog.hide_on_delete)
 		
 		self.new = int(self.configuration.getValue("new","newDay"))
 		self.newoption()
@@ -56,7 +54,9 @@ class Preferences():
 			self.configuration.setValue("new","newDay",str(self.new))
 		else:
 			self.new = auxnew
-
+			
+		self.dialog.hide()
+		return self.color
 	
 	def newcall(self, widget, day):
 		""""""

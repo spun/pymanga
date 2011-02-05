@@ -35,6 +35,11 @@ class TreeNew():
 		descargarNew.connect("activate", self.descargarSeleccion)
 		infoNew.connect("activate", self.openInfoDialog)
 		verWebNew.connect("activate", self.abrirEnWeb)
+		
+		#Localize
+		self.tvNew.get_column(1).set_title(_("Name"))
+		self.tvNew.get_column(2).set_title(_("Number"))
+		self.tvNew.get_column(4).set_title(_("Date"))
 
 		#self.listar()
 

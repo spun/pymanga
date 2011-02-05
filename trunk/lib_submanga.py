@@ -3,6 +3,7 @@
 import urllib, urllib2
 from datetime import datetime
 import notifications
+import cons
 
 class Novedades:
 	""""""
@@ -13,7 +14,7 @@ class Novedades:
 
 	def realizarBusqueda(self, numres):
 		""""""
-		self.n.notify("Actualizar Novedades","Actualizando lista... Espere por favor")
+		self.n.notify(_("Latest update"),_("Updating list... please wait"))
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
 		
@@ -128,7 +129,7 @@ class Novedades:
 				del resultadoRepetidos[index]
 			if index == len(resultadoRepetidos)-1: break
 		self.resultados = resultadoRepetidos + self.resultados[repetidos:]
-		self.n.notify("Actualizar Novedades","Lista actualizada con "+str(len(self.resultados))+" mangas")
+		self.n.notify(_("Latest update"),_("Updated list of ")+str(len(self.resultados))+" mangas")
 		
 
 	def getManga(self, num):
@@ -149,7 +150,7 @@ class Destacados:
 
 	def realizarBusqueda(self, numres=10):
 		""""""
-		self.n.notify("Actualizar Destacados","Actualizando lista... Espere por favor")
+		self.n.notify(_("Featured update"),_("Updating list... please wait"))
 		self.resultados[:].remove
 		f = urllib2.urlopen("http://submanga.com")
 		linea = ""
@@ -208,7 +209,7 @@ class Destacados:
 				encontradoManga = linea.find(etiquetaManga, encontradoManga+1);
 		
 		f.close()
-		self.n.notify("Actualizar Destacados","Lista actualizada con los 10 más destacados")
+		self.n.notify(_("Featured update"),_("Updated list of the 10 most outstanding"))
 
 	def getManga(self, num):
 		""""""
@@ -366,7 +367,7 @@ class Busqueda:
 				else:
 					fin=True
 		f.close()
-		self.n.notify("Búsqueda global","Búsqueda finalizada")
+		self.n.notify(_("Global search"),_("Complete search"))
 
 	def busquedaExacta(self, numres=10):
 		""""""
@@ -418,7 +419,7 @@ class Busqueda:
 				else:
 					fin=True
 		f.close()
-		self.n.notify("Búsqueda exacta","Búsqueda finalizada")
+		self.n.notify(_("Exact search"),_("Complete search"))
 
 
 	def getManga(self, num):

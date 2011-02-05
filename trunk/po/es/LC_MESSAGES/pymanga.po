@@ -1,0 +1,296 @@
+# Spanish translations for PACKAGE package
+# Traducciones al español para el paquete PACKAGE.
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Félix Serrano Blanco <balrogs.lord@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pyManga 0.1.7 beta\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-05 19:14+0100\n"
+"PO-Revision-Date: 2011-02-05 19:16+0100\n"
+"Last-Translator: Félix Serrano Blanco <balrogs.lord@gmail.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
+
+#: desc_dialog.py:24
+msgid "Loading information..."
+msgstr "Cargando información..."
+
+#: desc_dialog.py:79
+msgid "Information of \""
+msgstr "Información de \""
+
+#: downloader.py:28
+msgid "Downloading manga"
+msgstr "Descargando manga"
+
+#: downloader.py:28
+msgid "Started downloading "
+msgstr "Ha empezado la descarga de "
+
+#: downloader.py:85
+#: downloader.py:93
+msgid "Manga download"
+msgstr "Manga descargado"
+
+#: downloader.py:86
+msgid " manga is currently in the Library"
+msgstr " ya se encuentra en la Biblioteca"
+
+#: downloader.py:94
+msgid " manga is currently in the Downloads"
+msgstr " ya esta en Descargas"
+
+#: lib_submanga.py:17
+#: lib_submanga.py:132
+msgid "Latest update"
+msgstr "Actualizar Novedades"
+
+#: lib_submanga.py:17
+#: lib_submanga.py:153
+msgid "Updating list... please wait"
+msgstr "Actualizando lista... Espere por favor"
+
+#: lib_submanga.py:132
+msgid "Updated list of "
+msgstr "Lista actualizada con "
+
+#: lib_submanga.py:153
+#: lib_submanga.py:212
+msgid "Featured update"
+msgstr "Actualizar Destacados"
+
+#: lib_submanga.py:212
+msgid "Updated list of the 10 most outstanding"
+msgstr "Lista actualizada con los 10 más destacados"
+
+#: lib_submanga.py:370
+msgid "Global search"
+msgstr "Búsqueda global"
+
+#: lib_submanga.py:370
+#: lib_submanga.py:422
+msgid "Complete search"
+msgstr "Búsqueda finalizada"
+
+#: lib_submanga.py:422
+msgid "Exact search"
+msgstr "Búsqueda exacta"
+
+#: tab_download.py:69
+#: tab_featured.py:40
+#: tab_library.py:47
+#: tab_new.py:40
+#: tab_search.py:54
+#: pymanga.glade.h:18
+msgid "Name"
+msgstr "Nombre"
+
+#: tab_download.py:70
+#: tab_featured.py:41
+#: tab_library.py:48
+#: tab_new.py:41
+#: tab_search.py:55
+msgid "Number"
+msgstr "Número"
+
+#: tab_download.py:71
+msgid "Progress"
+msgstr "Progreso"
+
+#: tab_download.py:72
+#: tab_library.py:49
+msgid "Images"
+msgstr "Imágenes"
+
+#: tab_download.py:243
+msgid "Download complete"
+msgstr "Descarga completada"
+
+#: tab_download.py:243
+msgid "Has finished downloading "
+msgstr "Ha terminado la descarga de "
+
+#: tab_download.py:266
+#: tab_library.py:168
+msgid "Save as ."
+msgstr "Guardar como ."
+
+#: tab_new.py:42
+msgid "Date"
+msgstr "Fecha"
+
+#: viewer.py:91
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: viewer.py:92
+#: viewer.py:386
+msgid " of "
+msgstr " de "
+
+#: viewer.py:221
+msgid "Image download status"
+msgstr "Estado de descarga de imagenes"
+
+#: viewer.py:222
+msgid "Downloading image "
+msgstr "Descargando imagen "
+
+#: viewer.py:222
+msgid ", please wait..."
+msgstr ", espere por favor..."
+
+#: viewer.py:248
+#: viewer.py:272
+msgid "Image "
+msgstr "Imagen "
+
+#: pymanga.glade.h:1
+msgid " Page "
+msgstr " Página "
+
+#: pymanga.glade.h:2
+msgid "<b>Background color viewfinder</b>"
+msgstr "<b>Color de fondo del visor</b>"
+
+#: pymanga.glade.h:3
+msgid "<b>New</b>"
+msgstr "<b>Novedades</b>"
+
+#: pymanga.glade.h:4
+msgid "About pyManga"
+msgstr "Acerca de pyManga"
+
+#: pymanga.glade.h:5
+msgid "Application to download and view mangas submanga.com"
+msgstr "Aplicación para descargar y ver mangas de submanga.com"
+
+#: pymanga.glade.h:6
+msgid "Chapter"
+msgstr "Capítulo"
+
+#: pymanga.glade.h:7
+msgid "Continue downloading"
+msgstr "Continuar descarga"
+
+#: pymanga.glade.h:8
+msgid "Download"
+msgstr "Descargar"
+
+#: pymanga.glade.h:9
+msgid "Downloads"
+msgstr "Descargas"
+
+#: pymanga.glade.h:10
+msgid "Featured"
+msgstr "Destacados"
+
+#: pymanga.glade.h:11
+msgid "File .cbz"
+msgstr "Archivo .cbz"
+
+#: pymanga.glade.h:12
+msgid "File .zip"
+msgstr "Archivo .zip"
+
+#: pymanga.glade.h:13
+msgid "Information"
+msgstr "Información"
+
+#: pymanga.glade.h:14
+msgid "Last day"
+msgstr "Último día"
+
+#: pymanga.glade.h:15
+msgid "Last three days"
+msgstr "Últimos tres días"
+
+#: pymanga.glade.h:16
+msgid "Last week"
+msgstr "Última semana"
+
+#: pymanga.glade.h:17
+msgid "Library"
+msgstr "Biblioteca"
+
+#: pymanga.glade.h:19
+msgid "New"
+msgstr "Novedades"
+
+#: pymanga.glade.h:20
+msgid "Obtained from a URL"
+msgstr "Obtener desde una dirección"
+
+#: pymanga.glade.h:21
+msgid "Redownload"
+msgstr "Volver a descargar"
+
+#: pymanga.glade.h:22
+msgid "Remove disk"
+msgstr "Borrar del disco"
+
+#: pymanga.glade.h:23
+msgid "Remove library"
+msgstr "Borrar de la biblioteca"
+
+#: pymanga.glade.h:24
+msgid "Save as..."
+msgstr "Guardar como..."
+
+#: pymanga.glade.h:25
+msgid "Save in the library"
+msgstr "Guardar en la biblioteca"
+
+#: pymanga.glade.h:26
+msgid "Search"
+msgstr "Buscar"
+
+#: pymanga.glade.h:27
+msgid "See chapter"
+msgstr "Ver capítulo"
+
+#: pymanga.glade.h:28
+msgid "See in submanga.com"
+msgstr "Ver en submanga.com"
+
+#: pymanga.glade.h:29
+msgid "See without download"
+msgstr "Ver sin descargar"
+
+#: pymanga.glade.h:30
+msgid "Select background color"
+msgstr "Selecciona el color de fondo"
+
+#: pymanga.glade.h:31
+msgid "URL manga"
+msgstr "Dirección del manga"
+
+#: pymanga.glade.h:32
+msgid "Validate URL"
+msgstr "Validar dirección"
+
+#: pymanga.glade.h:33
+msgid "_Edit"
+msgstr "_Editar"
+
+#: pymanga.glade.h:34
+msgid "_File"
+msgstr "_Archivo"
+
+#: pymanga.glade.h:35
+msgid "_Help"
+msgstr "Ay_uda"
+
+#: pymanga.glade.h:36
+msgid "pyManga - Preferences"
+msgstr "pyManga - Preferencias"
+

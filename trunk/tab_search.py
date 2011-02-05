@@ -50,6 +50,10 @@ class TreeSearch():
 		self.entryChapter.connect("activate", self.getFromSearch)
 		self.buttonSearch.connect("clicked", self.getFromSearch)
 		
+		#Localize
+		self.tvSearch.get_column(1).set_title(_("Name"))
+		self.tvSearch.get_column(2).set_title(_("Number"))
+		
 		pixbufanim = gtk.gdk.PixbufAnimation(cons.PATH_MEDIA+"search-loader.gif")
 		self.imageUrl.set_from_animation(pixbufanim)
 		self.imageSearch.set_from_animation(pixbufanim)

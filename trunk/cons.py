@@ -5,10 +5,14 @@ import os
 import locale
 
 # Constantes del proyecto
-PROGRAM_NAME = "pyManga"
-PROGRAM_VERSION = "0.1.7 beta"
-WEBPAGE = "http://code.google.com/p/pymanga/"
-DOC = "http://code.google.com/p/pymanga/"
+#PROGRAM_NAME = "pyManga"
+#PROGRAM_VERSION = "0.1.7 beta"
+#WEBPAGE = "http://code.google.com/p/pymanga/"
+#DOC = "http://code.google.com/p/pymanga/"
+
+#Locale 
+APP="pymanga"
+DIR="po"
 
 # Directorio del proyecto
 if "win" in sys.platform:

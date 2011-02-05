@@ -25,7 +25,7 @@ class Downloader:
 		""""""
 		self.existe=self.crearDirectorio(continuar)
 		if not self.existe:
-			self.n.notify("Descargando manga","Ha empezado la descarga de "+self.manga.nombre+" "+self.manga.numero)
+			self.n.notify(_("Downloading manga"),_("Started downloading ")+self.manga.nombre+" "+self.manga.numero)
 			self.manga.getExtraInfo()
 			self.creaFicheroInfo()
 			if iter == -1:
@@ -82,14 +82,16 @@ class Downloader:
 		biblioteca=self.biblioteca+self.manga.codigo
 		n=notifications.Notification()
 		if os.path.exists(biblioteca):
-			self.n.notify("Manga descargado","El manga "+self.manga.nombre+" "+self.manga.numero+" ya se encuentra en la Biblioteca")
+			self.n.notify(_("Manga download"), self.manga.nombre+" "+self.manga.numero+
+			              _(" manga is currently in the Library"))
 			return True
 		elif os.path.exists(directorio):
 			#shutil.rmtree(directorio)
 			if continuar:
 				return False
 			else:
-				self.n.notify("Manga descargado","El manga "+self.manga.nombre+" "+self.manga.numero+" ya esta en Descargas")
+				self.n.notify(_("Manga download"), self.manga.nombre+" "+
+				              self.manga.numero+_(" manga is currently in the Downloads"))
 				return True
 		else:
 			os.mkdir(directorio)
