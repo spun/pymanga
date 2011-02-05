@@ -18,15 +18,10 @@ class Info():
 		self.InfoDialog = builder.get_object("InfoDialog")
 		self.imageinfo = builder.get_object("imageinfo")
 		self.textinfo = builder.get_object("textinfo")
-		
-		#Get signals
-		#LLamar a hide() en lugar de destroy() al cerrar la ventana
-		self.InfoDialog.connect("response", self.InfoDialog.hide_on_delete)
-		
 	
 	def open(self, manga):
 		""""""
-		self.InfoDialog.set_title("Cargando información...")
+		self.InfoDialog.set_title(_("Loading information..."))
 		textbuffer = self.textinfo.get_buffer()
 		textbuffer.set_text("")
 		self.imageinfo.clear()
@@ -38,7 +33,7 @@ class Info():
 		threading.Thread(target=self.getInfoText(), args=()).start()
 		
 		self.InfoDialog.run()
-		
+		self.InfoDialog.hide()
 		
 	def getImagen(self):
 		""""""
@@ -81,7 +76,7 @@ class Info():
 			#~ alto_pixbuf = float(pixbuf.get_height())
 			
 		self.imageinfo.set_from_pixbuf(pixbuf)
-		self.InfoDialog.set_title("Información de \""+self.manga.nombre+"\"")
+		self.InfoDialog.set_title(_("Information of \"")+self.manga.nombre+"\"")
 		
 
 	def getInfoText(self):

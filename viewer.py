@@ -88,8 +88,8 @@ class Visor:
 		self.alto_pixbuf = float(self.pixbuf.get_height())
 		self.image.set_from_pixbuf(self.pixbuf)
 		self.window.grab_focus()
-		self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Cargando...")
-		self.numpaginas.set_text(" de " + self.manga.numpaginas + " ")
+		self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+_("Loading..."))
+		self.numpaginas.set_text(_(" of ") + self.manga.numpaginas + " ")
 		#clear() se va posicionando en el último elemento y lo borra. Cada vez que cambia de elemento se llama 
 		#a la señal changed y entra en goto_image, por ello bloqueamos durante el clear() la señal changed
 		self.page_pos.handler_block(self.id)
@@ -218,8 +218,8 @@ class Visor:
 	def set_image(self, num):
 		""""""
 		if self.status:
-			context_id = self.statusbar.get_context_id("Estado de descarga de imagenes")
-			self.statusbar.push(context_id, "Descargando imagen "+str(num)+", por favor espere...")
+			context_id = self.statusbar.get_context_id(_("Image download status"))
+			self.statusbar.push(context_id, _("Downloading image ")+str(num)+_(", please wait..."))
 
 			dir_downloads = cons.PATH_TEMP
 
@@ -245,7 +245,7 @@ class Visor:
 					self.image.set_from_pixbuf(self.pixbuf)
 
 					self.page_pos.set_active(num-1)
-					self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
+					self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+_("Image ")+str(num))
 					self.ancho_pixbuf = float(self.pixbuf.get_width())
 					self.alto_pixbuf = float(self.pixbuf.get_height())
 					if self.zoomMode=="Normal":
@@ -269,7 +269,7 @@ class Visor:
 					self.pixbuf = gtk.gdk.pixbuf_new_from_file(imgUbic)
 					self.image.set_from_pixbuf(self.pixbuf)
 					self.page_pos.set_active(num-1)
-					self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+"Imagen "+str(num))
+					self.window.set_title(self.manga.nombre+" "+self.manga.numero+" - "+_("Image ")+str(num))
 					self.ancho_pixbuf = float(self.pixbuf.get_width())
 					self.alto_pixbuf = float(self.pixbuf.get_height())
 					if self.zoomMode=="Normal":
@@ -383,7 +383,7 @@ class Visor:
 	def initialInfoManga(self):
 		""""""
 		self.manga.getExtraInfo()
-		self.numpaginas.set_text(" de " + self.manga.numpaginas + " ")
+		self.numpaginas.set_text(_(" of ") + self.manga.numpaginas + " ")
 		for i in range(int(self.manga.numpaginas)):
 			self.page_pos.get_model().append([i+1])
 		

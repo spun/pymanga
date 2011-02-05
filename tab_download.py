@@ -64,7 +64,13 @@ class TreeDownload():
 		self.ok_icon = self.tvDownload.render_icon(gtk.STOCK_YES, gtk.ICON_SIZE_MENU)
 		self.nofinish_icon = self.tvDownload.render_icon(gtk.STOCK_MEDIA_PAUSE, gtk.ICON_SIZE_MENU)
 		self.down_icon = self.tvDownload.render_icon(gtk.STOCK_GO_DOWN, gtk.ICON_SIZE_MENU)
-
+		
+		#Localize
+		self.tvDownload.get_column(1).set_title(_("Name"))
+		self.tvDownload.get_column(2).set_title(_("Number"))
+		self.tvDownload.get_column(3).set_title(_("Progress"))
+		self.tvDownload.get_column(5).set_title(_("Images"))
+		
 		self.listar()
 
 	def listar(self):
@@ -234,7 +240,8 @@ class TreeDownload():
 			model.set_value(iter, 1, 1)
 			model.set_value(iter, 7, str(numImg))
 			n=notifications.Notification()
-			n.notify("Descarga completada","Ha terminado la descarga de "+model.get_value(iter, 2)+" "+str(model.get_value(iter, 3)))
+			n.notify(_("Download complete"),_("Has finished downloading ")+model.get_value(iter, 2)+" "+
+			         str(model.get_value(iter, 3)))
 
 
 	def abrirEnWeb(self, widget):
@@ -253,9 +260,10 @@ class TreeDownload():
 		directorio=self.directorio+text
 		name=model.get_value(iter, 2)
 		num=str(model.get_value(iter, 3))
+		name = name.replace(" ", "_")
 		namefile=name+"_"+num+"."+tipo
 
-		self.filechooserdialog.set_title("Guardar como ." + tipo)
+		self.filechooserdialog.set_title(_("Save as .") + tipo)
 		self.filechooserdialog.set_current_name(namefile)
 
 		response = self.filechooserdialog.run()

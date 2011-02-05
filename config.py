@@ -4,6 +4,8 @@ import os
 import ConfigParser
 import cons
 import gtk
+import locale
+import gettext
 
 
 CONF = "conf"
@@ -26,10 +28,25 @@ class Config():
 		if not self.cfg.read([cons.CONFIG_PATH + CONF]):
 			print "No existe el archivo"
 			
+		#Locale
+		locale.setlocale(locale.LC_ALL, '')
+		# This is needed to make gtk.Builder work by specifying the
+		# translations directory
+		locale.bindtextdomain(cons.APP, cons.DIR)
+		
+		gettext.textdomain(cons.APP)
+		gettext.bindtextdomain(cons.APP, cons.DIR)
+		 
+		#Para usar la función _() y poder traducir textos
+		gettext.install(cons.APP, cons.DIR)
+		
 		#Set the Glade file and signals
 		gladefile = "pymanga.glade"
 		self.builder = gtk.Builder()
+		self.builder.set_translation_domain(cons.APP)
 		self.builder.add_from_file(gladefile)
+		
+		
 		
 	def setValue(self, section, option, value):
 		""""""

@@ -35,6 +35,10 @@ class TreeFeatured():
 		descargarFeatured.connect("activate", self.descargarSeleccion)
 		infoFeatured.connect("activate", self.openInfoDialog)
 		verWebFeatured.connect("activate", self.abrirEnWeb)
+		
+		#Localize
+		self.tvFeatured.get_column(1).set_title(_("Name"))
+		self.tvFeatured.get_column(2).set_title(_("Number"))
 
 		#self.listar()
 

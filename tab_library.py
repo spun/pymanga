@@ -42,6 +42,11 @@ class TreeLibrary():
 		guardarzipLibrary.connect("activate", self.saveAs, "zip")
 		guardarcbzLibrary.connect("activate", self.saveAs, "cbz")
 		submangaLibrary.connect("activate", self.abrirEnWeb)
+		
+		#Localize
+		self.tvLibrary.get_column(1).set_title(_("Name"))
+		self.tvLibrary.get_column(2).set_title(_("Number"))
+		self.tvLibrary.get_column(4).set_title(_("Images"))
 
 		self.listar()
 
@@ -157,9 +162,10 @@ class TreeLibrary():
 		directorio=self.directorio+text
 		name=model.get_value(iter, 1)
 		num=str(model.get_value(iter, 2))
+		name = name.replace(" ", "_")
 		namefile=name+"_"+num+"."+tipo
 
-		self.filechooserdialog.set_title("Guardar como ." + tipo)
+		self.filechooserdialog.set_title(_("Save as .") + tipo)
 		self.filechooserdialog.set_current_name(namefile)
 
 		response = self.filechooserdialog.run()
