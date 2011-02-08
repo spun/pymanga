@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyManga 0.1.7 beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-05 19:14+0100\n"
-"PO-Revision-Date: 2011-02-05 19:16+0100\n"
+"POT-Creation-Date: 2011-02-08 19:44+0100\n"
+"PO-Revision-Date: 2011-02-08 19:47+0100\n"
 "Last-Translator: Félix Serrano Blanco <balrogs.lord@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Loading information..."
 msgstr "Cargando información..."
 
-#: desc_dialog.py:79
+#: desc_dialog.py:83
 msgid "Information of \""
 msgstr "Información de \""
 
@@ -85,42 +85,45 @@ msgstr "Búsqueda finalizada"
 msgid "Exact search"
 msgstr "Búsqueda exacta"
 
-#: tab_download.py:69
+#: tab_download.py:68
 #: tab_featured.py:40
-#: tab_library.py:47
+#: tab_library.py:57
 #: tab_new.py:40
 #: tab_search.py:54
-#: pymanga.glade.h:18
+#: pymanga.glade.h:24
 msgid "Name"
 msgstr "Nombre"
 
-#: tab_download.py:70
+#: tab_download.py:69
 #: tab_featured.py:41
-#: tab_library.py:48
+#: tab_library.py:58
 #: tab_new.py:41
 #: tab_search.py:55
 msgid "Number"
 msgstr "Número"
 
-#: tab_download.py:71
+#: tab_download.py:70
 msgid "Progress"
 msgstr "Progreso"
 
-#: tab_download.py:72
-#: tab_library.py:49
+#: tab_download.py:71
+#: tab_library.py:59
 msgid "Images"
 msgstr "Imágenes"
 
-#: tab_download.py:243
+#: tab_download.py:242
 msgid "Download complete"
 msgstr "Descarga completada"
 
-#: tab_download.py:243
+#: tab_download.py:242
 msgid "Has finished downloading "
 msgstr "Ha terminado la descarga de "
 
-#: tab_download.py:266
-#: tab_library.py:168
+#: tab_download.py:269
+#: tab_library.py:185
+#: tab_library.py:207
+#: tab_library.py:212
+#: tab_library.py:226
 msgid "Save as ."
 msgstr "Guardar como ."
 
@@ -133,24 +136,24 @@ msgid "Loading..."
 msgstr "Cargando..."
 
 #: viewer.py:92
-#: viewer.py:386
+#: viewer.py:390
 msgid " of "
 msgstr " de "
 
-#: viewer.py:221
+#: viewer.py:223
 msgid "Image download status"
 msgstr "Estado de descarga de imagenes"
 
-#: viewer.py:222
+#: viewer.py:224
 msgid "Downloading image "
 msgstr "Descargando imagen "
 
-#: viewer.py:222
+#: viewer.py:224
 msgid ", please wait..."
 msgstr ", espere por favor..."
 
-#: viewer.py:248
-#: viewer.py:272
+#: viewer.py:250
+#: viewer.py:274
 msgid "Image "
 msgstr "Imagen "
 
@@ -163,134 +166,162 @@ msgid "<b>Background color viewfinder</b>"
 msgstr "<b>Color de fondo del visor</b>"
 
 #: pymanga.glade.h:3
+msgid ""
+"<b>Choose the type of reading</b>\n"
+"\n"
+"<b>Manga</b> -> from right to left\n"
+"<b>Comic</b>  -> from left to right"
+msgstr ""
+"<b>Elija el tipo de lectura</b>\n"
+"\n"
+"<b>Manga</b> -> de derecha a izquierda\n"
+"<b>Comic</b>  -> de izquierda a derecha"
+
+#: pymanga.glade.h:7
 msgid "<b>New</b>"
 msgstr "<b>Novedades</b>"
 
-#: pymanga.glade.h:4
+#: pymanga.glade.h:8
 msgid "About pyManga"
 msgstr "Acerca de pyManga"
 
-#: pymanga.glade.h:5
+#: pymanga.glade.h:9
 msgid "Application to download and view mangas submanga.com"
 msgstr "Aplicación para descargar y ver mangas de submanga.com"
 
-#: pymanga.glade.h:6
+#: pymanga.glade.h:10
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: pymanga.glade.h:7
+#: pymanga.glade.h:11
 msgid "Continue downloading"
 msgstr "Continuar descarga"
 
-#: pymanga.glade.h:8
+#: pymanga.glade.h:12
 msgid "Download"
 msgstr "Descargar"
 
-#: pymanga.glade.h:9
+#: pymanga.glade.h:13
 msgid "Downloads"
 msgstr "Descargas"
 
-#: pymanga.glade.h:10
+#: pymanga.glade.h:14
 msgid "Featured"
 msgstr "Destacados"
 
-#: pymanga.glade.h:11
+#: pymanga.glade.h:15
 msgid "File .cbz"
 msgstr "Archivo .cbz"
 
-#: pymanga.glade.h:12
+#: pymanga.glade.h:16
+msgid "File .epub"
+msgstr "Archivo .epub"
+
+#: pymanga.glade.h:17
+msgid "File .mobi"
+msgstr "Archivo .mobi"
+
+#: pymanga.glade.h:18
 msgid "File .zip"
 msgstr "Archivo .zip"
 
-#: pymanga.glade.h:13
+#: pymanga.glade.h:19
 msgid "Information"
 msgstr "Información"
 
-#: pymanga.glade.h:14
+#: pymanga.glade.h:20
 msgid "Last day"
 msgstr "Último día"
 
-#: pymanga.glade.h:15
+#: pymanga.glade.h:21
 msgid "Last three days"
 msgstr "Últimos tres días"
 
-#: pymanga.glade.h:16
+#: pymanga.glade.h:22
 msgid "Last week"
 msgstr "Última semana"
 
-#: pymanga.glade.h:17
+#: pymanga.glade.h:23
 msgid "Library"
 msgstr "Biblioteca"
 
-#: pymanga.glade.h:19
+#: pymanga.glade.h:25
 msgid "New"
 msgstr "Novedades"
 
-#: pymanga.glade.h:20
+#: pymanga.glade.h:26
 msgid "Obtained from a URL"
 msgstr "Obtener desde una dirección"
 
-#: pymanga.glade.h:21
+#: pymanga.glade.h:27
 msgid "Redownload"
 msgstr "Volver a descargar"
 
-#: pymanga.glade.h:22
+#: pymanga.glade.h:28
 msgid "Remove disk"
 msgstr "Borrar del disco"
 
-#: pymanga.glade.h:23
+#: pymanga.glade.h:29
 msgid "Remove library"
 msgstr "Borrar de la biblioteca"
 
-#: pymanga.glade.h:24
+#: pymanga.glade.h:30
 msgid "Save as..."
 msgstr "Guardar como..."
 
-#: pymanga.glade.h:25
+#: pymanga.glade.h:31
 msgid "Save in the library"
 msgstr "Guardar en la biblioteca"
 
-#: pymanga.glade.h:26
+#: pymanga.glade.h:32
 msgid "Search"
 msgstr "Buscar"
 
-#: pymanga.glade.h:27
+#: pymanga.glade.h:33
 msgid "See chapter"
 msgstr "Ver capítulo"
 
-#: pymanga.glade.h:28
+#: pymanga.glade.h:34
 msgid "See in submanga.com"
 msgstr "Ver en submanga.com"
 
-#: pymanga.glade.h:29
+#: pymanga.glade.h:35
 msgid "See without download"
 msgstr "Ver sin descargar"
 
-#: pymanga.glade.h:30
+#: pymanga.glade.h:36
 msgid "Select background color"
 msgstr "Selecciona el color de fondo"
 
-#: pymanga.glade.h:31
+#: pymanga.glade.h:37
+msgid "To save sleeves like. epub or .mobi, install the package <b>calibre</b>"
+msgstr "Para poder guardar mangas como .epub o .mobi, debe instalar el paquete <b>calibre</b>"
+
+#: pymanga.glade.h:38
 msgid "URL manga"
 msgstr "Dirección del manga"
 
-#: pymanga.glade.h:32
+#: pymanga.glade.h:39
+msgid "Unmet dependency"
+msgstr "Dependencia insatisfecha"
+
+#: pymanga.glade.h:40
 msgid "Validate URL"
 msgstr "Validar dirección"
 
-#: pymanga.glade.h:33
+#: pymanga.glade.h:41
 msgid "_Edit"
 msgstr "_Editar"
 
-#: pymanga.glade.h:34
+#: pymanga.glade.h:42
 msgid "_File"
 msgstr "_Archivo"
 
-#: pymanga.glade.h:35
+#: pymanga.glade.h:43
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: pymanga.glade.h:36
+#: pymanga.glade.h:44
 msgid "pyManga - Preferences"
 msgstr "pyManga - Preferencias"
 

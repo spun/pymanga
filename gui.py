@@ -47,11 +47,12 @@ class Gui:
 		self.preferences = Preferences(self.configuration)
 		self.visor = viewer.Visor(self.configuration)
 		desc_dialog = Info(self.configuration)
-		self.biblioteca = tab_library.TreeLibrary(self.configuration, self.visor)
-		self.descargas = tab_download.TreeDownload(self.biblioteca, self.configuration, self.visor)
-		self.novedades = tab_new.TreeNew(self.descargas, self.configuration, self.visor, desc_dialog)
-		busqueda = tab_search.TreeSearch(self.descargas, self.configuration, self.visor, desc_dialog)
-		self.destacados = tab_featured.TreeFeatured(self.descargas, self.configuration, self.visor, desc_dialog)
+		descargas = tab_download.TreeDownload(self.configuration, self.visor)
+		self.biblioteca = tab_library.TreeLibrary(descargas, self.configuration, self.visor)
+		descargas.setLibrary(self.biblioteca)
+		self.novedades = tab_new.TreeNew(descargas, self.configuration, self.visor, desc_dialog)
+		busqueda = tab_search.TreeSearch(descargas, self.configuration, self.visor, desc_dialog)
+		self.destacados = tab_featured.TreeFeatured(descargas, self.configuration, self.visor, desc_dialog)
 		
 		# Tab con el foco al iniciar
 		tabSelected=self.configuration.getValue("main","mainTabSelected")

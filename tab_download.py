@@ -18,9 +18,8 @@ import zipfile
 
 class TreeDownload():
 	""""""
-	def __init__(self, biblioteca, config, visor):
+	def __init__(self, config, visor):
 		""""""
-		self.biblioteca=biblioteca
 		self.configuration = config
 		builder = config.builder
 		self.directorio = cons.PATH_TEMP
@@ -98,6 +97,7 @@ class TreeDownload():
 				else:
 					self.tvDownload.get_model().append([self.ok_icon, 1, nombre, int(numero), 100, True, fansub, imagenes,
 					                                   int(imagenes), int(codigo)])
+				
 				f.close()
 		self.tvDownload.grab_focus()
 
@@ -160,9 +160,13 @@ class TreeDownload():
 		""""""
 		treeselection = self.tvDownload.get_selection()
 		model, iter = treeselection.get_selected()
-		text = str(model.get_value(iter, 9))
-		source=self.directorio+text
-		destination=self.biblioteca.getPath()+text
+		nombre = model.get_value(iter, 2)
+		capitulo = str(model.get_value(iter, 3))
+		fansub = model.get_value(iter, 6)
+		imagenes = str(model.get_value(iter, 8))
+		codigo = str(model.get_value(iter, 9))
+		source=self.directorio+codigo
+		destination=self.biblioteca.getPath()+codigo
 		
 		if os.path.exists(destination):
 			shutil.rmtree(destination)
@@ -170,7 +174,7 @@ class TreeDownload():
 			shutil.move(source, destination)
 		
 		self.deleteRow(iter)
-		self.biblioteca.listar()
+		self.biblioteca.addRow(nombre, capitulo, fansub, imagenes, codigo)
 		
 	def redescargarSeleccion(self, widget):
 		""""""
@@ -182,8 +186,8 @@ class TreeDownload():
 		fansub = model.get_value(iter, 6)
 		m=lib_submanga.Manga(nombre, capitulo, codigo, fansub)
 
-		#self.borrarSeleccion()
-		self.descargarManga(m, iter)
+		self.borrarSeleccion(widget)
+		self.descargarManga(m)
 		
 	def continuarDescarga(self, widget):
 		""""""
@@ -197,36 +201,31 @@ class TreeDownload():
 		fansub = model.get_value(iter, 6)
 		m=lib_submanga.Manga(nombre, capitulo, codigo, fansub)
 
+		iter = gtk.TreeRowReference(model, model.get_path(iter))
 		self.descargarManga(m, iter, True)
 
-	def descargarManga(self, manga, iter, continuar=False):
+	def descargarManga(self, manga, iter=-1, continuar=False):
 		""""""
 		descarga=downloader.Downloader(manga, self)
-		threading.Thread(target=descarga.iniciarDescarga, args=(iter, continuar,)).start()
+		task = threading.Thread(target=descarga.iniciarDescarga, args=(iter, continuar,))
+		task.setDaemon(True)
+		task.start()
 
-	def addRow(self, nombre, numero,fansub, imagenes, codigo):
+	def addRow(self, nombre, numero, fansub, imagenes, codigo):
 		""""""
-		i=self.tvDownload.get_model().append([self.down_icon, 3, nombre, int(numero), 0, True, fansub, imagenes,
-		                                     int(imagenes), int(codigo)])
-		return i
+		model=self.tvDownload.get_model()
+		i=model.append([self.down_icon, 3, nombre, int(numero), 0, True, fansub, imagenes, int(imagenes), int(codigo)])
+		return gtk.TreeRowReference(model, model.get_path(i))
 
 	def deleteRow(self, a):
 		""""""
 		model=self.tvDownload.get_model()
 		model.remove(a)
-	
-	#Aun no ha sido probada debidamente
-	def getIter(self, codigo):
-		""""""
-		lista = self.tvDownload.get_model()
-		for i in range(len(lista)):
-			if lista[i][9] == int(codigo):
-				return lista[i].iter
-		return -1
 
 	def refreshProgress(self, iter, newProgress, numImg):
 		""""""
 		model=self.tvDownload.get_model()
+		iter = model.get_iter(iter.get_path())
 		model.set_value(iter, 4, newProgress)
 		imageInfo = model.get_value(iter, 7)
 		imageInfo = imageInfo.split('/')
@@ -250,6 +249,10 @@ class TreeDownload():
 		model, iter = treeselection.get_selected()
 		text = str(model.get_value(iter, 9))
 		webbrowser.open("http://submanga.com/"+text)
+	
+	def setLibrary(self, biblioteca):
+		""""""
+		self.biblioteca = biblioteca
 
 
 	def saveAs(self, widget, tipo):

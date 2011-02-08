@@ -27,6 +27,8 @@ class Config():
 
 		if not self.cfg.read([cons.CONFIG_PATH + CONF]):
 			print "No existe el archivo"
+		else:
+			self.checkConfig()
 			
 		#Locale
 		locale.setlocale(locale.LC_ALL, '')
@@ -76,7 +78,24 @@ class Config():
 
 		self.cfg.add_section("viewer")
 		self.cfg.set("viewer","viewerBackground","#000")
+		
 
+	#Si se tiene un archivo de configuración y se añaden más secciones, actualizar el archivo
+	def checkConfig(self):
+		""""""
+		sections = self.cfg.sections()
+		if len(sections) < 3:
+			if not self.cfg.has_section("main"):
+				value="800x500+50+50"
+				self.cfg.add_section("main")
+				self.cfg.set("main","mainWindowGeometry",value)
+				self.cfg.set("main","mainTabSelected","0")
+			if not self.cfg.has_section("new"):
+				self.cfg.add_section("new")
+				self.cfg.set("new","newDay","1")
+			if not self.cfg.has_section("viewer"):
+				self.cfg.add_section("viewer")
+				self.cfg.set("viewer","viewerBackground","#000")
 
 
 if __name__ == "__main__":
