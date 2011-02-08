@@ -62,7 +62,9 @@ class TreeSearch():
 	def getFromUrl(self, widget):
 		""""""
 		gtk.gdk.threads_init()
-		threading.Thread(target=self.listFromUrl, args=()).start()
+		url = threading.Thread(target=self.listFromUrl, args=())
+		url.setDaemon(True)
+		url.start()
 
 
 	def listFromUrl(self):
@@ -85,7 +87,9 @@ class TreeSearch():
 	def getFromSearch(self,widget):
 		""""""
 		gtk.gdk.threads_init()
-		threading.Thread(target=self.listFromSearch, args=()).start()
+		search = threading.Thread(target=self.listFromSearch, args=())
+		search.setDaemon(True)
+		search.start()
 
 
 	def listFromSearch(self):
@@ -142,8 +146,9 @@ class TreeSearch():
 		text = model.get_value(iter, 0)
 		manga=self.resBusquedas.getManga(text-1)
 		descarga=downloader.Downloader(manga, self.descargas)
-		#iter = self.descargas.getIter(manga.codigo)
-		threading.Thread(target=descarga.iniciarDescarga, args=()).start()
+		task = threading.Thread(target=descarga.iniciarDescarga, args=())
+		task.setDaemon(True)
+		task.start()
 		#descarga.iniciarDescarga()
 		#gtk.gdk.threads_leave()
 

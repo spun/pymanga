@@ -29,8 +29,12 @@ class Info():
 		
 		gtk.gdk.threads_init()
 		
-		threading.Thread(target=self.getImagen(), args=()).start()
-		threading.Thread(target=self.getInfoText(), args=()).start()
+		image = threading.Thread(target=self.getImagen(), args=())
+		image.setDaemon(True)
+		image.start()
+		info = threading.Thread(target=self.getInfoText(), args=())
+		info.setDaemon(True)
+		info.start()
 		
 		self.InfoDialog.run()
 		self.InfoDialog.hide()

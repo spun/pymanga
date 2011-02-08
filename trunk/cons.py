@@ -12,7 +12,7 @@ import locale
 
 #Locale 
 APP="pymanga"
-DIR="po"
+DIR="locale"
 
 # Directorio del proyecto
 if "win" in sys.platform:

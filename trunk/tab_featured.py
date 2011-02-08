@@ -45,7 +45,9 @@ class TreeFeatured():
 	def listar(self):
 		""""""
 		gtk.gdk.threads_init()
-		threading.Thread(target=self.actualizarDestacados, args=()).start()
+		list = threading.Thread(target=self.actualizarDestacados, args=())
+		list.setDaemon(True)
+		list.start()
 
 	def actualizarDestacados(self):
 		""""""
@@ -99,8 +101,9 @@ class TreeFeatured():
 		manga=self.destacados.getManga(text-1)
 		
 		descarga=downloader.Downloader(manga, self.descargas)
-		#iter = self.descargas.getIter(manga.codigo)
-		threading.Thread(target=descarga.iniciarDescarga, args=()).start()
+		task = threading.Thread(target=descarga.iniciarDescarga, args=())
+		task.setDaemon(True)
+		task.start()
 		#descarga.iniciarDescarga()
 		#gtk.gdk.threads_leave()
 

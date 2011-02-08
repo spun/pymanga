@@ -1526,6 +1526,20 @@ mail: balrogs.lord@gmail.com</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
+            <child>
+              <object class="GtkMenuItem" id="guardarepubLibrary">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">File .epub</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="guardarmobiLibrary">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">File .mobi</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -1858,5 +1872,109 @@ mail: balrogs.lord@gmail.com</property>
     <action-widgets>
       <action-widget response="0">closeinfo</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkDialog" id="emangaDialog">
+    <property name="border_width">5</property>
+    <property name="icon">media/icon.png</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox6">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="label15">
+            <property name="width_request">300</property>
+            <property name="height_request">100</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;Choose the type of reading&lt;/b&gt;
+
+&lt;b&gt;Manga&lt;/b&gt; -&gt; from right to left
+&lt;b&gt;Comic&lt;/b&gt;  -&gt; from left to right</property>
+            <property name="use_markup">True</property>
+            <property name="justify">center</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area6">
+            <property name="visible">True</property>
+            <property name="layout_style">spread</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label">Manga</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label">Comic</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">button1</action-widget>
+      <action-widget response="1">button2</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkMessageDialog" id="calibreDialog">
+    <property name="border_width">5</property>
+    <property name="icon">media/information_icon.png</property>
+    <property name="type_hint">normal</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="buttons">close</property>
+    <property name="text" translatable="yes">Unmet dependency</property>
+    <property name="secondary_text" translatable="yes">To save sleeves like. epub or .mobi, install the package &lt;b&gt;calibre&lt;/b&gt;</property>
+    <property name="secondary_use_markup">True</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox7">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area7">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

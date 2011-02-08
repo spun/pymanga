@@ -107,7 +107,9 @@ class Visor:
 			self.image.set_from_file(cons.PATH_MEDIA+"/loader.gif")
 			gtk.gdk.threads_init()
 
-			threading.Thread(target=self.initialInfoManga, args=()).start()
+			task = threading.Thread(target=self.initialInfoManga, args=())
+			task.setDaemon(True)
+			task.start()
 		else:
 			self.directorio=os.path.join(directorio, self.manga.codigo, "")
 			self.statusbar.hide()
@@ -307,7 +309,9 @@ class Visor:
 		entry = self.page_pos.get_active()+1
 		if self.status:
 			self.image.set_from_file(cons.PATH_MEDIA+"/loader.gif")
-			threading.Thread(target=self.set_image, args=(entry,)).start()
+			task = threading.Thread(target=self.set_image, args=(entry,))
+			task.setDaemon(True)
+			task.start()
 		else:	
 			self.set_image(entry)
 		return True
